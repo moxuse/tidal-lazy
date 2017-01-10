@@ -1,0 +1,8 @@
+v1 $ thing "apple*10 bottle*12 banana*10"
+|+| x (scale (-0.25) 0.8 sine1)
+-- |+| z (scale (-1.5) 1.5 rand)
+|+| y "0.9"
+|+| duration "0.8"
+
+
+hush

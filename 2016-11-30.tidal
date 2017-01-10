@@ -1,0 +1,36 @@
+(cps 1.15)
+
+d1
+$ every 8 (slow 3) 
+$ every 4 (slow 1.5)
+$ every 5 (striateL' 2 0.04 5)
+$ every 4 (striate 8)
+$ every 5 (iter 5)
+-- $ jux (iter 4)
+$ sound (samples "[mbd*2 ~ mhh mbd*2 moe2, mhh*2 [~ mbd*2]]" "2 3 5 4")
+|+| wah "0 0.4 0 0"
+|+| shape "0.3 0.6 0 0.6"
+|+| binscr "1"
+|+| binshf "0.4 0.5 1 0.9"
+|+| speed (scale 0.3 2 rand)
+|+| pan (scale 0.2 0.9 rand)
+|+| gain "1.2"
+|+| cut "1 2 2 1"
+
+d2
+$ slow 4
+$ every 5 (striateL' 2 0.1 2)
+$ slowspread  ($) [(|+| n "3"), (|+| n "-3")]
+$ sound (samples "ml ~ ml*2 mb*3 ~ cp mb:3" "5 5 2 4 12")
+|+| n "2 0 3"
+-- |+| conv "0.3 0 0.7 0"
+|+| wah "1 0.4 1"
+|+| shape "0.5 0.2 0.3"
+|+| cut "1 2 2 1"
+|+| speed "0.7 0.8 0.8 -1 0.9"
+|+| gain "1.2"
+
+d2 silence
+
+
+hush

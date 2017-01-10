@@ -1,0 +1,19 @@
+d1 $ jux (slow 1.5) $ sound (samples "imp*3" "6 7 8 3") # pan "0"  
+
+d1 silence
+
+d1 
+  $ every 3 (iter 4) $ every 4 (striate 6) $ every 2 (chop 3) 
+  $ every 7 (slow 0.2)
+  $ degradeBy 0.124
+  $ sound (samples "{sn bd hh*4 bd:4 cp, jazz:8*2 bass2 drum*3 notes:1 can:3}" (irand 3)) 
+  |+| pan sinewave1 
+  # room "0.02" 
+  # speed "[0.83 -1.25 0.75 -1.5]/3" 
+  -- # shape "0.3" 
+  # up "{-1 -2 -3}/4" 
+  -- # outbus "20 20 30 40 10"
+
+d1 silence
+
+d1 $ sound "hh" # pan "0.3" # outbus "1"

@@ -1,0 +1,26 @@
+cps (2.0)
+
+d1 
+ $ jux (slow 3)
+ -- $ straiate 3
+  $ degradeBy 0.15
+  $ jux (density 4)
+  $ every 2 (gap 8)
+  $ sound (samples "amencutup*3, {jazz*4 hh*2 v}" (irand 14))
+  # outbus "40 50 30 20 10"
+
+d1 silence
+
+d1 $ every 3 (density 0.5)
+  $ degradeBy 0.28
+  $ every 3 (striateL' 3 0.15 8)
+  $ every 4 (iter 3) 
+  $ every 4 (slow 3) 
+  $ every 5 (gap 3)
+  $ sound  (samples' "{moe4 moe1 mbd moe1 ~, [mbd*2 lt*3] ~ mhh*2}" (irand 7))
+  |+| pan sinewave1
+  # coarse "2 8 1 12" 
+  # binscr "0 0 1 1"
+  # binshf "0 1 0 0"
+
+d2 silence

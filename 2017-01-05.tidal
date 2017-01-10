@@ -1,0 +1,28 @@
+v1
+$ density 2
+$ every 2 (palindrome)
+$ thing "apple"
+|+| x (scale (-8) 28 sinewave1) 
+|+| y (density 0.2 $ scale (12.5) 15.5 sine1) 
+|+| z (slow 12 (scale (0) 0 sine1))
+|+| duration "3"
+
+v1 silence 
+
+
+d1
+$ sound "bd*2 hh*2"
+
+hush
+
+
+v1
+$ every 3 (gap 3)
+$ slow 1
+$ thing "pet*4 ~ apple*6 banana*3"
+|+| duration "12.4"
+-- |+| x (density 4 $ scale (-20) 20 sine1)
+|+| y (scale (2) 20 sine1)
+-- |+| z (scale (-20) 20 sine1)
+
+hush

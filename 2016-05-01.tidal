@@ -1,0 +1,100 @@
+(cps 1.1)
+
+d1
+ --  $ slow 2
+ $ degradeBy 0.2
+ $ every 4 (gap 2)
+ $ every 5 (chop 3)    
+ $ every 4 (iter 4) 
+ $ every 3 (slow 2)
+ $ foldEvery [4, 5] (striateL' 2 0.03 5)
+ $ every 4 (palindrome)
+ $ slowcat ([
+  (stack[
+      sound (samples "sn mbd(4, 9) mgt moe4" "4 2 1 4 3"),
+       sound (samples "~ hh*2 ~ mbd" (irand 8)),
+      sound (samples "moe3*3 ~" (irand 9))
+      -- sound "bang bang"
+    ]),
+    (stack[
+      sound (samples "mnz(7,16) mbd*3 mgt"  "2 1 3 2"),
+      sound (samples "cp mgt*3(5,16) ~ bass3" (irand 8)),
+      sound (samples "mbd*2 ~  [moe1*2 mnz]" (irand 9)),
+      sound "bang bang"
+    ])
+  ])
+# cut "2 1 1 2"
+  # accelerate "1000 3 100 -0.6"
+  # binfrz "0 1 0 1"
+  # binscr "0 1 0 1"
+ # dist "0.2 0.1 0.1 0.4 0.3"
+   # shape "0.4 0.2 0.3 0.4"
+  # binshf "1 0 0 1"
+  -- # coarse "12 1 128 1"
+  # speed "-8 0.7 1 -1 "
+   # delay "0.3 0 0.0 0.2"
+  # delayfeedback "0.1 0 0 0"
+   # delaytime "0.6" 
+   # hcutoff "0.1 0.1 0.03 0.1"
+  # pan sinewave1
+# room "0.05"
+ # sustain "8"
+
+d1 silence
+
+d1 
+ $ every 6 (degradeBy 0.8) 
+$ every 5 (rev) 
+$ every 3 (density 2)
+$ every 5 (iter 4) 
+$ every 3 (slow 3)
+$ foldEvery [2, 8] (striateL' 2 0.15 8)
+$ every 3 (gap 2)
+$ every 2 (chop 6)
+$ slowcat ([
+  stack[ sound (samples "mhh*3 ~ mbd mbd*3" "2 2 3 5 7 1"), sound "bang bang"],
+  stack[ sound (samples "mnz*2? ~ moe3 mnz*2 ~" (irand 10)), sound "bang"], 
+  stack[ sound (samples "tabla*2 mgt*2? mbd*3" (irand 3)), sound "bang bang"]
+  ])
+  # pan sinewave1 
+  # cut "4 2 1 2"
+ # accelerate "120 -10 1 1000"
+  # speed "1 0.5 -2 1" 
+  # coarse "1 0.8 1 2"
+# hresonance "0.1 0.2 0.1 0.9"
+  # binshf "1 1 0 1" 
+-- # binfrz "0 1 0 1"
+ # dist "0.4 0.2 0.2 1"
+  # binscr "1 0 0 1 1"
+   # shape "0.4"
+
+
+d1 $ degradeBy 0.5 $ every 3 (rev) 
+$ every 3 (density 2)
+$ every 5 (iter 4) 
+$ every 5 (slow 2)
+$ foldEvery [5, 8] (striateL' 5 0.09 2)
+$ every 3 (gap 3)
+$ every 2 (chop 2)
+$ slowcat ([
+  stack[ sound (samples "mhh*3 ~ mbd mbd*3" "4 1 3 5 7 1"),sound "bang bang"], 
+--   stack[ sound (samples "mnz*4? moe4 mbd mnz*2 ~" (irand 10)), sound "bang"],
+  stack[ sound (samples "tabla*2 mhh*3? mbd*3" (irand 3)), sound "bang bang"] 
+  ])
+ # pan sinewave1 
+ # cut "4 2 1 2"
+ # accelerate "1000 100 200 1 1"
+ # speed "0.7 0.5 -2 1" 
+ # shape "0.1"
+# coarse "12 8 1 1 "
+ # hresonance "0.1 0.2 0.1 0.9"
+ # binshf "1 1 0 1" 
+--  # binfrz "0 1 0 1"
+ # dist "0.4 0.2 0.2 1"
+  # binscr "1 0 0 1 1"
+
+
+
+d1 silence
+
+hush
