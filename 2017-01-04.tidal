@@ -1,25 +1,26 @@
 (cps 1.13)
 
 d1
-$ every 5 (iter 3)
-$ every 6 (off (3/16) (# up "0 1 2 3 4"))
-$ every 8 (stut 3 0.0125 4)
+-- $ every 5 (iter 3)
+$ every 6 (off (2/16) (# up "0 1 2 3 4"))
+$ every 8 (stut 8 0.0125 4)
 $ slow 3
 $ stack [
   sound "{mhh:1*7 ~ mnt:1*2 [~ mbd*2] ~, mbd*3/3 msn:16}"|+| cut "4 5 5 1",
   sound "mhh:37(4,12)" |+| cut "2",
   sound "ml:31/4 [~ mbd/2]"
 ]
-|+| n "4 2"
+|+| n "2 4"
 # mGain
 -- # binfrz "1/32 0 1/24 0 0"
- # binshfR
+# binshfR
 -- # wah "0.3/12 0 0 0.3/2 0"
--- # modl (density 4 $ choose [0,0,0,0,0,0.3,0.6])
+# modl (density 4 $ choose [0,0,0,0,0,0.3,0.6])
 |+| accelerate "12 0.5 -2 0 0 1"
 -- |+| end "0.3 0.13 1 0.5 1"
 |+| shape "0.4 0.5 0.2 0.4"
 |+| slowPanR 12
+-- |+| disv "-2 -2 -4" "3 4 5"
 
 d2
 $ every 4 (off (1/4) (# up "0 1 2 3 5"))
@@ -52,5 +53,7 @@ d1 silence
 d2 silence
 
 d3 silence
+
+d4 silence
 
 hush

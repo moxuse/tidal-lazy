@@ -2,7 +2,7 @@
 
 d5 
 $ sometimes (iter 2)
-$ every 3 (0.25 ~>) 
+$ every 2 (0.25 ~>) 
 $ degradeBy 0.4 
 $ slow 64 
 $ striate 512
@@ -29,11 +29,12 @@ $ sound "msoz:9"
 -- |+| coarse (slow 4 $ "2 2 18 4")
 |+| wah (slow 8 $ "3 0.4 1 0")
 |+| room "0.02"
+|+| disv "-2 0.3 -2" "5 4 5"
 
 d1
 $ (0.25 ~>)
 $ slow 8
-$ degradeBy 0.6
+$ degradeBy 0.3
 $ sometimes (|*| up "0.6666666")
 $ every 3 (stut 4 0.2 0.5)
 $ every 3 (smash 4 [2,3,4]) 
@@ -57,7 +58,7 @@ $ sound "{~ ml? ml}"
 
 d2
 -- $ (0.5 ~>)
-$ slow 1
+$ slow 2
 $ degradeBy 0.8
 $ every 4 (density 0.5)
 $ every 5 (palindrome)
@@ -72,6 +73,7 @@ $ sound "{~ ~ [moe1? ~], mhh:1?} {mhh:4*2 mbd*2, ~ mhh*3} ~ moe1*2"
 |+| gain "1.2"
 |+| nudge "[0 0.02]*2"
 |+| pan (scale 0.1 0.9 rand)
+|+| disv "-2 0.3 -2" "5 4 5"
 
 
 d3

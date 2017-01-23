@@ -16,7 +16,8 @@ unityShape = Shape {
     F "x" (Just 0),
     F "y" (Just 0),
     F "z" (Just 0),
-    F "duration" (Just 0.5)
+    F "duration" (Just 0.5),
+    F "twist" (Just 0)
   ],
   cpsStamp = True,
   latency = 0.02
@@ -39,4 +40,5 @@ x = makeF unityShape "x"
 y = makeF unityShape "y"
 z = makeF unityShape "z"
 duration = makeF unityShape "duration"
+twist = makeF unityShape "twist"
 

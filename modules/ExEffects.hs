@@ -11,7 +11,7 @@ slowPanS n = pan (slow n $ scale 0.2 0.8 sine1)
 slowPanR n = pan (slow n $ scale 0.2 0.8 rand)
 panR = pan (scale 0.2 0.8 $ rand)
 
-mGain = gain "1.1"
+mGain = gain "1.15"
 
 binshfR = binshf (choose [0,0,0, 0.75, 0.3, 1])
 binshfS n = binshf (slow n $ scale 0.0 0.7 sine1)

@@ -24,7 +24,7 @@ $ sound "{mbd:23? ~ [~ mhh:15*3] co,  ~ mhh:12, ~ moe3 [~ msn:4] ~, ~ msoz:2?, m
 d2
 --t2 (clutchIn 16)
 $ (1.0 ~>)
-$ slow 2
+$ slow 4
 --  $ sometimes (jux (iter 2))
 $ every 4 (stut 12 0.00125 0.1)
 $ sound "{mhh:6*4 ~ [~ msn:8] mbd:3?, ~ mbd:3*2 ~}"
@@ -38,11 +38,14 @@ $ sound "{mhh:6*4 ~ [~ msn:8] mbd:3?, ~ mbd:3*2 ~}"
 |+| pan (slow 8 $ scale 0.4 0.7 sine1)
 
 d2
+$ slow 2
+$ every 2 (off 0.125 (|+| up "1 2 4 2"))
+$ every 4 (striateL' 8 0.03 3)
 --t2 (clutchIn 8)
-$ (0.5 ~>)
+-- $ (0.5 ~>)
 -- $ sometimes (jux (iter 2))
-$ every 2 (stut 14 0.00125 0.3)
-$ sound "{mhh:6*2? ~ [~ msn:8] mbd:3?, ~ mbd:3*2 ~}"
+-- $ every 2 (stut 11 0.00125 0.3)
+$ sound "{mhh:6*3? ~ [~ msn:8] mbd:3?, ~ mbd:3*2 ~}"
 -- |+| speed (choose [1,1,1,1,0.6666, 0.5, 2, -0.75])
 |+| binshf "1 0"
 |+| accelerate (choose[-2, 0, 0.5, 1])
