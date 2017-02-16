@@ -20,7 +20,7 @@ $ stack [
   $ degradeBy 0.2
   $ every 4 (|+| n "-3")
   $ whenmod 8 4 (|-| up "5")
-  (sound "ml:4*2 ~ mb:1*2 ml:3*2 ~ ml:3 ~" |+| n "[0 3 ,3 5 ,7 8]" |+| n "-12 5 7 3 4 5")
+  (sound "ml:7*2 ~ mb:1*2 ml:3*2 ~ ml:6 ~" |+| n "[0 3 ,3 5 ,7 8]" |+| n "-12 5 7 3 4 5")
   # room "0.0 0.1 0.3"
   # end "2.1"
   |+| speed "-1.333 0.5 1.5 1.25 -0.5"
@@ -37,7 +37,7 @@ $ stack [
 
 
 d2
-$ slow 2
+$ slow 3
 $ every 6 (stut 8 0.125 (-0.5))
 $ every 4 (chop 3)
 $ every 5 (striate 3)

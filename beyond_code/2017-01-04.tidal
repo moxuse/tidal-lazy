@@ -31,7 +31,7 @@ $ sound "{mb:27 ~ [mb:26 ~] ~ , [mpd:16? mpd:28]/2 mb/2 ml ~}"
 # wah "0.1 0"
 # sustain "0.4"
 # cut "1 4 1 2"
--- # modl (density 4 $ choose [0,0,0,0.3,0.6])
+# modl (density 0.4 $ choose [0,0,0,0.3,0.6])
 # mGain
 |+| gain "0.2"
 |+| shape "0.3"

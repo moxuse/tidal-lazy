@@ -1,0 +1,20 @@
+d1
+$ slow 2
+-- $ degradeBy 0.3
+$ msvo 0.125 
+$ stack[
+  (sound "{mhh*4 mnt*2 mhh:2 ~ msn:3/2 mcp*2 ~, mcp:0/2 [mcp mnz:18] ~}")
+  ,(sound "[mbd mns:3] ~ [~ mbd] mpd:3/2")
+  -- ,(sound "~ [~ mnt:18] ~ mnz:3/2")
+ ]
+|+| n "12"
+-- |+| n "15"
+-- |+| n "12 15"
+|+| shape "0.2"
+-- |+| mDefault
+|+| mGrav
+-- |+| wah "0 0 0.2 0 0.3"
+-- |+| conv "1 0 0 0 1"
+
+hush
+

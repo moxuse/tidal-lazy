@@ -1,0 +1,36 @@
+d1
+-- $ degradeBy 0.1
+$ slow 2
+$ within (0.4, 0.8) (every 3 (0.125 ~>))
+$ within (0.5, 0.8) (every 2 (0.125 ~>))
+$ within (0.0, 0.5) (every 2 (slow 2))
+$ within (0.2, 0.8) (every 7 (striateL' 3 0.08 8))
+$ every 4 (off 0.125 (|+| speed "0.5 -1 0.75 -2 4")) 
+$ whenmod 4 2 (off 0.075 (|+| speed "~ ~ 2 -0.6")) 
+$ stack [
+  (sound "{~ [mbd*2/2 [~ msn]] ~ , mhh:21*8}"),
+  (sound "[mpd:7/4 mcp:2(3,5)?, ~ mcp:16/4 ~ ml:17*2/4 [msn*2 ~]]"),
+  (sound "mbd ~ [mnt:3*2 mnz:6*2 ~]/3 ~")
+  ,(sound "mb:34*2 [~ mb:25/2] ~" |+| up "-2 5" |+| wah "0.1")
+]
+|+| slowPanR 2
+|+| binshfR
+|+| nudge "[0.01 0]*4"
+|+| n "6 16 6"
+|+| mGain
+|+| conv " 0 0 0 0"
+-- |+| disv "-2 -3 -4" "3 4 3"
+
+d2
+$ slow 32
+$ sound "ml:14*7"
+|+| chord [fM, em9, fm, cm9, dm] "0 1 2 [3 4]*2 5 6]"
+|+| mGain
+|+| wah "0.04"
+
+
+d1 silence
+
+
+
+hush

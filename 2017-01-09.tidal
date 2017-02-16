@@ -1,30 +1,32 @@
-let disv n l = accelerate n |+| loop l
+(cps 1.28)
+
 
 d1
-$ every 2 (off 0.25 (|+| speed "1 2 3 0.5 2 3"))
--- $ whenmod 8 2 (striateL' 2 0.08 12)
+$ every 2 (off 0.125 (|+| speed "1 2 3 0.5 2 3")) 
+-- $ whenmod 8 6 (striateL' 3 0.08 11)
 $ slow 3
 $ stack[
   (sound "mhh:31(5,6) ~ [~ msn:29] mbd:7*2"),
-  (sound "msn([3 2]/2,6)/3 moe3([2 3]/2,5)" |+| n "25"),
+  (sound "msn([5 2]/2,6)/3 moe3([4 3]/2,7)" |+| n "26"),
   ((0.125 <~) $ sound "ml:34/2 ~ mhh:25*3 mcp*2/4")
 ]
-|+| binshfS 6
+|+| binshfR 
 |+| mGain
-|+| shape "0.2"
-|+| n (scale (-1) 7 $ (run 2))
-
+|+| shape "0.3"
+-- |+| n (scale (-1) 2 $ (run 3))
+|+| slowPanR 4
+-- |+| disv "-1 -3 -1" "3 3 2"
 
 d2
 $ slow 3
--- $ whenmod 8 1 (striateL' 3 0.01 5)
+$ whenmod 8 1 (striateL' 3 0.01 5)
 $ every 2 (off 0.25 (|=| speed "1 [1.125 1] 0.5 1.33"))
 $ sound "mb:16*2 ml:29/3 [mb:12*2 ~] mb:12"
 |+| wah "0.1 0.5 0.2"
 |+| coarse "4 2 2 2"
 |+| cut "5 3 5 3"
 |+| shape "0.3"
-|+| up (slow 2 $ "-3 3 4 -1 2")
+|+| up (slow 2 $ "-2 4 4 -2 0")
 |+| n (scale 2 8 $ (run 4))
 |+| slowPanS 2
 
@@ -49,6 +51,8 @@ d1 silence
 d2 silence
 
 d3 silence
+
+d4 silence
 
 hush
 

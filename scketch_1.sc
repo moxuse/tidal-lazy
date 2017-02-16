@@ -1,8 +1,10 @@
 s.options.device_("ZOOM TAC-2");
+s.options.device_("Soundflower (2ch)");
 
 "/Users/moxuse/dev/tidal_sc/start_superdirt.scd".load;
 
 
+s.makeGui
 
 (
 ~dirt.orbits[0].set(\freq, #{

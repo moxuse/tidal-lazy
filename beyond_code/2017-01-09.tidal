@@ -1,0 +1,67 @@
+(cps 1.32)
+
+d1
+-- $ degradeBy 0.1
+$ slow 2
+$ whenmod 8 6 (within (0,0.5) (striateL' 2 0.08 8))
+$ every 4 (off 0.075 (|+| speed "-1.25 [~ -0.5] -2")) 
+-- $ every 8 (within (0, 0.2) (0.075 <~))
+$ foldEvery [5,8] (within (0.6, 0.9) (slow 2))
+$ foldEvery [4,11] (within (0.2, 0.5) (density 2))
+$ slowcat[
+  (sound "mbd*2 [mbd*2/2, msn:3/2] mcp*2"),
+  (sound "~ mbd [mcp, msn:2/3] [~ mnt:18/3]"),
+  (sound "[mbd*2, mhh:4] [~ mnt:20/2] ~ mhh:3*3"),
+  (sound "~ mbd:4 [~ msn] [mcp/2, msn:6/2 ~]")
+]
+|+| n "8"
+|+| binshfR 
+|+| mGain
+|+| shape "0.3"
+|+| n (scale 1 6 $ (run 2))
+|+| slowPanR 5
+
+d4
+$ sound "mhh*6"
+|+| gain "[0 -0.5]*5"
+|+| mGain
+|+| nudge "[0.01 0]*3"
+|+| n "5 12 9"
+
+d2
+$ slow 4
+-- $ whenmod 8 6 (striateL' 3 0.07 2)
+$ every 2 (off 0.125 (|+| speed "2 -1.5 0.75 ~ 1.33"))
+$ sound "mb:23*2 ~ [mb:15*2 ~] mb:15"
+|+| wah "0.5 0.2"
+-- |+| coarse "4 2 2 2"
+|+| cut "5 1 5 3"
+|+| shape "0.3"
+|+| up (slow 2 $ "0 2 4 -2 0")
+|+| slowPanS 2
+|+| loop "2 3 2 0"
+
+d3
+$ degradeBy 0.3
+$ foldEvery [3, 7] (off 0.125 (|+| speed "~ [1.25 -0.5] ~ 0.5")) 
+$ slow 4
+$ every 5 (iter 3)
+$ chord [cm, fm9, gm9, dm] "0 1 2 3"
+|+| sound "ml:1*2 [ml:2 ~] ml:1 ml:0*2"
+|+| n (slow 3 $ "3 8")
+|+| wah "0.3 0.2 0.1"
+|+| slowPanR 2
+|+| coarse (slow 4 $ "2 4 24 2")
+-- |+| end "0.05"
+
+
+d1 silence
+
+d2 silence
+
+d3 silence
+
+d4 silence
+
+hush
+

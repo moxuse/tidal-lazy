@@ -36,7 +36,7 @@ s.waitForBoot {
     grain core synth module
   */
 
-  ~dirt.addModule('grain',
+ /* ~dirt.addModule('grain',
 	{ |dirtEvent|
 		if(~diversion.value.isNil) {
 			if(~buffer.notNil) {
@@ -104,7 +104,7 @@ s.waitForBoot {
 			Out.ar(out, sound)
 		}, [\ir, \ir, \ir, \ir, \ir, \ir, \ir, \ir]).add;
 	};
-
+*/
 
   /*
     mod core synth
@@ -484,7 +484,7 @@ OffsetOut.ar(out,
 //   Out.ar(0,(y*30).softclip*0.2);
 // }).store;
 
-SynthDef(\bang, {
+/*SynthDef(\bang, {
   0
 }).store();
 SynthDef(\volca0, {
@@ -492,7 +492,7 @@ SynthDef(\volca0, {
 }).store();
 SynthDef(\volca1, {
   0
-}).store();
+}).store();*/
 
 
   }; //wait for boot.
