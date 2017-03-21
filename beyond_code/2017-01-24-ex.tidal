@@ -1,0 +1,51 @@
+(cps 1.28)
+
+d1
+  $ slow 3 
+  $ every 6 (off 0.125 (|+| speed "1 2 1 0.75")) 
+  $ s "feelfx*2 alex*2" 
+  |+| n "2 7 1" 
+  # speed "-0.25" 
+  |+| cut "6 5 6 7" 
+  |-| speed (slow 2 $ "0.1 0.2") 
+  |+| wah "0.3 0.8 0.2" 
+
+do
+  let 
+    pad1 = sound "{msoz:2*2, msoz:10*2}"
+    pad2 = sound "{msoz:15*2}" -- 15 14 18
+  d2
+    $ slow 16
+    $ stut 8 0.25 16
+    $ slowcat [pad1, pad2, pad2]
+    |+| speed "0.5 [0.3333 [0.66 0.5]]*3 -0.333"
+    |+| wah "0.02"
+    |+| gain "0.7"
+
+d3
+  $ every 2 (off 0.125 (|+| speed "4 [-0.5 1] ~ 1 2")) 
+  -- $ every 4 (within (0.0, 0.3) (striateL' 2 0.04 8))
+  -- $ every 3 (within (0.125, 0.6) (|+| speed (choose [0.5, -2, 4, 0.75, -0.35])))
+  -- $ every 8 (within (0.5, 0.9) (|+| disv "-3 -2" "2 3"))
+  $ slow 3
+  $ stack[
+    (sound "mbd:4 [mhh:12([3,4]/2,8) ~] ~"),
+    (sound "{mhh:22([2 3]/2,5) ~ msn:7/2, [~ moe3([3 2]/2,5)] mbd:5 ~}" |+| n "2"),
+    (sound "mnt:18/2 [~ msn:24] ~")
+  ]
+  |+| binshfS 3
+  |+| mGain
+  -- |+| coarse "12 2 2 8"
+  |+| shape "0.2"
+  -- |+| n (scale (-1) 6 $ (run 3))
+  |+| slowPanS 2
+  -- |+| cut "1 1 3 2"
+
+
+d1 silence
+
+d2 silence
+
+d3 silence
+
+hush

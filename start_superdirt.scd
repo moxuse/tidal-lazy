@@ -359,24 +359,31 @@ doneAction:2);
 }).store();
 
 SynthDef(\ld1, {|out, sustain = 1, note = 0, speed = 1, begin=0, end=1, pan, accelerate, amp = 1, offset|
-var sound, d_freq, dur, env;
+  var sound, d_freq, dur, env;
   dur = 1.5 * (end - begin);
   d_freq = (note + 60).midicps * (1.0 + Sweep.kr(1, accelerate));
   env = EnvGen.ar(Env.adsr(0.1,dur, 0.8, 2, 1, -5), timeScale:sustain, doneAction:2);
-sound=MoogFF.ar(SinOsc.ar(d_freq + LFNoise2.ar(0.4,10),SinOsc.ar(d_freq,SinOsc.ar(d_freq*0.666,0,0.5),8),SinOsc.ar(d_freq,0.1,1.0)),TExpRand.kr(500.0, 2300.0, Impulse.kr(6)));
-OffsetOut.ar(out,
-		DirtPan.ar(sound, ~dirt.numChannels, pan, env)
-	)
+  sound=MoogFF.ar(
+    SinOsc.ar(d_freq + LFNoise2.ar(0.4,10),
+      SinOsc.ar(d_freq,SinOsc.ar(d_freq*0.666,0,0.5),8),
+      SinOsc.ar(d_freq,0.1,1.0)
+    ),
+    TExpRand.kr(500.0, 2300.0, Impulse.kr(6))
+  );
+
+  OffsetOut.ar(out,
+    DirtPan.ar(sound, ~dirt.numChannels, pan, env)
+  )
 }).store;
 
-  SynthDef(\ld2, {|out, sustain = 1, note = 0, speed = 1, begin=0, end=1, pan, accelerate, amp = 1, offset|
-var sound, d_freq, dur, env;
+SynthDef(\ld2, {|out, sustain = 1, note = 0, speed = 1, begin=0, end=1, pan, accelerate, amp = 1, offset|
+  var sound, d_freq, dur, env;
   dur = 2.0 * (end - begin);
   d_freq = (note + 84).midicps * (1.0 + Sweep.kr(1, accelerate));
   env = EnvGen.ar(Env.adsr(0.025 * sustain, dur, 0.3, 1,  1.3 * amp, -4), timeScale:sustain, doneAction:2);
-  sound = Resonz.ar(ClipNoise.ar(20), d_freq, 0.0003).distort* 12;
-OffsetOut.ar(out,
-		DirtPan.ar(sound, ~dirt.numChannels, pan, env)
+  sound = Resonz.ar(ClipNoise.ar(20), d_freq, 0.0003).distort * 12;
+    OffsetOut.ar(out,
+      DirtPan.ar(sound, ~dirt.numChannels, pan, env)
 	)
 }).store;
 
@@ -386,8 +393,8 @@ var sound, d_freq, dur, env;
   d_freq = (note + 60).midicps * (1.0 + Sweep.kr(1, accelerate));
   env = EnvGen.ar(Env.perc(0.025 * sustain, 2*dur,  1, -4), gate, timeScale:sustain*8, doneAction:2);
   sound = RLPF.ar(SinOsc.ar(SinOsc.kr(d_freq/pi, 0, d_freq*2, 0.5), 0, 0.3),LFNoise2.kr(5,23,60).midicps,0.3);
-OffsetOut.ar(out,
-		DirtPan.ar(sound, ~dirt.numChannels, pan, env)
+    OffsetOut.ar(out,
+      DirtPan.ar(sound, ~dirt.numChannels, pan, env)
 	)
 }).store;
 
@@ -399,8 +406,8 @@ var sound, d_freq, dur, env;
   d_freq = ((note + 60).midicps * (1.0 + Sweep.kr(1, accelerate)) * 0.003 )+ 1.0;
   env = EnvGen.ar(Env.perc(0.0, 0.05*dur,  1, -6), gate, timeScale:sustain*8, doneAction:2);
   sound = Klank.ar(`[[60,18492,8354] * d_freq, nil, [0.6, 0.6,1]], ClipNoise.ar(0.04)) * amp;
-OffsetOut.ar(out,
-		DirtPan.ar((sound*32).softclip*0.3, ~dirt.numChannels, pan, env)
+    OffsetOut.ar(out,
+      DirtPan.ar((sound*32).softclip*0.3, ~dirt.numChannels, pan, env)
 	)
 }).store;
 

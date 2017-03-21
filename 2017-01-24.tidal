@@ -10,17 +10,17 @@ d1
     |-| speed (slow 2 $ "0.1 0.2") 
     |+| wah "0.05" 
 
-let 
-  pad1 = sound "{msoz:2*2, msoz:10*2}"
-  pad2 = sound "{msoz:17*2}" -- 17 15 14 18
-
-d2
-  $ slow 16
-  $ stut 8 0.25 16
-  $ slowcat [pad1, pad2, pad2]
-  |+| speed "0.5 [0.3333 [0.66 0.5]]*3 -0.333"
-  |+| wah "0.05"
-  |+| gain "0.8"
+do
+  let 
+    pad1 = sound "{msoz:2*2, msoz:10*2}"
+    pad2 = sound "{msoz:17*2}" -- 17 15 14 18
+  d2
+    $ slow 16
+    $ stut 8 0.25 16
+    $ slowcat [pad1, pad2, pad2]
+    |+| speed "0.5 [0.3333 [0.66 0.5]]*3 -0.333"
+    |+| wah "0.05"
+    |+| gain "0.8"
 
 d3
   $ every 2 (off 0.125 (|+| speed "0.5 -2 4 2")) 

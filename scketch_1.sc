@@ -1,17 +1,23 @@
-s.options.device_("ZOOM TAC-2");
+//s.options.device_("ZOOM TAC-2");
+
+// bridge to TAC-2 with loopback
 s.options.device_("Soundflower (2ch)");
 
 "/Users/moxuse/dev/tidal_sc/start_superdirt.scd".load;
 
-
 s.makeGui
 
+
+// free all synthbd
 (
-~dirt.orbits[0].set(\freq, #{
-	(~n.degreeToKey([0, 3, 5, 7, 9, 10], 12) +62).midicps
-});
+~dirt.orbits.collect { |each|
+    each.freeSynths;
+  }
 )
 
+
+// extra 2017-01-04.tidal
+// extra 2017-01-24.tidal
 
 
 
@@ -27,8 +33,11 @@ s.sendMsg("/b_allocRead", 10, Platform.resourceDir +/+ "sounds/superdirt/msn/sn3
 }.play()
 )
 
-
-
+// (
+// ~dirt.orbits[0].set(\freq, #{
+//   (~n.degreeToKey([0, 3, 5, 7, 9, 10], 12) +62).midicps
+// });
+// )
 
 
 //////////////PV practice
