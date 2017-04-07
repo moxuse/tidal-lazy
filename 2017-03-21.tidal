@@ -1,36 +1,48 @@
 (cps 1.1)
 
 d1
-$ slow 2
-$ foldEvery [3,5] (within (0.4,0.6) (chop 6))
-$ sound "[mbd:15(3,8), mhh*2 msn:22*2/2, mnt:25*8?]"
-|+| n "3 5 8"
-|+| mDefault
+  $ sometimes (msvo 0.125)
+  $ whenmod 4 3 (slow 3)
+  $ foldEvery [3,5] (within (0.4,0.6) (striate 5))
+  $ ur 1 "<0 1 0 1 2 0 2 1 2 0 0 2 1>" [
+    sound "[mbd:15(3,8), mhh*2 msn:22*2/2, mnt:25*8?]"
+    ,sound "[mbd:2(3,9), mhh*3 msn:5]"
+    ,sound "[~ mbd:2(2,5), mcp mhh*4]"
+  ]
+  -- |+| speed (slow 1.75 $ "1 -0.8 1.1 0.75")
+  |+| n "3 5 8"
+  |+| mDefault
+  -- |+| slowSpeedR 2
+  -- |+| mGrav
+
 
 d2
-$ slow 2
-$ msvoA 0.125
--- $ foldEvery [4,5] (within (0.5,0.9) (chop 4))
-$ sound "{~ mnt:32(5,8)?, mnz:19(2,5)? ~}"
-|+| n (slow 3 $ "2 4 5")
-|+| modl "0 0 0 1 0 1"
-|+| conv "0 0 0 1"
-|+| slowSpeedR 2
-|+| mGrav
+  $ slow 2
+  $ msvoA 0.125
+  $ foldEvery [4,5] (within (0.5,0.9) (chop 4))
+  $ sound "{~ mnt:32(5,8)?, mnz:19(2,5)? ~}"
+  |+| n (slow 3 $ "2 4 5")
+  |+| modl "0 0 0 1 0 1"
+  |+| conv "0 0 0 1"
+  |+| slowSpeedR 2
+  |+| mGrav
+
 
 d3
-$ slow 4
-$ stut 2 0.125 4
-$ foldEvery [4,5] (within (0.4,0.8) (chop 3))
-$ every 3 (iter 3)
-$ whenmod 8 4 (|*| speed "0.75")
-$ whenmod 6 3 (off 0.125 (|*| speed "1.5"))
-$ degradeBy 0.5
-$ sound "ml:21(2,3) ml:5*4"
-|+| up "{0 2 6 9 12 15 17}%4"
-|+| room "0.1"
--- |+| wah (slow 2 $ "0.03 0 0 0.02 0.1")
--- |+| coarse "4 2 12 4 2"
-|+| end "0.6 1"
+  $ slow 4
+  $ stut 2 0.125 4
+  $ foldEvery [4,5] (within (0.4,0.8) (chop 3))
+  $ every 3 (iter 3)
+  $ whenmod 8 4 (|*| speed "0.75")
+  $ whenmod 6 3 (off 0.125 (|*| speed "1.5"))
+  $ degradeBy 0.4
+  $ sound "ml:21(2,3) ml:5*4"
+  |+| up "{0 2 6 9 12 15 17}%7"
+  |+| room "0.1"
+  |+| wah (slow 2 $ "0.03 0 0 0.02 0.1")
+  |+| coarse "4 2 12 4 2"
+  |+| end "0.8 1"
+
+d1 silence >> d3 silence
 
 hush

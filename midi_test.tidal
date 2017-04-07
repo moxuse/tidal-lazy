@@ -1,0 +1,45 @@
+(cps 1)
+
+
+do
+
+  d1 $ slow 4 $ sound "mhh:3*4"
+  
+  m1 $ slow 4 $ midinote "60" -- clock sync
+  
+  -- samples
+  --
+
+m2 $ slow 4 $ midinote "60"   
+
+m3 $ slow 4 $ midinote "60"   
+
+m4 $ slow 4 $ midinote "60"   
+
+m5 $ slow 4 $ midinote "60"   
+
+m2
+$ slow 0.125
+-- $ stut 2 0.125 3
+-- $ whenmod 8 4 (|+| midinote "0.75")
+-- $ whenmod 6 3 (sometimes (off 0.125 (|*| speed (choose [1.5, 1.125]))))
+$ degradeBy 0.3
+-- $ midinote "60"
+-- |+| mGain
+$ midinote "{0 5 7 12 15 20 22}%4"
+-- |*| speed "1.0 2.0 -1.5"
+
+m2 silence 
+
+hush
+
+
+
+d1
+-- $ slow 2
+$ sound "{mbd mhh*4, arpy*4}"
+|+| coarse "32 16"
+|+| n (run 9)
+|+| end "0.4"
+
+d1 silence

@@ -1,30 +1,30 @@
 (cps 1.0)
 
 d1
-$ slow 2
-$ degradeBy 0.8
-$ msvoS 0.125
-$ stack [
-  (sound "[msn:13/2 [ml2:12/2 ~ mhh:12] ~, [~ msn:28/4] moe3/2 ~ mcp]")
-  ,(sound "mnt:32*2 ~ msn:15*3? ~")
-  ,(sound "mb2:4/4 [~ mnt:24/2] ~ mbd/3 mhh:15*3")
- ]
-|*| speed "0.9"
-|+| mDefault
-|+| n "23 21"
-|-| gain "0 0.2 0.1 0 0.3"
--- |+| disv "-3 -3 -2" "3 4 4"
--- |+| mGrav
+  $ slow 2
+  $ degradeBy 0.8
+  $ msvoS 0.125
+  $ stack [
+    (sound "[msn:13/2 [ml2:12/2 ~ mhh:12] ~, [~ msn:28/4] moe3/2 ~ mcp]")
+    ,(sound "mnt:32*2 ~ msn:15*3? ~")
+    ,(sound "mb2:4/4 [~ mnt:24/2] ~ mbd/3 mhh:15*3")
+   ]
+  |*| speed "0.9"
+  |+| mDefault
+  |+| n "23 21"
+  |-| gain "0 0.2 0.1 0 0.3"
+  -- |+| disv "-3 -3 -2" "3 4 4"
+  -- |+| mGrav
 
 
 d2
-$ slow 6
-$ degradeBy 0.2
-$ sound "mb2:0*3 ml2:26*3"
-|+| chord [dm ,em9, fm, em] "0 1 2 3 2 1"
-|+| mGain
--- |+| coarse "2 2 12 4"
-|+| end "0.4 1.0"
+  $ slow 6
+  $ degradeBy 0.2
+  $ sound "mb2:0*3 ml2:26*3"
+  |+| chord [dm ,em9, fm, em] "0 1 2 3 2 1"
+  |+| mGain
+  -- |+| coarse "2 2 12 4"
+  |+| end "0.4 1.0"
 
 
 -- d3

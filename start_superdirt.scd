@@ -28,7 +28,7 @@ s.waitForBoot {
 	);
 
 
-  s.latency = 0.3; // increase this if you get "late" messages
+  s.latency = 0.025; // increase this if you get "late" messages
 
   numChannels =  ~dirt.numChannels;
 

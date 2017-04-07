@@ -1,9 +1,12 @@
 //s.options.device_("ZOOM TAC-2");
 
 // bridge to TAC-2 with loopback
-s.options.device_("Soundflower (2ch)");
+//s.options.device_("Soundflower (2ch)");
+s.options.device_("US-4x4");
 
 "/Users/moxuse/dev/tidal_sc/start_superdirt.scd".load;
+
+
 
 s.makeGui
 

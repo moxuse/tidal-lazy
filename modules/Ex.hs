@@ -18,7 +18,7 @@ msvoA time s = every 9 (within (0.3, 0.4) (striateL' 2 0.08 11))
 
 msvoS time s = every 9 (within (0.3, 0.4) (striateL' 2 0.08 11))
   $ every 6 (off time (|+| speed "-0.5 2 [~ -0.3] -2"))
-  $ every 5 (within (0.2, 0.5) (|+| disv "-2 -1" "3 2"))
+  $ every 5 (within (0.2, 0.5) (|+| disv "-0.2 -0.1" "3 2"))
   $ every 7 (within (0.7, 0.9) (chop 2))
   $ every 2 (within (0.3, 0.5) (slow 2))
   $ whenmod 5 3 (within (0.2, 0.4) (density 2))
