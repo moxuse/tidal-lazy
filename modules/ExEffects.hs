@@ -21,3 +21,6 @@ slowWahR n = wah (slow n $ choose [0,0,0,0,0, 0.1, 0.2, 0.5])
 
 mNudge = nudge "[0 0.015]*4"
 disv n l = accelerate n |+| loop l
+
+mfDel pat = delayt (density "<0.3 1 0.5 2>" (scale 1.0e-4 0.05 $ saw1)) |+| delay (slow 2 (scale 0.1 0.8 $ saw1)) |+| delayfb pat
+
