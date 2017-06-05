@@ -40,3 +40,5 @@ mGrav = mGain
   |+| slowSpeedR 4
   |+| mNudge
 
+inverse 1 = 0
+inverse 0 = 1

@@ -1,0 +1,57 @@
+cps 0.95
+
+d1
+$ slow 3 
+$ msvo "<0.125 0.25 0>"
+$ slow "<2 1 2 1 1.75>"
+$ stack [
+  sound "{mhh:18*2 [mpd2:25/3 mpd:19/2] mcp*2, ~ msn2:15(3,5)}" 
+    |+| end (slow 2.41421 $ "0.5 1 1 0.5"),
+  sound (slow 2 $ "{ml:28/2 mhh:21 mbd:15*2/3 mhh:19}"),
+  sound "mnt:9/4 mnz:28*2/2 mnz:22*2" |+| wah (slow 2.666 $ "0.75 0 0 0 0.3 0 0")
+]
+|+| slowSpeedR 2
+-- |+| mfDel (slow 1.83 (scale 0.1 1 $ sine1))
+|+| binshfS 2
+|+| slowPanR 4
+-- |+| mGain
+|+| mDefault
+|+| cut "3 4 1 2"
+
+d2
+$ slow 4
+$ every 4 (within (0.125,  0.75) (striateL' 3 0.125 4))
+$ whenmod 4 2 (|*| speed "0.75")
+$ every 3 (within (0.5,  0.95) (chop 4))
+$ sound "mpd:8(2,5) mnz:35*2/4"
+|+| mfDel (slow 2.25 (scale 0.1 1 $ sine1))
+|+| mGain
+-- |+| mDefault
+|+| slowPanS 2
+|+| cut (slow 4 $ "1 4")
+
+do
+  let pat = "[0 1/2 0 1/2 1 0/2 1/4 1*2]"
+  d3
+   $ slow 2
+   $ every 4 (within (0.5,  0.95) (gap 2))
+   $ whenmod 4 2 (slow 2)
+   $ whenmod 2 1 (within (0.1, 0.5) (|+| mfDel (slow 1.25 (scale 0.1 1 $ sine1))))
+   $ stack[
+    (whenmod 4 2 (0.25 <~) $ gain (inverse <$> pat) |+| sound "mhh:14")
+    ,(gain pat |+| sound "mbd2:7")
+    ,((0.125 ~>) $ gain pat |+| sound "mb2:13" |+| coarse "12" |+| wah "0.03"|+| speed "0.5 0.8 1 0.75")
+    ,(whenmod 4 3 (|*| speed "0.75") $ (0.25 ~>) $ gain (inverse <$> pat) |+| sound "ml:3" |+| speed "0.5 0.8 1.5 0.75" |+| coarse "12")
+   ]
+   -- |+| mDefault
+   |+| mGain
+   -- |+| shape "0.3"
+   |+| slowPanS 2
+   |+| cut "1 2 3 4"
+   |+| mfDel (slow 2.25 (scale 0.1 1 $ sine1))
+
+
+d2 silence
+
+
+hush
