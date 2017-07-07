@@ -1,0 +1,14 @@
+cps (125/120)
+
+v1
+$ thing "trash5*20 trash8*10 spinner*10"
+|+| rigid "1"
+|+| duration "3.5"
+|+| x (slow 0.75 (scale (-1) 1 saw1))
+|+| z (slow 2.34 (scale (-1) 1 sine1))
+|+| vscale (slow 0.8 (scale 0.3 1.8 sine1))
+|+| randCam (slow 32 "{0 0.1/20 0.1/42 0 0 0.2/12}")
+|+| y (slow 1.45 (scale 0.2 0.6 sine1))
+|+| vortex "0.3*20 2.4*20" "1.3 8.5 0.3" (slow 1.5 "120 0 40 -260 0 -20")
+
+v1 silence 

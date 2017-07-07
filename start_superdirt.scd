@@ -28,7 +28,7 @@ s.waitForBoot {
 	);
 
 
-  s.latency = 0.025; // increase this if you get "late" messages
+  s.latency = 0.3; // increase this if you get "late" messages
 
   numChannels =  ~dirt.numChannels;
 
@@ -250,7 +250,7 @@ s.waitForBoot {
         dist: ~dist
       ]
     )
-  }, { ~dist.notNil }); // play synth only if at least one of the two was given
+  }, { ~dist.notNil });
 
   SynthDef("distortion" ++ numChannels, { arg out, pan = 0, dist = 0;
     var in, mix;
@@ -266,7 +266,7 @@ s.waitForBoot {
         conv: ~conv
       ]
     )
-  }, { ~conv.notNil }); // play synth only if at least one of the two was given
+  }, { ~conv.notNil });
 
   SynthDef("convolution" ++ numChannels, { arg out, note, pan = 0, conv = 0;
     var in, karnel, mix;
@@ -283,7 +283,7 @@ s.waitForBoot {
         convn: ~convn
       ]
     )
-  }, { ~convn.notNil }); // play synth only if at least one of the two was given
+  }, { ~convn.notNil });
 
   SynthDef("convolution_n" ++ numChannels, { arg out, note, pan = 0, convn = 0;
     var in, karnel, mix;
@@ -294,7 +294,7 @@ s.waitForBoot {
   }).store;
 
 
-  SynthDef("becay-filter" ++ numChannels, { |out = 0, decay = 0|
+  SynthDef("decay-filter" ++ numChannels, { |out = 0, decay = 0|
     var signal, mix, mix_2, trig;
     signal = In.ar(out, numChannels);
     trig = Decay.ar(Impulse.ar(decay, 2 / decay ));
@@ -303,14 +303,14 @@ s.waitForBoot {
     ReplaceOut.ar(out, [mix, mix_2]);
   }).store;
 
-  ~dirt.addModule('becay-filter', { |dirtEvent|
-    dirtEvent.sendSynth('becay-filter' ++ numChannels,
+  ~dirt.addModule('decay-filter', { |dirtEvent|
+    dirtEvent.sendSynth('decay-filter' ++ numChannels,
       [
       out: ~out,
         decay: ~decay
       ]
     )
-  }, { ~decay.notNil }); // play synth only if at least one of the two was giv
+  }, { ~decay.notNil });
 
   SynthDef("distortion" ++ numChannels, { arg out, pan = 0, dist = 0;
     var in, mix;
@@ -326,7 +326,7 @@ s.waitForBoot {
         wah: ~wah
       ]
     )
-  }, { ~wah.notNil }); // play synth only if at least one of the two was given
+  }, { ~wah.notNil });
 
   SynthDef("wah" ++ numChannels, { arg out, pan = 0, wah = 0;
     var index, in, mix, signal;
@@ -500,6 +500,32 @@ SynthDef(\volca0, {
 SynthDef(\volca1, {
   0
 }).store();*/
+
+SynthDef(\mstring, {|out, sustain = 1, gate = 1, note = 0, speed = 1, begin=0, end=1, pan, accelerate, amp = 1, offset|
+  var sound, d_freq, dur, env, sig;
+
+  dur = 1.0 * (end - begin)/speed;
+
+  env = EnvGen.ar(Env.perc(0.1 , 0.3 * dur,  1, 1), gate, timeScale:sustain, doneAction:2);
+
+  sound = Mix.fill(32 ,{|i|
+      Pluck.ar(WhiteNoise.ar(0.05),
+      Impulse.kr(200),
+      ((60 + note).midicps).reciprocal,
+      {((([0, 2, 7, 10, 24].choose + 60 + note).midicps) * rrand(0.99, 1.01)).reciprocal},
+      30,
+      coef: {rrand(-0.02, 0.02)})
+    * LFNoise2.kr(0.03, 1, 0.3).abs
+    * 0.3;
+  }) * amp;
+
+  sig = AllpassN.ar(sound, 0.1,{[ Rand(0.03, 0.1), Rand(0.03, 0.1)]}.dup(2), 1.0);
+   //yy = (yy * -0.5) + (ww * 0.5);
+
+OffsetOut.ar(out,
+		DirtPan.ar(sig, ~dirt.numChannels, pan, env);
+	)
+}).store;
 
 
   }; //wait for boot.
