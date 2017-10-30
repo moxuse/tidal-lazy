@@ -28,8 +28,8 @@ do
         ]
   d2
     $ msvoA 0.125
-    -- $ whenmod 4 3 (within (0.25, 0.4) (rev) . (striate 4))
-    -- $ whenmod 6 4 (within (0.5, 0.75) (off 0.125 (|+| speed "-0.75 0.8 3 -2.666")))
+    $ whenmod 4 3 (within (0.25, 0.4) (rev) . (striate 4))
+    $ whenmod 6 4 (within (0.5, 0.75) (off 0.125 (|+| speed "-0.75 0.8 3 -2.666")))
     $ slow 2
     $ ur 1 "<1 0 2 1 1 0 2>" [
       ppt0
@@ -38,7 +38,8 @@ do
     ]
     |+| room "0"
     |+| orbit "1"
-    |+| slowPanS 3
+    |=| slowPanS 3
+    -- |=| slowPanS 3
     -- |+| mDefault
     |+| mGain
 

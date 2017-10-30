@@ -1,0 +1,22 @@
+do
+  let
+    pat1 = (slow 4 $ "0/2 1/2 1 0/3 0*2 1/2 1/4 0 0*4 0/4 0 1/3 1/2 1 0/2 1")
+  d1
+    $ msvoS 0.125
+    $ foldEvery [4,5] (within (0.2, 0.5) (slow 1.5))
+    $ stack [
+      -- ((0.125 ~>) $ gain pat1 |+| s "ecco_kick:7")
+      (whenmod 5 3 (off 0.075 (within (0.3, 0.7) (|+| speed "2.5 -0.6 2"))) $ gain (inverse <$> pat1) |+| s "ecco_noise:5" |+| cut "5 6 4 5")
+      ,((0.125 <~) $ gain pat1 |+| s "ecco_bip:3" |+| cut "4 5 4 6 8 6 4 5")
+      ,(slow 8 $ gain pat1 |+| s "ecco_bip:8")
+    ]
+    -- |+| n "1 0 3 4"
+    |+| n "10 3"
+    |+| mfDel (slow 7 (scale 1 0.01 rand))
+    -- |+| mGain
+    |+| slowPanS 2
+    |+| mNudge
+    |+| mDefault
+
+hush
+

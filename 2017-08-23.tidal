@@ -1,0 +1,26 @@
+d1 $ (chooseUr (randpick seqlist) [(sound "hh")]
+
+:t (randpick seqlist)
+
+:t chooseUr
+
+
+import GHC.Base
+
+d1 $ chooseUr [(sound "hh"),(sound "hh")]
+
+ve = unIO $ chooseUr [(sound "hh"),(sound "hh")]
+
+d1 unva
+-- t: choose
+:t [(sound "hh"),(sound "hh")]
+
+hush
+
+:t ur
+
+
+:t seqlist
+
+
+:t "<>"

@@ -1,0 +1,14 @@
+cps (140/120)
+
+d1
+$ msvoB 0.125
+$ mxur0
+|+| mDefault
+|=| mGain
+|+| n "1 3"
+
+mxur0 <- mxl
+
+hush
+
+

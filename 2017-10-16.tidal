@@ -1,0 +1,34 @@
+cps (92/120)
+
+do
+  x <- lazy' 2
+  d1
+    $ msvoA 0
+    $ x 
+    |+| slowPanR 2
+    |+| slowSpeedR 2
+    |+| mfDel "{0 0 0 0.09 0.02 0.5 0.08 1 0.9}%7"
+    |+| mGain
+    |+| n "0 [8 4]/2? 8 1?"
+    |+| orbit "0"
+
+d2 silence
+
+d2
+  $ slow 2
+  $ every 3 (zoom (0.25, 0.6) . (slow "<2 4>"))
+  $ whenmod 4 2 (off (0.125) (within (0.25, 0.5) (|+| up "<2 4>")))
+  $ up "5 0 -2 [7 10]/2"
+  |+| s "[msoz:2/2 ~]/2"
+  |+| wah (slow 3 "0.06 0 0.1")
+  |+| room "0.03"
+  |+| end "<0.4 0.3 0.5>"
+  |+| binscr "1"
+  -- |+| binshf "1"
+  |+| slowPanR 2
+  |+| cut "3 5 3 5"
+  |=| gain "1.1"
+  |+| orbit "1"
+
+
+hush
