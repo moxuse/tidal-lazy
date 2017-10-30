@@ -19,6 +19,10 @@ binshf :: Pattern Double -> ParamPattern
 binshf = make' VF binshf_p
 binshf_p = F "binshf" (Just 0)
 
+binsmr :: Pattern Double -> ParamPattern
+binsmr = make' VF binsmr_p
+binsmr_p = F "binsmr" (Just 0)
+
 dist :: Pattern Double -> ParamPattern
 dist = make' VF dist_p
 dist_p = F "dist" (Just 0)

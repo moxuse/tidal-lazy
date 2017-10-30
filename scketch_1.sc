@@ -1,12 +1,19 @@
-//s.options.device_("ZOOM TAC-2");
+// s.options.device_("Audinst HUD-mx1");
+
+s.options.device_("Soundflower (2ch)");
+
+s.options.device_("ZOOM TAC-2");
 
 // bridge to TAC-2 with loopback
-//s.options.device_("Soundflower (2ch)");
+
 s.options.device_("US-4x4");
 
 "/Users/moxuse/dev/tidal_sc/start_superdirt.scd".load;
 
 
+s.quit
+
+s.reboot
 
 s.makeGui
 
@@ -18,6 +25,23 @@ s.makeGui
   }
 )
 
+
+{SinOsc.ar(400,0,0.3)}.play
+
+// viz_nuts buffer
+(
+var sig, buf;
+
+sig = Signal.fill(512 * 1200, {|i|
+  var t= i;
+  var calc;
+  calc=t*(((t>>16)|(t>>4))&(63&(t>>3)));
+  (calc%256)/128.0-1.0;
+});
+
+buf = Buffer.alloc(s, 512 * 1200, bufnum: 99999);
+buf.loadCollection(sig);
+)
 
 // extra 2017-01-04.tidal
 // extra 2017-01-24.tidal

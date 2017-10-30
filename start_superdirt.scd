@@ -1,5 +1,5 @@
 (
-  var numChannels;
+  var numChannels, viznut_sig, viznut_buf;
 
 // configure the sound server: here you could add hardware specific options
 // see http://doc.sccode.org/Classes/ServerOptions.html
@@ -243,6 +243,29 @@ s.waitForBoot {
     ReplaceOut.ar(out, Pan2.ar((signal * (1.0 - binshf)) + (binshf * [IFFT(chain), IFFT(chain_r)]), pan));
   }).store;
 
+
+  ~dirt.addModule('binsmear', { |dirtEvent|
+    dirtEvent.sendSynth('binsmear' ++ numChannels,
+      [
+        out: ~out,
+        binsmr: ~binsmr
+      ]
+    )
+  }, { ~binsmr.notNil });
+
+  SynthDef("binsmear" ++ numChannels, { |out, pan = 0, binsmr = 0|
+    var in, chain, chain_r, bins;
+    in = In.ar(out, numChannels) * 1.75;
+    chain = FFT(LocalBuf(2048), in[1]);
+    chain_r = FFT(LocalBuf(2048), in[0]);
+    bins = MouseY.kr(0, 100);
+    chain = PV_MagSmear(chain, bins);
+    chain_r = PV_MagSmear(chain_r, bins);
+
+    ReplaceOut.ar(out, Pan2.ar((in * (1.0 - binsmr)) + (binsmr * [IFFT(chain), IFFT(chain_r)]), pan));
+  }).store;
+
+
   ~dirt.addModule('distortion', { |dirtEvent|
     dirtEvent.sendSynth('distortion' ++ numChannels,
       [
@@ -342,7 +365,7 @@ s.waitForBoot {
     ReplaceOut.ar(out, Pan2.ar(signal, pan));
   }).store;
 
-  ~dirt.orderModules(['sound', 'vowel',  'shape',  'crush', 'coarse', 'mod', 'wah', 'spectral-delay','decay-filter','binfreeze', 'binscramble', 'binshift', 'distortion', 'hpf', 'lpf', 'bpf']);
+  ~dirt.orderModules(['sound', 'vowel',  'shape',  'crush', 'coarse', 'mod', 'wah', 'spectral-delay','decay-filter','binfreeze', 'binscramble', 'binshift', 'binsmear', 'distortion', 'hpf', 'lpf', 'bpf']);
 
 
 // custom synth
@@ -501,7 +524,7 @@ SynthDef(\volca1, {
   0
 }).store();*/
 
-SynthDef(\mstring, {|out, sustain = 1, gate = 1, note = 0, speed = 1, begin=0, end=1, pan, accelerate, amp = 1, offset|
+/*SynthDef(\mstring, {|out, sustain = 1, gate = 1, note = 0, speed = 1, begin=0, end=1, pan, accelerate, amp = 1, offset|
   var sound, d_freq, dur, env, sig;
 
   dur = 1.0 * (end - begin)/speed;
@@ -519,12 +542,45 @@ SynthDef(\mstring, {|out, sustain = 1, gate = 1, note = 0, speed = 1, begin=0, e
     * 0.3;
   }) * amp;
 
-  sig = AllpassN.ar(sound, 0.1,{[ Rand(0.03, 0.1), Rand(0.03, 0.1)]}.dup(2), 1.0);
+    sig = AllpassN.ar(sound, 0.1,{[ Rand(0.03, 0.1), Rand(0.03, 0.1)]}.dup(2), 1.0);
    //yy = (yy * -0.5) + (ww * 0.5);
 
-OffsetOut.ar(out,
+    OffsetOut.ar(out,
 		DirtPan.ar(sig, ~dirt.numChannels, pan, env);
 	)
+}).store;*/
+
+
+// viznut grain synth
+
+viznut_sig = Signal.fill(512 * 1200, {|i|
+  var t= i;
+  var calc;
+  calc= t*(((t>>12)|(t>>8))&(56&(t>>3)));
+  (calc%256)/128.0-1.0;
+});
+
+viznut_buf = Buffer.alloc(s, 512 * 1200, bufnum: 99999);
+viznut_buf.loadCollection(viznut_sig);
+
+
+  SynthDef(\mviznut, {|out, sustain = 1, gate = 1, note = 0, speed = 1, begin=0, end=1, pan, accelerate, amp = 1, offset|
+  var sound, d_freq, dur, env, sig, tdur, trate, rate;
+
+  trate = MouseY.kr(0.7,200,1);
+  tdur = 4 / trate;
+  rate = Dseq([1, 0.5], inf);
+
+  dur = 1.0 * (end - begin)/speed;
+
+  env = EnvGen.ar(Env.perc(0.0 , dur,  1, 4), gate, timeScale:sustain, doneAction:2);
+
+     sound = TGrains.ar(1, Impulse.ar(trate), 99999, rate * speed, MouseX.kr(0,BufDur.kr(99999)), tdur, 0, 0.1, 1) * 0.5 * amp;
+
+
+    OffsetOut.ar(out,
+      DirtPan.ar(sound, ~dirt.numChannels, pan, env);
+    )
 }).store;
 
 
