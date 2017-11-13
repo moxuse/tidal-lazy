@@ -365,7 +365,31 @@ s.waitForBoot {
     ReplaceOut.ar(out, Pan2.ar(signal, pan));
   }).store;
 
-  ~dirt.orderModules(['sound', 'vowel',  'shape',  'crush', 'coarse', 'mod', 'wah', 'spectral-delay','decay-filter','binfreeze', 'binscramble', 'binshift', 'binsmear', 'distortion', 'hpf', 'lpf', 'bpf']);
+
+  ~dirt.addModule('henon', { |dirtEvent|
+    dirtEvent.sendSynth('henon' ++ numChannels,
+      [
+        out: ~out,
+        henon: ~henon
+      ]
+    )
+  }, { ~henon.notNil });
+
+  SynthDef("henon" ++ numChannels, { arg out, pan = 0, henon = 0;
+    var index, in, mix, rate;
+
+    rate = henon;
+
+    in = In.ar(out, 2);
+
+    mix = in * HenonC.ar(SampleRate.ir/2, LFNoise2.ar(0.6,1.2),  LFNoise1.ar(0.4,0.9));
+
+    ReplaceOut.ar(out, Pan2.ar((in * (1.0 - rate)) + (mix * rate), pan));
+  }).store;
+
+
+
+  ~dirt.orderModules(['sound', 'vowel',  'shape',  'crush', 'coarse', 'mod', 'wah', 'spectral-delay','decay-filter','binfreeze', 'binscramble', 'binshift', 'binsmear', 'henon', 'distortion', 'hpf', 'lpf', 'bpf']);
 
 
 // custom synth

@@ -51,3 +51,7 @@ modl :: Pattern Double -> ParamPattern
 modl = make' VF modl_p
 modl_p = F "mod" (Just 0)
 
+henon :: Pattern Double -> ParamPattern
+henon = make' VF henon_p
+henon_p = F "henon" (Just 0)
+
