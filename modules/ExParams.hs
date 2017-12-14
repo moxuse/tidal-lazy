@@ -23,6 +23,10 @@ binsmr :: Pattern Double -> ParamPattern
 binsmr = make' VF binsmr_p
 binsmr_p = F "binsmr" (Just 0)
 
+brick :: Pattern Double -> ParamPattern
+brick = make' VF brick_p
+brick_p = F "brick" (Just 0)
+
 dist :: Pattern Double -> ParamPattern
 dist = make' VF dist_p
 dist_p = F "dist" (Just 0)
@@ -54,4 +58,12 @@ modl_p = F "mod" (Just 0)
 henon :: Pattern Double -> ParamPattern
 henon = make' VF henon_p
 henon_p = F "henon" (Just 0)
+
+flangefq :: Pattern Double -> ParamPattern
+flangefq = make' VF flangefq_p
+flangefq_p = F "flangefq" (Just 0)
+
+flangefb :: Pattern Double -> ParamPattern
+flangefb = make' VF flangefb_p
+flangefb_p = F "flangefb" (Just 0)
 

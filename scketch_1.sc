@@ -1,4 +1,4 @@
-// s.options.device_("Audinst HUD-mx1");
+s.options.device_("Audinst HUD-mx1");
 
 s.options.device_("Soundflower (2ch)");
 
@@ -11,6 +11,7 @@ s.options.device_("US-4x4");
 "/Users/moxuse/dev/tidal_sc/start_superdirt.scd".load;
 
 
+
 s.quit
 
 s.reboot
@@ -19,6 +20,7 @@ s.makeGui
 
 
 // free all synthbd
+
 (
 ~dirt.orbits.collect { |each|
     each.freeSynths;
@@ -26,7 +28,30 @@ s.makeGui
 )
 
 
-{SinOsc.ar(400,0,0.3)}.play
+
+( // unit osc bridge
+var naddr = NetAddr("127.0.0.1", 57110);
+var unity = NetAddr("localhost", 5000);
+var objectMatcher = ('mhh': "stone1", 'mhh2': "stone2", 'mbd2': "trash4", 'msn2': "trash2");
+var msgSet = ('thing': "apple", 'x': 0.0, 'y': 0.5, 'z': 0.0, 'vscale': 2.0.rand, 'duration': (1.25.rand + 0.1), 'twist': 0.0, 'rigid': 0, 'randCaom': 0.03.rand);
+OSCdef(\unity, {|msg, time, addr, recvPort|
+  var lmsg;
+  msg.do({|e_val, i|
+    var synth_name, thing;
+    if(e_val == \s, {
+      synth_name = msg[i + 1];
+      thing = objectMatcher.matchAt(synth_name);
+      if (nil != thing, {
+        msgSet['thing'] = thing;
+      });
+    });
+  });
+  unity.sendMsg("/unity_osc", 0.0, msgSet['thing'], msgSet['x'], msgSet['y'], msgSet['z'], msgSet['vscale'], msgSet['duration'], msgSet['twist'], msgSet['rigid'], msgSet['randCaom'], 0.0, 0.0, 0.0);
+},
+'/play2', nil).fix;
+)
+
+
 
 // viz_nuts buffer
 (
