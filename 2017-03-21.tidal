@@ -9,9 +9,10 @@ d1
     ,sound "[mbd:2(3,9), mhh*3 msn:5]"
     ,sound "[~ mbd:2(2,5), mcp mhh*4]"
   ]
-  -- |+| speed (slow 1.75 $ "1 -0.8 1.1 0.75")
+  |+| speed (slow 1.75 $ "1 -0.8 1.1 0.75")
   |+| n "3 5 8"
   |+| mDefault
+  -- |+| flange "1.0" "0.59 0.4 0.7 0.9"
   -- |+| slowSpeedR 2
   -- |+| mGrav
 
@@ -26,6 +27,7 @@ d2
   |+| conv "0 0 0 1"
   |+| slowSpeedR 2
   |+| mGrav
+  |+| flange "1.0" "0.9"
 
 
 d3

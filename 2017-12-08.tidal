@@ -1,0 +1,16 @@
+cps (82/120)
+
+do
+  x <- lazy' 2 $ inst $ hh "mhh:22" . sn "msn2:39" . pd "msoz:20/6". ps "mps:33/7". bd "mbd:12"
+  d1
+    $ msvoA 0
+    $ msvoC 0
+    $ x
+    |+| mGain
+    |+| mNudge
+    |+| brick "{0 2.4 0 0 0 1.2 0}%9"
+    |+| mfDel "{0.1 0.125 0 0.7 0.08 0 0.04}%9"
+    |+| flangeD
+    |+| slowPanR 3
+
+hush
