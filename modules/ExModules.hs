@@ -6,9 +6,9 @@ import ExParams
 import ChordSymbols
 import ExEffects
 import Ex
-import ExCompose
--- import ExComposeSepar
+import ExInstruments
+import ExLazy
 
 import UnityOsc
 
-import MIDIClockShape
+-- import MIDIClockShape

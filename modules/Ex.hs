@@ -24,7 +24,7 @@ msvoS time s = every 9 (within (0.3, 0.4) (striateL' 2 0.08 11))
   $ whenmod 5 3 (within (0.2, 0.4) (density 2))
   $ s
 
--- effect wrapper
+-- effect function wrapper
 
 mSlowDiv n s = off n (|+| speed (slow (n / 2) $ "[2 0.75] 0.666 [2 [0.5 0.125]*3]*2 0.6666"))
   $ s

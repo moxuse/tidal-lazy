@@ -27,7 +27,6 @@ unityShape = Shape {
   ],
   cpsStamp = True,
   latency = 0.1
-
 }
 
 unitySlang = OscSlang {
