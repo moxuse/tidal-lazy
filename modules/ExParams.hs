@@ -5,6 +5,15 @@ module ExParams where
 import Sound.Tidal.Params
 import Sound.Tidal.Context
 
+
+tsdelay :: Pattern Double -> ParamPattern
+tsdelay = make' VF tsdelay_p
+tsdelay_p = F "tsdelay" Nothing
+
+xsdelay :: Pattern Int -> ParamPattern
+xsdelay = make' VI xsdelay_p
+xsdelay_p = I "xsdelay" Nothing
+
 -- Custom effects by moxus
 
 binscr :: Pattern Double -> ParamPattern
@@ -34,14 +43,6 @@ dist_p = F "dist" (Just 0)
 wah :: Pattern Double -> ParamPattern
 wah = make' VF wah_p
 wah_p = F "wah" (Just 0.25)
-
-tsdelay :: Pattern Double -> ParamPattern
-tsdelay = make' VF tsdelay_p
-tsdelay_p = F "tsdelay" Nothing
-
-xsdelay :: Pattern Int -> ParamPattern
-xsdelay = make' VI xsdelay_p
-xsdelay_p = I "xsdelay" Nothing
 
 conv :: Pattern Double -> ParamPattern
 conv = make' VF conv_p
