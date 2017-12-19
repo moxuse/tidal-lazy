@@ -1,7 +1,7 @@
 tidal-lazy
 ---
 
-Livecode set with [TidalCycles]() and [SuperDirt]().
+Livecode set with [TidalCycles](https://github.com/tidalcycles/Tidal) and [SuperDirt](https://github.com/musikinformatik/SuperDirt).
 
 ## build environment 
 
@@ -17,12 +17,47 @@ Locaete ```modules``` directory to anywhere you want.
 
 Then haskell codes of ```modules``` will be loaded when you boot tidal-vim.
 
+each file contains..
 
+file | content
+--- | ---
+Ex.hs | collection of wrapper functions
+ExEffects.hs | shotrhands for function of effect
+ExLazy.hs | implementation of ```lazy``` function
+ExInstruments | implementation of ```inst``` function
+ExModulses.hs | include file
+ExParams.hs | declaration of paramaters of effect modules
 
 ### settings of Super-Dirt side
 
 ```start_superdirt.scd``` is a excutable file which would boot SuperDirt.
 
 Includes server settings, some effect modules and extra synthDefs which chould play from tidal's pattern.
+
+
+## functions
+
+### lazy
+
+```
+lazy
+```
+
+### inst
+
+
+```
+inst
+```
+
+```
+defaultI
+```
+
+(```devel``` branch includes many code fragments besides these explanations)
+
+
+
+
 
 
