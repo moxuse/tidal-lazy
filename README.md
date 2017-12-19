@@ -25,7 +25,7 @@ Ex.hs | collection of wrapper functions
 ExEffects.hs | shotrhands for function of effect
 ExLazy.hs | implementation of ```lazy``` function
 ExInstruments | implementation of ```inst``` function
-ExModulses.hs | include file
+ExModules.hs | include file
 ExParams.hs | declaration of paramaters of effect modules
 
 ### settings of Super-Dirt side
