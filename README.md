@@ -43,7 +43,7 @@ Generate Ptterns have some length randomly.
 
 Requires two argments, one is Pattern Time as density of pattern another is DefaultInstrument.
 
-Actuary now lazy' is just random choose of pattern list. It will be passed to an `ur` function of Tidal. It is detailed at the [source]().
+Actuary now lazy' is just random choose of pattern list. It will be passed to an `ur` function of Tidal. It is detailed at the [source](https://github.com/moxuse/tidal-lazy/blob/master/modules/ExLazy.hs).
 
 ```
 lazy' :: Pattern Time -> DefaultInstrument -> IO (Pattern ParamMap)
@@ -68,7 +68,7 @@ do
 
 Data type used in lazy patterns as instrument set.
 
-`defaultI` makes a DefaultInstrument data that declerd in [modules/ExInstruments.hs]()
+`defaultI` makes a DefaultInstrument data that declerd in [modules/ExInstruments.hs](https://github.com/moxuse/tidal-lazy/blob/master/modules/ExInstruments.hs)
 
 ```
 defaultI
