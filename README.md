@@ -37,22 +37,72 @@ Includes server settings, some effect modules and extra synthDefs which chould p
 
 ## functions
 
-### lazy
+### lazy'
+
+Generate Ptterns have some length randomly.
+
+Requires two argments, one is Pattern Time as density of pattern another is DefaultInstrument.
+
+Actuary now lazy' is just random choose of pattern list. It will be passed to an `ur` function of Tidal. It is detailed at the [source]().
 
 ```
-lazy
+lazy' :: Pattern Time -> DefaultInstrument -> IO (Pattern ParamMap)
 ```
 
-### inst
+```
+lazy' 2 defaultI
+```
 
+It makes `IO (Pattern ParamMap)` so you need use in action. 
+
+In TidalCycles use with do block, And execute connections `d1` at the same time is useful.
 
 ```
-inst
+do
+  x <- lazy' 2 defaultI
+  d1
+    $ x
 ```
+
+### DefaultInstrument
+
+Data type used in lazy patterns as instrument set.
+
+`defaultI` makes a DefaultInstrument data that declerd in [modules/ExInstruments.hs]()
 
 ```
 defaultI
 ```
+
+### inst
+
+Function to set field of DefaultInstrument and make an instance. 
+
+`hh` `sn` `bd` `cp` `pd` `ps` are functions to set field of each instrument. 
+
+They are composable by dot operator so you could set instrument partially.
+
+
+```
+inst $ inst $ hh "myhat:2" . sn "mysnr:1"
+```
+
+## Use as a Pattern ParamMap
+
+Even though `lazy'` is IO but behave as a Pattern ParamMap in action.
+
+So it could add any pattern transformers or effect pattern at before and behind.
+
+```
+do
+  x <- lazy' 2 defaultI
+  d1
+    $ slow 2
+    $ jux (iter 2)
+    $ x
+    |+| speed (rand + 0.25)
+```
+
 
 (```devel``` branch includes many code fragments besides these explanations)
 
