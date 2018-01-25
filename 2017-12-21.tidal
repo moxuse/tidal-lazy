@@ -1,0 +1,15 @@
+
+d2
+  $ (0.115 <~)
+  $ slow 2
+  $ sound "mpd3/2 mpd3"
+  |+| cut "3/2 4/3"
+  |+| slowSpeedR 3
+  |+| n "1 5"
+  |+| flangeL
+  |+| mDefault
+  |+| orbit "1"
+
+
+d2 silence
+

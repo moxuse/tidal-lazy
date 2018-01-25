@@ -1,0 +1,16 @@
+cps (84/120)
+
+do
+  x <- lazy' 2 $ inst $ hh ((sometimes rev . slow 3) "[mcp:2 mhh:14 ~, ml3:6/4 mps:9/9]")
+  d1
+    $ msvoA 0.125
+    $ msvoB 0
+    $ x 
+    |+| flangeL
+    |+| unit (slow 3 "{r r r r c r r r s}")
+    -- |+| mfDel "{0.2 0.08 0.08 1 0.08 0.75 1 1}"
+    |+| mDefault
+    |+| room "0.05"
+    |+| n (slow 0.8 "52 36")
+ 
+hush

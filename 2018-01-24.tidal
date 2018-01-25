@@ -1,0 +1,12 @@
+do
+  x <- lazy' 2 defaultI
+  d1
+    $ slow 2
+    $ jux (iter 2)
+    $ x
+    |+| speed (rand + 0.125)
+
+
+hush
+
+
