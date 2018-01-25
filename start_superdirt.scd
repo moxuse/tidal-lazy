@@ -1,6 +1,9 @@
 (
 var numChannels, viznut_sig, viznut_buf;
 
+
+s.options.device_("Soundflower (2ch)");
+
 // configure the sound server: here you could add hardware specific options
 // see http://doc.sccode.org/Classes/ServerOptions.html
 s.options.numBuffers = 1024 * 128; // increase this if you need to load more samples
@@ -256,6 +259,23 @@ s.waitForBoot {
     ReplaceOut.ar(out, Pan2.ar((in * (1.0 - convn)) + (convn * mix),pan));
   }).store;
 
+  ~dirt.addModule('convolution_p', { |dirtEvent|
+    dirtEvent.sendSynth('convolution_p' ++ numChannels,
+      [
+        out: ~out,
+        convp: ~convp
+      ]
+    )
+  }, { ~convp.notNil });
+
+  SynthDef("convolution_p" ++ numChannels, { arg out, note = 0, pan = 0, convp = 0;
+    var src, kernel, mix, env;
+    kernel = Mix.new(LFPulse.ar(([0,2,5,10,24] + (note + 60)).midicps, 0, 0.1, 0.04));
+    src = In.ar(out, numChannels);
+    mix = RLPF.ar(Convolution.ar(src[0], kernel, 2048), 8500);
+    ReplaceOut.ar(out, Pan2.ar((src * (1.0 - convp)) + (convp * mix),pan));
+  }).store();
+
   ~dirt.addModule('decay-filter', { |dirtEvent|
     dirtEvent.sendSynth('decay-filter' ++ numChannels,
       [
@@ -337,7 +357,7 @@ s.waitForBoot {
     ReplaceOut.ar(out, Pan2.ar(effect, pan));
   }).store;
 
-  ~dirt.orderModules(['sound', 'vowel', 'flange', 'shape',  'crush', 'coarse', 'mod', 'wah', 'brick', 'spectral-delay','decay-filter','binfreeze', 'binscramble', 'binshift', 'binsmear', 'henon', 'distortion', 'hpf', 'lpf', 'bpf']);
+  ~dirt.orderModules(['sound', 'vowel', 'flange', 'shape',  'crush', 'coarse', 'mod', 'wah', 'brick', 'spectral-delay','decay-filter','binfreeze', 'binscramble', 'binshift', 'binsmear', 'conv', 'convn', 'convp', 'henon', 'distortion', 'hpf', 'lpf', 'bpf']);
 
 
   /**

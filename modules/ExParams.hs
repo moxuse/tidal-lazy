@@ -52,6 +52,10 @@ convn :: Pattern Double -> ParamPattern
 convn = make' VF convn_p
 convn_p = F "convn" (Just 0) 
 
+convp :: Pattern Double -> ParamPattern
+convp = make' VF convp_p
+convp_p = F "convp" (Just 0) 
+
 modl :: Pattern Double -> ParamPattern
 modl = make' VF modl_p
 modl_p = F "mod" (Just 0)
