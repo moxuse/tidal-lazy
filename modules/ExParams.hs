@@ -72,3 +72,14 @@ flangefb :: Pattern Double -> ParamPattern
 flangefb = make' VF flangefb_p
 flangefb_p = F "flangefb" (Just 0)
 
+pipe :: Pattern Int -> ParamPattern
+pipe = make' VI pipe_p
+pipe_p = I "pipe" (Just 0)
+
+
+-- this is exprimental
+-- out :: Pattern Int -> ParamPattern
+-- out = make' VI out_p
+-- out_p = I "out" (Just 0)
+
+
