@@ -10,5 +10,6 @@ import ExInstruments
 import ExLazy
 
 import UnityOsc
+import WebGLOsc
 
 -- import MIDIClockShape
