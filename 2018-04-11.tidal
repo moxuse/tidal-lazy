@@ -1,0 +1,11 @@
+import Data.String
+
+
+x n = (striate <$> [fromString (show x)| x <- [0.01, 0.02..1]])!!n
+
+x 2
+
+
+d1 $ (x 3) $ sound "hh"
+
+hush

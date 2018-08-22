@@ -1,0 +1,17 @@
+cps (93/120)
+
+
+do
+  x <- lazy' 2 $ inst0
+  d2
+    $ whenmod 4 3 (within (0.6,0.9) (|+| chord [em9, dM7, fm, eM] (choose [0,1,2,3])))
+    $ msvoC 0.125
+    -- $ so1
+    $ x
+    |+| mGain
+    |+| slowPanS 2
+    |+| slowSpeedR 3
+    |+| n (slow 1.35 $ "6 2")
+
+hush
+

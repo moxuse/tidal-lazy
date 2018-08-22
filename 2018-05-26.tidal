@@ -1,0 +1,34 @@
+cps (80/120)
+
+d1
+$ sound "<[ml3:2, mb2?]>"
+|=| mGain
+|+| accelerate "<-0.2 -0.5 -0.04>"
+|+| pipe "<40 40>"
+|+| wah "0.1"
+|+| room "0.2"
+|+| n (slow 1.35 $ "3 6")
+
+
+do
+  x <- lazy' 2 $ inst $ hh "[mhh2:23, ml2:7?]" . sn "[msn2, mcp?]"
+  d2
+    $ msvoB 0.125
+    $ sometimes (|+| flangeD)
+    $ x
+    |=| mDefault
+    |+| mNudge
+    |+| accelerate "{-0.8 -0.04 -1.0}%4"
+    |+| pipe "{40 0 40 0}%3"
+    |+| shape "0.2"
+    |+| slowPanR 3
+    |+| room "0.12"
+    |+| n "{~ 10 5 9 8}%7"
+
+
+
+hush
+
+
+
+

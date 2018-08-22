@@ -1,4 +1,4 @@
-(cps 0.125)
+(cps 1.125)
 
 d1
   -- $ msvoB 0.125
@@ -9,9 +9,9 @@ d1
   $ every 2 (within (0.3, 0.8) (slow 4))
   $ every 5 (within (0.7, 0.9) (striate 2))
   $ ur 4 "{0 1 2 0 2 1 0 2}%4" [
-    sound "{ml3:15/8 mhh:1*7 ~ flick:4 ~, moe4*3, mbd:12*4?}" 
+    sound "{mhh:1*8 ~ flick:4 ~, moe4*3, mbd:12*4?}" 
     ,sound "[mhh:15*3, mhh:28/4 msn:20/4, mbd:7(2,5)? mhh:29/3 mb2:18?]"
-    ,sound "{ml2:4 flick:6*2/2 mcp:16/3, ml3:8/7 mbd:12, mhh:19*3}"
+    ,sound "{~ flick:6*2/2 mcp:16/3,  mhh:19*3}"
   ]
   |*| up (slow 2 $ "1 -0.8 1 0.8")
   |+| mfDel (slow 3.45 $ scale 1 0.01 sine1)

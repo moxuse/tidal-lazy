@@ -1,0 +1,63 @@
+cps (85/120)
+
+d1
+$ slow 7
+$ sometimes (within (0.13, 0.5) (rev))
+$ s "pmosc(3,5)" 
+|+| n "[0,3,7]" 
+|+| sustain "5" 
+|+| n (foldl (+) "<4 3 0 1 2>" ["3 7", "0 5" , "<1 5 0>"]) 
+-- |+| convn "0 0.5 0 0.1 1" 
+|*| speed "0.5 0 0.5 0.7"
+|+| room 0.2
+-- |+| dist "0.1"
+|+| wah 0.0025
+|+| gain 1.2
+
+do
+  x <- lazy' 3 defaultI
+  d2
+    $ sometimes (within(0.5,1.0) (gap 9))
+    $ sometimes (msvoB 0.125)
+    $ sometimes (zoom (0.3, 0.5))
+    $ sometimes (within (0.4, 0.75) (rev))
+    $ x
+    -- |+| unit "{r r r r s c r c r}%7"
+    |+| mfDel "{0.08 0.1 0 0.1 0.2 0}%11"
+    |+| n "40 ~ ~ 49? 5"
+    |+| accelerate "{-0.09 -0.3 -0.14 0.1 0}%7"
+    -- |+| cutoff (scale 6000 18000 $ (slow 2 $ sine1))
+    |=| mDefault
+    -- |+| brick "{0 1 0 0 2 0.4}"
+    -- |+| gain 1.2
+    |=| gain 1.8
+    |+| room 0.02
+
+d3
+$ sometimes (gap 6)
+$ sometimes (within (0.5, 0.75) (rev))
+$ s "mhh:0(3,5)"
+|+| accelerate "-0.3 0.4 -0.1 0.9"
+|+| end (slow 0.9 (scale 0.7 1.1 $ sine))
+|+| nudge "[0.02 0]*3"
+|+| room "0.01"
+|+| pan 0.6
+|+| mGain
+
+
+
+d2 silence
+
+hush
+
+
+
+
+
+
+
+
+
+
+
+

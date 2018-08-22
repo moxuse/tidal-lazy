@@ -1,27 +1,28 @@
 cps (130/120)
 
-do 
-  let
-    pat = "0/4 1*2 0 1/2 1*4 1/4 1 0/2"
-  d1
-    $ slow 2
+-- do 
+  -- let
+    -- pat = "0/4 1*2 0 1/2 1*4 1/4 1 0/2"
+  -- d1
+    -- $ slow 3
     -- $ every 4 (msvo (-0.125))
-    $ every 2 (within (0.25, 0.75) (slow 2))
-    $ every 6 (within (0.4, 0.8) (|+| unit "s") . (|+| accelerate "<0.76 0 -0.16>") . (|+| loop "<0.125 0.75 0.5>"))
-    $ every 4 (off (-0.125) (stut 3 0.05 6) . (zoom (0.25, 0.75)))
-    $ stack [
-      (gain pat |+| sound "ecco_kick:5")
-      ,((slow 4) $ gain pat |+| sound "ecco_bass:3" |+| sustain "0.125" |+| up "0 2 -3 0")
-      ,((0.125 <~) $ gain pat |+| sound "ecco_hihat:0")
-      ,(gain (inverse <$> pat) |+| sound "ecco_snr:0")
-      ,(slow 8 $ (0.125 ~>) $ gain pat |+| sound "ecco_bip:6")
-    ]
-    |+| mGain
-    |+| slowPanS 3
-    |+| mfDel (slow 3 (scale 1 0.02 saw1))
-    |+| binsmr (slow 3 "0 1 0 0 1 0")
-    |+| n "0 4"
-    |+| orbit "0"
+    -- $ every 2 (within (0.25, 0.75) (slow 2))
+    -- $ every 6 (within (0.4, 0.8) (|+| unit "s") . (|+| accelerate "<0.76 0 -0.16>") . (|+| loop "<0.125 0.75 0.5>"))
+    -- $ every 4 (off (-0.125) (stut 3 0.05 6) . (zoom (0.25, 0.75)))
+    -- $ stack [
+      -- (gain pat |+| sound "ecco_kick:5")
+      -- ,((slow 4) $ gain pat |+| sound "ecco_bass:3" |+| sustain "0.125" |+| up "0 2 -3 0")
+      -- ,((0.125 <~) $ gain pat |+| sound "ecco_hihat:0")
+      -- ,(gain (inverse <$> pat) |+| sound "ecco_snr:0")
+      -- ,(slow 8 $ (0.125 ~>) $ gain pat |+| sound "ecco_bip:6")
+    -- ]
+    -- |=| mGain
+    -- |+| crush "8"
+    -- |+| slowPanS 3
+    -- |+| mfDel (slow 3 (scale 1 0.02 saw1))
+    -- |+| binsmr (slow 3 "0 1 0 0 1 0")
+    -- |+| n "0 4"
+    -- |+| orbit "0"
 
 d2
   $ sometimes (slow "<4 3>")

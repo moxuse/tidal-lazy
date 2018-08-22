@@ -8,6 +8,7 @@ d2
   |+| n "1 5"
   |+| flangeL
   |+| mDefault
+  |=| mGain
   |+| orbit "1"
 
 

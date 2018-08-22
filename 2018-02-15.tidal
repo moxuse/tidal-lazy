@@ -1,0 +1,37 @@
+cps (85/120)
+
+
+do
+  x <- lazy' 2 defaultI
+  d1
+    $ msvoA 0.125
+    $ whenmod 4 2 (|+| flangeD)
+    $ whenmod 6 5 (gap 2)
+    -- $ sometimes (|+| mfDel "{0 0 0 0.18 1 0.1333 0 0 0.183}%10")
+    $ x
+    -- |+| mDefault
+    |+| mGain
+    |+| mNudge
+    |+| slowPanR 3
+    |+| slowSpeedR 0.75
+    |+| unit (density 2 "{r r r r [s, r]/2 r r r}%9")
+    |+| n "12? ~ 43 27/4"
+    |+| up ("{3 0 5 7 0 3 5 -1}" + "<0 1 -2>")
+
+d2
+  $ slow "<3 4>"
+  $ up ("{7 [0, 5] [3, 10]}" + "<0 1 2>" + (slow 4 $ "<1 0>"))
+  |+| sound "ml"
+  |+| n "<28 19 29>"
+  |+| room "0.2"
+  |*| speed "{-1.125 1 1}"
+  |+| nudge "0.08"
+  |+| mNudge
+  |+| accelerate "{-0.03 0 0 0.02}%5"
+  |+| mGain
+
+
+d1 silence
+
+hush
+

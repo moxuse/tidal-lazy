@@ -1,0 +1,14 @@
+cps (40/120)
+
+do
+  x <- lazy' 2 $ inst $ hh "[mhh:12, ml3?]"
+  d1
+    $ msvo 0.125
+    $ x
+    |=| mDefault
+    |+| slowPanR 3
+    |+| n "~ 20 10 ~"
+    |+| wah "0.3 0 0.2 0"
+
+ hush
+

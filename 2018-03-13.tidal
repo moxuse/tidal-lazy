@@ -1,0 +1,16 @@
+cps (80/120)
+
+d2
+$ slow 3
+$ mStut' "<0 2 5>" "<0.3 0.9>"
+$ sound "ld0(5,8)"
+|+| sustain "2.0"
+|=| mGain
+|+| coarse "12 4 8"
+|+| henon "0.3"
+|+| wah "0.02"
+|+| room "0.2"
+|+| flangeL
+
+
+hush

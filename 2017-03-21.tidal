@@ -11,23 +11,24 @@ d1
   ]
   |+| speed (slow 1.75 $ "1 -0.8 1.1 0.75")
   |+| n "3 5 8"
-  |+| mDefault
-  -- |+| flange "1.0" "0.59 0.4 0.7 0.9"
+  |=| mDefault
+  -- |+| flange "1.0" "0.9 0.1 0.7 0.09"
   -- |+| slowSpeedR 2
   -- |+| mGrav
 
 
 d2
   $ slow 2
-  $ msvoA 0.125
+  $ msvo 0.125
+  -- $ mStut "<2 5>" "0.3"
   $ foldEvery [4,5] (within (0.5,0.9) (chop 4))
   $ sound "{~ mnt:32(5,8)?, mnz:19(2,5)? ~}"
   |+| n (slow 3 $ "2 4 5")
   |+| modl "0 0 0 1 0 1"
   |+| conv "0 0 0 1"
   |+| slowSpeedR 2
-  |+| mGrav
-  |+| flange "1.0" "0.9"
+  |=| mGrav
+  -- |+| flange "1.0" "0.9"
 
 
 d3

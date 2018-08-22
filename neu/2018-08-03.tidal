@@ -1,0 +1,40 @@
+cps 1.3
+
+d1 
+$ degradeBy 0.6
+$ whenmod 4 3 (within (0.5, 0.75) (0.125<~))
+$ whenmod 4 2 (within (0.25, 0.8) (slow 1.5))
+$ foldEvery [3, 5] (within (0.75, 1.0) (striate 4))
+$ sometimes (|+| flangeD)
+$ msvo 0.125
+$ ur 2 "<a c b a b c a d a d d b>" 
+  [
+  ("a", (s "[mhh*4, mbd:13*2]")), 
+  ("b", (s "[mhh*8, mbd:13*4]")), 
+  ("c", (s "mhh(8,11), mcp*3")), 
+  ("d", (s "[mhh(6,9), mbd(5,9)]"))] 
+  []
+  |+| mNudge
+  |+| pipe "{[0,40] 0 0 0 [40,0]}"
+|+| slowSpeedR 3
+|+| accelerate "-0.02"
+|+| slowPanR 3
+|+| mDefault
+|+| n "6"
+
+
+do
+  x <- lazy' 6 $ inst $ sn "[msn2, ml3?]"
+  d2
+    $ degradeBy 0.8
+    $ msvoB 0.125
+    -- $ msvoA 0.125
+    $ x
+    |+| slowSpeedR 3
+    -- |+| sustain "0.29  0.4  0.03 0.1"
+    |=| mDefault
+    |+| accelerate "-1 -0.03 0.7 0.2"
+    |+| pipe "{[0,40] 0 0 0 [40,0]}"
+    |+| n "12 48"
+
+hush

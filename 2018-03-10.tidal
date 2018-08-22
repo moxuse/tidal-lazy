@@ -1,0 +1,17 @@
+cps (80/120)
+
+do
+  x <- lazy' 2 $ inst $ hh "[mhh2:3, mcp:9/3]/1.5" . sn "[msn2:4, mbd2:8?]/2" . bd "mbd2:6"
+  d1
+    $ msvo 0.125
+    $ sometimes (|+| brick (density 3 "{0 4 0 1 2 0 0 1 0}"))
+    $ whenmod 4 3 (|+| up "[0 -2 5 1 7 3]")
+    $ x 
+    |+| mfDel ((slow 0.6 (scale 0.25 0.03 $ saw1)) + (slow 2 (scale 0.05 1 $ sine1)))
+    |+| n "10 42 ~ 34 4 ~"
+    |+| mNudge
+    -- |+| mDefault
+    |=| mGain
+    |+| slowPanR 1.75
+ 
+ hush 

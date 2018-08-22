@@ -6,7 +6,7 @@ do
     $ msvo 0.125
     -- $ msvoC 0
     $ x
-    |+| mGain
+    |=| mGain
     -- |+| mNudge
     |+| brick "{0 2.4 0 0 0 1.2 0}%9"
     |+| mfDel "{0.1 0.125 0 0.7 0.08 0 0.04}%9"
@@ -20,15 +20,15 @@ hush
 
 
 do
-  x <- lazy' 2 $ inst $ hh "[mbd2:2/4, mhh2:8/3, ml3:38/4]"
+  x <- lazy' 2 $ inst $ hh "[mbd2:2/4, mhh2:8/3, ml3:38/8]"
   d1
-    $ msvo 0.125
+    $ msvoS 0.125
     $ x
-    |+| mGain
+    |=| mGain
     |+| (slow 2 $ mNudge)
-    |+| brick "{1.8 2.4 0 0.3 0 1.2 0}%3"
     |+| mfDel "{0.3 0.125 1 0.7 0.08 1 0.08}%8"
-    |+| room "0.3"
+    -- |+| room "0.3"
+    -- |+| unit "{r r r r r s c}%10"
     |+| n "11 ~ 26 10"
     |+| flangeD
     |+| slowPanR 3

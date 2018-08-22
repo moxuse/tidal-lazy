@@ -3,7 +3,7 @@ cps (82/120)
 do
   x <- lazy' 2 $ inst $ hh "mhh:22" . sn "msn2:39" . pd "msoz:20/6". ps "ml3:3/1". bd "mbd:12"
   d1
-    $ msvo 0.125
+    $ msvoA 0.125
     -- $ msvoC 0
     $ x
     |+| mGain
@@ -20,7 +20,7 @@ hush
 
 
 do
-  x <- lazy' 2 $ inst $ hh "[mbd2:2/4, mhh2:8/3, ml3:38/4]"
+  x <- lazy' 4 $ inst $ hh "[mbd2:2/4, mhh2:8/3, ml3:38/4]"
   d1
     $ msvo 0.125
     $ x
@@ -29,7 +29,7 @@ do
     |+| brick "{1.8 2.4 0 0.3 0 1.2 0}%3"
     |+| mfDel "{0.3 0.125 1 0.7 0.08 1 0.08}%8"
     |+| n "11 ~ 26 10"
-    |+| flangeD
+    |+| flangeL
     |+| slowPanR 3
 
 hush

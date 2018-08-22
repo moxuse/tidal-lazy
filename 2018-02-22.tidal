@@ -1,0 +1,34 @@
+cps (83/120)
+
+do
+  x <- lazy' 2 defaultI
+  d1
+    $ msvo 0.125
+    $ sometimes (so1)
+    $ x
+    -- |+| mNudge
+    -- |+| slowSpeedR 0.75
+    |+| slowPanS 2
+    |+| mGain
+    -- |+| mfDel "{0.08 0 0 0 0 1 0.1 0.3 0.125}"
+    -- |+| henon "{0.2 0.8 0 0 0.1 0}%9"
+    |+| convp "0.2 0 0 0 0.1 0"
+    |+| flangeL
+    |+| n "41 ~ [25 17]/2"
+
+d2
+  $ striateL' 16 0.1 16
+  $ slow 6
+  -- $ sometimes (so1)
+  $ up ("[0, 3, 7]" + "<0 1>")
+  |+| s "mvo:1"
+  |+| convp "0.2"
+  |+| flangeL
+  |+| room "0.1"
+  |-| zoom (0.125, 0.75) (up (choose [0, 5, 7]))
+  |+| henon "0.5"
+  -- |+| mGain
+
+d1 silence
+
+hush

@@ -1,0 +1,16 @@
+cps (120/120)
+
+v1
+$ thing "trash7*20 apple*20"
+|+| duration "0.15"
+|+| rigid  "0"
+|+| y (scale 0.2 0.9  sine1)
+|+| x (slow 0.54 (scale (-0.75) 0.75 sine1))
+|+| z (slow 1.75 (scale (-0.5) 0.5 sine1))
+|+| vscale (slow 2 (scale 2 0.45 sine1))
+|+| randCam (slow 2.9 "{0 0 0 0 0  0 0.1/12 0.06}%12")
+|+| vortex "0.5*20 1.3*20" "0.8" (slow 2 (scale (-120) 160 $ sine1))
+-- |+| ripple (slow 3.333  (scale 0.03 0.4 $  sine1))
+|+| nudge "0.16"
+
+v1 silence

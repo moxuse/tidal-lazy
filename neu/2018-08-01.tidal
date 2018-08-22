@@ -1,0 +1,41 @@
+cps 1.2
+
+d2
+$ slow "<10 8>"
+$ s "ld0(3,7)"
+|+| flangeL
+|+| sustain "7"
+|+| coarse 2
+|+| n (foldl (+) "<0 1>" ["[0, 2]", "0 5 3", "[1, [2, 6]]", "<0 2 3>"])
+|+| wah "0.03"
+|+| speed "1 1 -0.5"
+-- |+| accelerate "-0.2 0.3"
+-- |+| gain 0.2
+|+| pipe "[0, 40]"
+|+| mGain
+
+hush
+
+do
+  x <- lazy' 2 $ inst $ hh "mhh2:13" .sn "[msn:16, mb:5?]" . bd "mbd2:6"
+  d1
+    $ degradeBy 0.8
+    $ sometimes (|+| flangeL)
+    $ msvoA 0.125
+    $ x
+    -- |+| mNudge
+    |+| up "{0 3 -1 5 7 -2 -5}"
+    |+| up "<0 1 0.5>"
+    |*| speed "0.3"
+    |+| sustain "0.3"
+    -- |=| mGain
+    |+| n "0 0 1 0"
+    |+| accelerate "{-0.03 0.2 0.04 -0.1 -0.15}"
+    |+| mDefault
+    |+| slowPanR 3
+    -- |+| pipe "{[40,0] 0 0 [40, 0]}%3"
+    |+| room "0.05"
+    -- |+| n "6"
+    |+| n "12"
+
+hush

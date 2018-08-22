@@ -2,6 +2,7 @@ do
   let
     pat1 = (slow 4 $ "0/2 1/2 1 0/3 0*2 1/2 1/4 0 0*4 0/4 0 1/3 1/2 1 0/2 1")
   d1
+    $ slow 2
     $ msvoS 0.125
     $ foldEvery [4,5] (within (0.2, 0.5) (slow 1.5))
     $ stack [
@@ -11,12 +12,12 @@ do
       ,(slow 8 $ gain pat1 |+| s "ecco_bip:8")
     ]
     -- |+| n "1 0 3 4"
-    |+| n "10 3"
-    |+| mfDel (slow 7 (scale 1 0.01 rand))
-    -- |+| mGain
+    -- |+| n "10 3"
+    -- |+| mfDel (slow 7 (scale 1 0.01 rand))
+    |=| mGain
     |+| slowPanS 2
-    |+| mNudge
-    |+| mDefault
+    -- |+| mNudge
+    -- |=| mDefault
 
 hush
 

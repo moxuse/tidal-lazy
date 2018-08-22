@@ -1,0 +1,20 @@
+cps (78/120)
+
+do
+  x <- lazy' "<3 4>" $ defaultI
+  d2
+    $ msvoB 0.125
+    $ whenmod 4 1 (0.125 ~>)
+    $ whenmod 4 2 (within (0.4,0.75) (slow 2))
+    $ x
+    |=| mDefault
+    |+| mNudge
+    |=| gain 1.75
+    |+| mfDel "{0.1 0.08 1 0 0.2 0 0.125}%11"
+    |*| accelerate "[-0.8 -0.3 -0.5]*2"
+    |+| cut (slow 0.98 "{0 1 2 3 1}")
+    |+| n "30 ~ 64"
+
+d2 silence
+
+hush
