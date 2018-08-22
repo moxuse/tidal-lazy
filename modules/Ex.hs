@@ -5,9 +5,9 @@ import Sound.Tidal.Context
 
 -- pttern boost
 
-msvo time s = whenmod 4 3 (within (0.3, 0.6) (striateL' 3 0.02 7))
+msvo time s = whenmod 4 3 (within (0.4, 0.8) (striateL' 3 0.02 7))
   $ every 4 (within (0.4, 0.75) (slow 3))
-  $ every 2 (off time (|+| speed "-0.25 -0.4 6 -2")) 
+  $ every 2 (off time (mvSpeed "-0.25 -0.4 6 -2")) 
   $ s
 
 msvoA time s = every 9 (within (0.3, 0.4) (striateL' 2 0.08 11))
@@ -30,12 +30,12 @@ mSlowDiv n s = off n (|+| speed (slow (n / 2) $ "[2 0.75] 0.666 [2 [0.5 0.125]*3
   $ s
 
 mDefault = mGain
-  |+| shape "0.4"
+  |+| shape "0.25"
   |+| binshfR
   |+| slowPanS 3
 
 mGrav = mGain
-  |+| shape "0.4"
+  |+| shape "0.2"
   |+| slowPanR 3
   |+| slowSpeedR 4
 
@@ -53,4 +53,22 @@ msvoC time s = every 4 (|+| mfDel (slow 2 (scale 1 0.01 rand)))
 
 inverse 1 = 0
 inverse 0 = 1
+
+so0 s = spaceOut [1, 0.75, 1.33, 2] $ s
+so1 s = spaceOut [2, 0.75, 0.33, 2] $ s
+so2 s = spaceOut [1, 0.1, 2.33, 2, 0.5] $ s
+
+mStut pt sp s = sometimes (stut 4 1 1) 
+  $ s
+  |+| up (foldr (+) pt ["[0 5 7]*2", "<0 3>", "<0 5 8>"])
+  |+| up (foldl (-) "<0 1 0 3>" ["{0 0 2}/2", "<0 1>", "0 1", "0 3"])
+  |*| speed sp
+
+mStut' pt sp s = sometimes (stut 4 1 1) 
+  $ s
+  |+| n (foldr (+) pt ["[0 5 7]*2", "<0 3>", "<0 5 8>"])
+  |+| n (foldl (-) "<0 1 0 3>" ["{0 0 2}/2", "<0 1>", "0 1", "0 3"])
+  |*| speed sp
+
+mvSpeed pt s = within (0.2, 0.85) (|=| speed (sometimesBy 0.75 ((slow "<0.75 2 1.25>") . (sometimes rev)) pt)) $ s
 
