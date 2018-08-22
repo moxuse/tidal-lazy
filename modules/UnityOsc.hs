@@ -16,6 +16,9 @@ unityShape = Shape {
     F "x" (Just 0),
     F "y" (Just 0),
     F "z" (Just 0),
+    F "moveX" (Just 0),
+    F "moveY" (Just 0),
+    F "moveZ" (Just 0),
     F "vscale" (Just 1.0),
     F "duration" (Just 0.5),
     F "twist" (Just 0),
@@ -23,7 +26,10 @@ unityShape = Shape {
     F "randCam" (Just 0),
     F "vortexRadX" (Just 0.5),
     F "vortexRadY" (Just 0.5),
-    F "vortexAngle" (Just 0)
+    F "vortexAngle" (Just 0),
+    -- S "skybox" (Just ""),
+    F "ripple" (Just 0),
+    S "dlight" (Just "r")
   ],
   cpsStamp = True,
   latency = 0.1
@@ -44,6 +50,9 @@ thing = makeS unityShape "thing"
 x = makeF unityShape "x"
 y = makeF unityShape "y"
 z = makeF unityShape "z"
+moveX = makeF unityShape "moveX"
+moveY = makeF unityShape "moveY"
+moveZ = makeF unityShape "moveZ"
 vscale = makeF unityShape "vscale"
 duration = makeF unityShape "duration"
 twist = makeF unityShape "twist"
@@ -54,4 +63,11 @@ vortexRadY = makeF unityShape "vortexRadY"
 vortexAngle = makeF unityShape "vortexAngle"
 
 vortex x y angle = vortexRadX x |+| vortexRadY y |+| vortexAngle angle
+
+move x y z = moveX x |+| moveY y |+| moveZ z
+
+ripple = makeF unityShape "ripple"
+
+dlight = makeS  unityShape "dlight"
+-- skybox = makeS unityShape "skybox"
 
