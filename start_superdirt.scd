@@ -2,7 +2,11 @@
 var numChannels, viznut_sig, viznut_buf;
 
 
-s.options.device_("Soundflower (2ch)");
+// s.options.device_("Soundflower (2ch)");
+
+// s.options.device_("Audinst HUD-mx1");
+
+s.options.device_("ZOOM TAC-2");
 
 // configure the sound server: here you could add hardware specific options
 // see http://doc.sccode.org/Classes/ServerOptions.html
@@ -13,6 +17,7 @@ s.options.numOutputBusChannels = 2; // set this to your hardware output channel 
 s.options.numInputBusChannels = 2; // set this to your hardware output channel size, if necessary
 // boot the server and start SuperDirt
 s.waitForBoot {
+  s.makeGui;
   ~dirt = SuperDirt(2, s); // two output channels, increase if you want to pan across more channels
   ~dirt.loadSoundFiles;   // load samples (path can be passed in)
   //s.sync; // wait for samples to be read
@@ -128,7 +133,7 @@ s.waitForBoot {
 
   SynthDef("binshift" ++ numChannels, { |out, pan = 0, binshf = 0|
     var signal, chain, chain_r, thr;
-    signal = In.ar(out, numChannels) * 1.9;
+    signal = In.ar(out, numChannels) * 1.4;
     chain = FFT(LocalBuf(2048), signal[1]);
     chain_r = FFT(LocalBuf(2048), signal[0]);
     thr = MouseX.kr(0.25, 4, \exponential);
@@ -229,7 +234,7 @@ s.waitForBoot {
 
     index = Amplitude.kr((mod.ceil).clip(0,1));
 
-    in = In.ar(out, 2);
+    in = In.ar(out, numChannels);
 
     trate = MouseY.kr(12,9320,1);
 
@@ -308,7 +313,7 @@ s.waitForBoot {
 
     index = Amplitude.kr((wah.ceil).clip(0,1));
 
-    in = In.ar(out, 2);
+    in = In.ar(out, numChannels);
 
     mix = RLPF.ar(in, LFNoise2.kr(wah.linexp(0, 1.0, 0.8, 40), 40, 84).midicps, 0.2);
 
@@ -331,7 +336,7 @@ s.waitForBoot {
 
     rate = henon;
 
-    in = In.ar(out, 2);
+    in = In.ar(out, numChannels);
 
     mix = in * HenonC.ar(SampleRate.ir/2, LFNoise2.ar(0.6,1.2),  LFNoise1.ar(0.4,0.9));
 
@@ -350,14 +355,36 @@ s.waitForBoot {
 
   SynthDef("flange" ++ numChannels, { | out, pan = 0, flangefq = 0.1, flangefb = 0.1 |
     var input, effect;
-    input = In.ar(out, 2);
-    input = input + LocalIn.ar(2); //add some feedback
+    input = In.ar(out, numChannels);
+    input = input + LocalIn.ar(numChannels); //add some feedback
     effect = DelayN.ar(input, 0.02, SinOsc.kr(flangefq, 0, 0.005, 0.005));
     LocalOut.ar(flangefb * effect);
     ReplaceOut.ar(out, Pan2.ar(effect, pan));
   }).store;
 
-  ~dirt.orderModules(['sound', 'vowel', 'flange', 'shape',  'crush', 'coarse', 'mod', 'wah', 'brick', 'spectral-delay','decay-filter','binfreeze', 'binscramble', 'binshift', 'binsmear', 'conv', 'convn', 'convp', 'henon', 'distortion', 'hpf', 'lpf', 'bpf']);
+
+  ~dirt.addModule('pipe', { |dirtEvent|
+     dirtEvent.sendSynth('pipe' ++ numChannels,
+       [
+         out: ~out,
+         pipe: ~pipe
+       ]
+     )
+   }, { ~pipe.notNil && ~pipe != 0 });
+
+   SynthDef("pipe" ++ numChannels, { | out, pipe, pan = 0 |
+     var input;
+     input = In.ar(out, numChannels) ;
+     OffsetOut.ar(pipe, input);
+     ReplaceOut.ar(out, Silent.ar(numChannels));
+   },[\ir, \ir, \ir]).store;
+
+
+  // ~dirt.orderModules(['sound', 'vowel', 'flange', 'shape',  'crush', 'coarse', 'mod', 'wah', 'brick', 'spectral-delay','decay-filter','binfreeze', 'binscramble', 'binshift', 'binsmear', 'conv', 'convn', 'convp', 'henon', 'distortion', 'hpf', 'lpf', 'bpf', 'envelope', 'tremolo', 'phaser', 'convolution', 'convolution_n', 'convolution_p']);
+
+  ~dirt.orderModules(['sound', 'vowel', 'flange', 'shape',  'crush', 'coarse', 'mod', 'wah', 'brick', 'spectral-delay','decay-filter','binfreeze', 'binscramble', 'binshift', 'binsmear', 'conv', 'convn', 'convp', 'henon', 'distortion', 'hpf', 'lpf', 'bpf', 'envelope', 'tremolo', 'phaser', 'convolution', 'convolution_n', 'convolution_p', 'pipe']);
+
+
 
 
   /**
@@ -367,8 +394,8 @@ s.waitForBoot {
   SynthDef(\ld0, { |out, sustain = 1, note = 0, speed = 1, begin=0, end=1, pan, accelerate, amp = 1, offset|
     var env, sound, dur;
     dur = 0.5 * (end - begin)/speed;
-    sound = RLPF.ar( Mix.fill(3, {Pulse.ar((note + 60).midicps * (1.0 + Sweep.kr(1, accelerate)) * 2 , 0.1, 0.08) + SinOsc.ar((note+[60,72].choose).midicps * 0.5,0,0.8)}), LFNoise2.kr(2, 20 ,72).midicps, 0.3);
-    env = EnvGen.ar(Env.linen(0.2, dur, 1.2, amp, -2), timeScale:sustain,
+    sound = RLPF.ar( Mix.fill(7, {Pulse.ar((note + 60).midicps * (1.0 + Sweep.kr(1, accelerate)), 0.1, 0.04) + SinOsc.ar((note+[60, 72].choose).midicps * 2, LFSaw.ar((note+48).midicps,0,0.3,2), 0.03)}), LFNoise2.kr(0.4, 20 ,72).midicps, 0.2);
+    env = EnvGen.ar(Env.perc(0.02, dur, amp * 0.5, -8), timeScale:sustain,
       doneAction:2);
     OffsetOut.ar(out,
       DirtPan.ar(sound, 2, pan, env)
@@ -379,13 +406,15 @@ s.waitForBoot {
     var sound, d_freq, dur, env;
     dur = 1.5 * (end - begin);
     d_freq = (note + 60).midicps * (1.0 + Sweep.kr(1, accelerate)) * speed;
-    env = EnvGen.ar(Env.adsr(0.1,dur, 0.8, 2, 1, -5), timeScale:sustain, doneAction:2);
+
+    env = EnvGen.ar(Env.adsr(0.1, dur, 0.8, 2.3, 1, 2), timeScale:sustain, doneAction:2);
+
     sound=MoogFF.ar(
-      SinOsc.ar(d_freq + LFNoise2.ar(0.4,10),
-        SinOsc.ar(d_freq,SinOsc.ar(d_freq*0.666,0,0.5),8),
-        SinOsc.ar(d_freq,0.1,1.0)
+      SinOsc.ar(d_freq + LFNoise2.ar(0.2, 10),
+        SinOsc.ar(d_freq * 3, SinOsc.ar(d_freq, 0, 6), 3) * EnvGen.kr(Env.perc(0.1, 0.35, amp , -4),  timeScale:sustain),
+        SinOsc.ar(d_freq, pi / 2, amp)
       ),
-      TExpRand.kr(500.0, 2300.0, Impulse.kr(6))
+      TExpRand.kr(1800.0, 8300.0, Impulse.kr(1.5))
     );
 
     OffsetOut.ar(out,
@@ -393,16 +422,18 @@ s.waitForBoot {
     )
   }).store;
 
+
   SynthDef(\ld2, {|out, sustain = 1, note = 0, speed = 1, begin=0, end=1, pan, accelerate, amp = 1, offset|
     var sound, d_freq, dur, env;
     dur = 2.0 * (end - begin);
-    d_freq = (note + 84).midicps * (1.0 + Sweep.kr(1, accelerate));
-    env = EnvGen.ar(Env.adsr(0.025 * sustain, dur, 0.3, 1,  1.3 * amp, -4), timeScale:sustain, doneAction:2);
-    sound = Resonz.ar(ClipNoise.ar(20), d_freq, 0.0003).distort * 12;
+    d_freq = (note + 48).midicps * (1.0 + Sweep.kr(1, accelerate));
+    env = EnvGen.ar(Env.adsr(0.0, dur * sustain, 0.2, 1.5 * sustain,  1.2 * amp, -4), timeScale:sustain, doneAction:2);
+    sound = Resonz.ar(Dust.ar(12000), d_freq, 0.0025) * 50 * amp;
     OffsetOut.ar(out,
       DirtPan.ar(sound, ~dirt.numChannels, pan, env)
     )
   }).store;
+
 
   SynthDef(\ldb, {|out, sustain = 1, gate = 1, note = 0, speed = 1, begin=0, end=1, pan, accelerate, amp = 1, offset|
     var sound, d_freq, dur, env;
@@ -475,6 +506,21 @@ s.waitForBoot {
   }).store;
 
 
+  SynthDef('mgut',{|out, sustain = 1, gate = 1, note = 0, speed = 1, begin=0, end=1, pan, accelerate, amp = 1, offset|
+
+   var sound, d_freq, dur, env;
+    dur = 1.5 * (end - begin);
+    d_freq = (note + 60).midicps * (1.0 + Sweep.kr(1, accelerate)) * speed;
+
+    env = EnvGen.ar(Env.adsr(0.1, dur, 0.2, 1, amp, -6), timeScale:sustain, doneAction:2);
+
+    sound = Pluck.ar(WhiteNoise.ar(0.1),1, 68.midicps.reciprocal, d_freq.reciprocal, 12,
+          coef: 0);
+    OffsetOut.ar(out,
+      DirtPan.ar(sound, ~dirt.numChannels, pan, env);
+    )
+  }).store();
+
   /*
   SynthDef(\mstring, {|out, sustain = 1, gate = 1, note = 0, speed = 1, begin=0, end=1, pan, accelerate, amp = 1, offset|
   var sound, d_freq, dur, env, sig;
@@ -544,9 +590,9 @@ s.waitForBoot {
     sound = Mix.new(
       PMOsc.ar(
         ((([0, 5, 12, 24, 36] + (note + 60)).midicps)) * (1.0 + Sweep.kr(1, accelerate)) * speed,
-        ExpRand(3, 60),
-        EnvGen.ar(Env.adsr(Rand(0.1, 0.25) * dur, ExpRand(0.01, 0.5), 0.03, 1.0, ExpRand(8, 50), 1)),
-        0,
+        ExpRand(3, 50),
+        EnvGen.ar(Env.adsr(Rand(0.1, 0.25) * dur, ExpRand(0.01, 0.5), 0.03, 1.0, ExpRand(3, 10), 1)),
+        1,
         0.1));
     env = EnvGen.ar(Env.perc(0.5, 2.2 * dur,  1 * amp, -9), gate, timeScale:sustain, doneAction:2);
     OffsetOut.ar(out,
