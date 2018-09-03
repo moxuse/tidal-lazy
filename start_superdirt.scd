@@ -2,11 +2,11 @@
 var numChannels, viznut_sig, viznut_buf;
 
 
-// s.options.device_("Soundflower (2ch)");
+s.options.device_("Soundflower (2ch)");
 
 // s.options.device_("Audinst HUD-mx1");
 
-s.options.device_("ZOOM TAC-2");
+// s.options.device_("ZOOM TAC-2");
 
 // configure the sound server: here you could add hardware specific options
 // see http://doc.sccode.org/Classes/ServerOptions.html
@@ -386,7 +386,6 @@ s.waitForBoot {
 
 
 
-
   /**
    * custom synths
    */
@@ -433,6 +432,20 @@ s.waitForBoot {
       DirtPan.ar(sound, ~dirt.numChannels, pan, env)
     )
   }).store;
+
+  SynthDef(\ld3, {|out, sustain = 1, note = 0, speed = 1, begin=0, end=1, pan, accelerate, amp = 1, offset|
+    var sound, d_freq, dur, env;
+    dur = 2.0 * (end - begin);
+    d_freq = (note + 60).midicps * (1.0 + Sweep.kr(1, accelerate));
+
+  env = EnvGen.ar(Env.adsr(0.05, dur * sustain, 0.2, sustain, amp, -4), timeScale:sustain, doneAction:2);
+
+  sound = RLPF.ar( Mix.fill(5, {Impulse.ar(d_freq, 0.0, 0.4) + SinOsc.ar((note+[60, 72].choose).midicps * 2, LFSaw.ar((note+72).midicps,0,0.1,1), 0.03)}), LFNoise2.kr(0.4, 20 ,82).midicps, 0.3);
+
+    OffsetOut.ar(out,
+      DirtPan.ar(sound, ~dirt.numChannels, pan, env)
+    )
+}).store;
 
 
   SynthDef(\ldb, {|out, sustain = 1, gate = 1, note = 0, speed = 1, begin=0, end=1, pan, accelerate, amp = 1, offset|
