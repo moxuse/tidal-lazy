@@ -1,0 +1,8 @@
+d1
+$ sound "hh bd"
+
+
+hush
+
+
+d2 <- stream "192.168.10.2" 7771 dirt

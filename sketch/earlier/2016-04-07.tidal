@@ -1,0 +1,15 @@
+d1 $ every 3 (striate 4) $ every 2 (slow 0.5) $ sound (samples "mhh*3 mbd msn*4" (irand 5))   
+  # room  "0.8 0 0.25 1" 
+  -- # outbus "40 10 20 30 30 10"
+  # speed "0.5 -5 0.8 0.9"
+  # pan sinewave1
+ # cut "1"
+# binshf "1 1 0 1"
+
+
+d1 silence
+
+
+d1 $sound "hh bd" 
+
+d2 silence

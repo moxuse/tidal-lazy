@@ -1,0 +1,32 @@
+cps (94/120)
+
+do
+   x <- lazy' "<2 3.125>" $ inst $ hh "mcp:15" . bd "bd:8"
+   d1
+    $ degradeBy 0.125
+    -- $ msvoB 0.125
+    $ x
+    |+| flange "<1.0 0.2 0.9 0.1>" "{0.6 0.05 0.4 0.8}%7"
+    -- |+| unit "{r r r r r c r r r r s}%5"
+    |+| mfDel "{1 0.3 1 0.08 2 0.125}%3"
+    |+| mGain
+    |+| accelerate "{-0.03 0.125 0.03}"
+    |+| slowPanS 2
+    |+| n "~ 2/4 4 21"
+
+d2
+  $ slow 9
+  $ whenmod 4 1 (within (0.0,0.75) (|*| speed "<1.333 1.125 -1.25 -0.75>"))
+  $ whenmod 4 0 (within (0.1,0.5) (slow "<0.8 2 0.75 1.25 0.5>"))
+  $ sound "msoz(3,5)"
+  -- $ sound "mch:1*2"
+  |*| speed "1.125"
+  |+| flange (slow 0.73 "<0.3 0.2 0.7>") "{0.1 0.4 0.1 0.3}%3"
+  |+| mGain
+  |+| orbit "1"
+  |+| n "21"
+  |+| cut "1 [2 3]/2 1"
+
+d2 silence
+
+hush

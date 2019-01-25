@@ -1,0 +1,23 @@
+d1
+$ msvoA 0.125
+$ msvoC 0
+$ sound "{mbd2(3,12), mhh2*4, ~ msn2*2 ~, mps/2 mps/3, ~ mpd2:4/4}"
+|=| mDefault
+|+| mfDel (slow 1.334 (scale 0.08 0.5 sine1))
+|+| n "0 16 8 23"
+
+cps (1.05)
+
+do
+  x <- lazy' 6 defaultI
+  d2
+    $ slow 2
+    $ msvoC 0
+    $ msvoA (-0.125)
+    $ x
+    -- |=| mDefault
+    |=| mGain
+    |=| slowPanS 2
+    |=| n "~ 5 ~ ~ 45"
+
+hush

@@ -1,0 +1,55 @@
+(cps (67 / 120))
+ 
+d1
+$ slow 1
+$ every 4 (gap 3)
+$ every 4 (iter 4)
+$ stack [
+ sound (samples "msoz*2 ~" "3") #speed "-0.3" # begin (scale 0.0 0.4 rand) # cut "1" # room "0.4",
+ sound (samples "~ msoz" "7") #speed "0.2" # begin (scale 0.01 0.8 rand) # cut "2" 
+  # room "0.6",
+ slow 2 (jux (striate 3)
+ $ every 4 (gap 3)
+ $ every 4 (iter 4)
+ $ sound (samples "[mbd co*2] [msn*2 ~] moe3  [mbd*2 ~] moe3" "3 4 5 2"))
+ # accelerate "0 3 -10 4 -4"
+  # binscr "1 0 1"
+  # gain "1.1"
+ # binshf "1 0 0 1"
+ # coarse "2 1 16 1"
+  # pan sinewave1
+  # speed "0.75 1 -0.6 -2",
+ 0.25 ~> (slow 5 (sound (samples "bass3 ~" "5 12 -3 8 "))) |+| n "12 3 5" 
+ |+| cut "6 4 4 4"
+ |+| gain "1.1"
+]
+
+d1 silence
+
+
+d1
+$ slow 2
+-- $ jux (iter 3)
+$ every 4 (gap 3)
+$ stack [
+ sound (samples "~ msoz ~" "3") #speed "0,5" # begin (scale 0.0 0.4 rand) # cut "1" # room "0.4",
+ 0.25 ~> sound (samples "~ msoz" "7") #speed "0.6" # begin (scale 0.01 0.8 rand) # cut "2" 
+  # room "0.6",
+ slow 3 (jux (striate 8)
+ $ every 4 (gap 3)
+ $ every 4 (iter 4)
+ $ sound (samples "[mbd mnz*2] [moe4*2 ~] mbd*3 [~ msn]*2 moe3" "6 4 5 7"))
+  # accelerate "0 3 -1 2 -4"
+  # binscr "1 0 1"
+  # gain "1.1"
+  # binshf "1 1 1 0"
+  # coarse "2 1 1 1"
+  # pan sinewave1
+  # speed "0.75 2 -0.6 -2",
+ 0.25 ~> (slow 5 (sound (samples "bass3 ~" "5 12 -3 8 "))) |+| n "12 3 5" 
+ |+| cut "6"
+ |+| gain "1"
+]
+
+
+hush

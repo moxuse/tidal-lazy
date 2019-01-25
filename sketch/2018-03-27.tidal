@@ -1,0 +1,61 @@
+cps (83/120)
+
+d2 
+  $ slow 16
+  $ off (choose [0.75, 0.125]) (rev . (|+| up "3 -5"))
+  $ s "pmosc(5, 8)/2"
+  |+| sustain (choose [2.18, 2.7, 2, 3])
+  |+| n (foldl (+) "[0, 1, 5]" ["[0 2 5]/4", "0 7 5 -1", "<1 0>/1.75", "<0 0 -7 0 5>"])
+  |+| room "0.3"
+  |+| coarse "4"
+  |=| gain "1.2"
+
+do
+  x <- lazy' 2 defaultI
+  d1
+    $ msvoB 0.125
+    $ sometimes (within (0.4, 0.85) (|+| mfDel (choose [0.03, 0.04..1])))
+    -- $ sometimes (|=| mDefault)
+    -- $ sometimes (zoom (0.4, 0.8) . gap 2 . rev)
+    -- $ sometimes (within (0.25, 0.5) (slow 2))
+    $ sometimes (|+| crush 8)
+    $ x
+      |+| slowSpeedR 3
+      |+| slowPanR 3
+      -- |+| unit "{s s s r r r c r}%9"
+      |=| mGain
+      -- |+| mNudge
+      |+| n "39 [~ 11]/2 43"
+
+d3 $ stack [
+  (s "mhh:1(<10 5 8>,<10 17>)")
+  ,(s "mbd:8(3,<6 5>)" |=| gain 1.2 |+| sustain "0.25 1 0.45 1 0.7")
+  ]
+  |+| nudge "[0.01 0]*2"
+
+d1 silence
+
+hush 
+
+
+
+do
+  x <- lazy' 2 $ inst $ hh "[mbd2:3/4, mhh2:8/3, ml3:38/8]"
+  d1
+    -- $ degradeBy 0.7
+    $ msvoB 0.125
+    -- $ mStut "<0 3 5>" "0.3"
+    -- $ sometimes (|+| crush 8)
+    $ x
+    |+| (slow 2 $ mNudge)
+    -- |+| mfDel "{0.3 0.125 1 0.7 0.08 1 0.08}%8"
+    |+| room "0.1"
+    -- |+| unit "{r r r r r s c}%10"
+    |+| n "11 ~ 26 10"
+    |+| flangeD
+    |+| slowPanR 3
+    |=| mGain
+
+
+
+hush

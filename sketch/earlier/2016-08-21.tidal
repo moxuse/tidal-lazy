@@ -1,0 +1,65 @@
+(cps 1.1)
+
+let pat1 = " 5 24 ~ [~ 17] 4 [~ -5] " 
+
+let pat2 = "12  7 [15*2 7] [~ -5] " 
+
+d1
+$ slow 2
+$ every 5 (striateL' 2 0.05 3)
+$ every 3 (iter 4)
+$ every 3 (chop 3)
+$ stack[
+  sound (samples "mnz:2 [~ mbd ~] [moe3*2 ~] ~" "2 2 5 6") # cut "5 2 5 3"
+   # cutoff (scale 585 6900 $ slow 2 $ sine1),
+  slow 2 (up pat1 |=| sound "cr:8" #speed (scale 0.02 0.8 rand))
+   # cutoff (scale 285 5290  $ slow 2 $ sine1)
+   # cut "6 4 4 6"
+    # conv "0.3 0 1" |+| n "0 -5 7 12"
+   # coarse "1 1 12 1",
+  0.5 <~ (sound "~ bass3 mbd:2*4" #speed (scale 0.7 0.99 rand)) |+| cut "3 4 3 4"
+    # shape "0.1",
+  0.5 ~> up pat2 |=| sound "cr:6"  # speed (scale 1 0.5 rand) # cut "3 5 6 6"
+     # binshf "1 0 0 1" 
+     # binscr "1"
+    # cut "4 2 4 2"
+    -- # accelerate "100 0 0 0"
+]
+-- # binscr "1"
+# accelerate "1 0 1 0"
+# shape "0.2"
+
+d2 silence
+
+d1
+$ slow 3
+$ every 4 (chop 3)
+$ every 3 (iter 3)
+$ every 4 (striateL' 3 0.05 3) 
+$ every 3 (palindrome)
+$ slowcat [
+  stack[
+    slow 3 (sound (samples "msoz*2 msn*2 ~" "3 4 5")) 
+      # speed  (scale 0.8 0.6 rand) # cut "3 3" 
+      # cutoff  (scale 2560 11200 rand) 
+      -- # convn "1 0 1"
+      # n "5 7 0 12"
+      # shape "0.4"
+      # room "0.1",
+    sound (samples "mnz:3 [~ mbd ~] [moe3*2 ~] ~" "3 2 5 6")
+      #speed (scale (- 0.4) 0.99 rand) 
+      # binshf "1 0 1 0"
+     # accelerate "1000 3 0 0",
+　  sound (samples "[mnz*2 ~] msn [cp mbd*2 ~]" "3 8 4 6") 
+      #speed (scale (- 0.4) 1.1 rand)
+      # binshf "1 0 1 0",
+     slow 2 (0.5 ~> sound (samples "mnz:2*2 [~ mbd*2] moe1*3" "5 3 5 6"))
+      # shape "0.4"
+  ]
+]
+# speed "0.5 -1 0.85"
+# pan (scale 0.3 0.7 rand)
+# cut "1 2 3 2"
+# shape "0.7"
+
+hush

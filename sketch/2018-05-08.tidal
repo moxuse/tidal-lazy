@@ -1,0 +1,10 @@
+v1 $ thing "trash3*40"
+|+| randCam (slow 2 "0.3/30 0 0 0 ")
+|+| duration "2"
+|+| y "0.5"
+|+| x (scale (-0.5) 0.5 sine1)
+|+| rigid "1"
+-- |+| skybox "studio"
+-- |+| dlight "<r r  d  r d>"
+
+v1 silence

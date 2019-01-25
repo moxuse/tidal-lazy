@@ -1,0 +1,20 @@
+import Data.String
+
+cps (90/120)
+
+d1 $ density 0.75 $ stack [s "ml:10(3,10)" |+| up (fromString(show x)) |+| convn 0.4 |+| wah 0.1 | x <- [0,6..11]] |+| up "<0 2 1 0 1>/4"
+
+do
+  x <- lazy' "<2 4>" defaultI
+  d2  
+    $ msvoB 0.125
+    $ msvoA 0.125
+    $ x
+      |=| mDefault
+      |+| mfDel "{0.18 0.08 0.4 0.6 0.1 0.05 0.06 0 1 0 0}%12"
+      -- |+| unit "{r r r r s c s r r r r}%10"
+      -- |+| slowPanR 3
+      |+| n "4 ~ ~ ~ 12 8 34"
+
+
+hush

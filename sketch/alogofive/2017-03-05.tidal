@@ -1,0 +1,45 @@
+d1
+  $ slow 2
+  -- $ whenmod 4 2 (|*| speed (slow 2 $ "1.25 0.8"))
+  $ whenmod 6 4 (|*| speed (slow 2 $ "-0.66666 1 -2"))
+  $ degradeBy 0.7
+  $ sometimes (stut 4 0.125 8)
+  $ off 0.125 (|+| up "0 2 6 11")
+  $ sound "ml2*6?"
+  |+| loop "1 2 2"
+  -- |+| delay "0.9"
+  -- |+| delaytime "0.48"
+  |+| n "27"
+  |+| room "0.2"
+  |+| mGain
+
+
+d2
+  $ slow 6
+  $ degradeBy 0.8
+  $ msvoS 0.125
+  $ sound "{mhh:23/2 [mnt*2 mbd:3] mcp:8*2, ~ mhh:2(3,7) [~ mcp*2]/2  mnt:2/2, ~ mnz:28/2 mpd:19/3}"
+  |+| mDefault
+  |+| binscr "0 0 0 1 1 0"
+  |+| conv "0.4 0.1 0 0 0 0.3"
+  |+| wah "0 0 0 0.2 0.1 0 0.2"
+  |+| slowSpeedR 2
+  |+| n "28 32"
+  -- |+| disv "-3 -3 -5" "2 4 4"
+
+
+d3
+  $ slow 3
+  $ msvoS 0.25
+  $ degradeBy 0.4
+  $ sound "mb:0(5,8)"
+  |+| n "0 2 6"
+  |+| up (slow 3 "0 1 -2")
+  |+| cut "3"
+
+
+d2 silence
+
+d3 silence
+
+hush

@@ -1,0 +1,13 @@
+u1
+$ thing "iwashi*20 teapod*20"
+|+| x (scale (-0.5) 0.5 sine1)
+|+| (hurry  1.4 $ z (scale (-0.5) 0.5 sine1))
+|+| y (scale 0.3 0.9 $ sine1)
+|+| rigid 1
+|+| (slow 3.333 $ randCam "{0.02 0.005 0.1 0 0 0 0 0.03}%12")
+|+| vscale "2 1 0.3 2.8"
+|+| (slow 4 $ vortex 0.8 1.4 "{100.3 40 0 -100 0.5 300 0 }%2")
+|+| duration 2
+
+
+u1 silence

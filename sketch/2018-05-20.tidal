@@ -1,0 +1,26 @@
+cps (80/120)
+
+do
+  x <- lazy' 2 $ inst $ hh "[mhh:3, ml2:23/4]" . sn "[mcp:4, mnt:24/8]"
+  d1
+    -- $ msvoS 0.125
+    $ x
+    -- |+| accelerate "-0.2"
+    |+| bus "40"
+    -- |+| mfDel "{0.1 0 0.1 1 0.08 0 0 0.2}%7"
+    |+| n "~ 5 ~ ~ 10 ~ 27"
+    |+| slowPanR 2
+    |+| mNudge
+    |+| mGain
+
+
+d2 $ s "pmosc/3" 
+  |+| up "[0,5,7,10]" 
+  |+| wah 0.3 
+  |+| up "<0 5 2>" 
+  -- |+| accelerate "-0.01" 
+  |+| bus "40" 
+  |+| sustain 1.5 
+  |+| mGain
+
+hush

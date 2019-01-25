@@ -1,0 +1,13 @@
+scp 1.2
+
+do
+  x <- lazy' 2 $ inst $ sn "[msn2:9, ml3] [ml3:9, msn:5]"
+  d1
+    $degradeBy 0.7
+    $ x
+    |=| mDefault
+    -- |+| pipe "{[0, 0 40] 0 0 40 [40,0]}"
+    |+| n "10"
+
+hush
+

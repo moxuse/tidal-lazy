@@ -1,0 +1,33 @@
+cps (84/120)
+
+do
+  x <- lazy' 2 $ defaultI
+  d1
+    -- $ degradeBy 0.2
+    $ whenmod 3 1 (|-| up "[5 0 -2 [0 3]/2]%6")
+    $ x
+    |=| mDefault
+    -- |+| slowPanR 2
+    |+| unit "{r r r s r r r c r r}"
+    |+| zoom (0.5, 0.9) (up (choose [1, 2, 4, 10]))
+    |+| mfDel (choose [0, 0.04, 0.3, 0.1, 0.125, 0.08, 1, 0])
+    |+| brick  "{0.3 0 2 1 0 0 0 0 0.7}*2"
+    |+| n "15 43"
+
+ d2
+  $ striateL' 4 0.5 16
+  $ slow 2
+  $ whenmod 3 2 (|+| up "<0 2>")
+  $ sometimes (so0)
+  $ s "ml:19"
+  |+| room "0.1"
+  |+| shape "0.3"
+  |+| zoom (0.4, 0.9) (up (choose [0, 5, 10]))
+  |+| henon "0.1"
+  |*| speed "0.7"
+  |+| cut "{1 2}"
+  |+| mGain
+
+d2 silence
+
+hush

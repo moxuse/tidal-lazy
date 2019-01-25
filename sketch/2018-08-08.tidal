@@ -1,0 +1,9 @@
+cps 2
+
+v1 $ y (scale 0.8 0.9 $ sine1)
+  |+| x (scale 0.3 0.9 $ sine1)
+
+hush
+
+v1 silence
+

@@ -1,0 +1,38 @@
+(cps 0.6)
+
+d1
+$ slow 2
+$ stack [
+  sound (samples "msoz ~ ~  cp" "2") |+| speed "0.6",
+  sound (samples "~ msoz" "8") # speed "0.6"
+]
+# gain "1.25"
+# cut "10"
+# room "0.2"
+
+
+d2
+$ every 3 (striateL' 4 0.51 6)
+$ every 4 (gap 4)
+$ every 4 (iter 5)
+$ slowcat [
+  stack[
+    sound (samples "bass3 ~ mbd*2" "1"),
+    gap 3 (sound (samples "[mbd*3 moe3*2 ~] [mhh ~] ~" "2 6 6")) |+| speed (scale 0.5 2 rand)
+  ],
+  stack [
+    sound (samples "bass3 ~ [mhh*2 ~ mbd] mbd" "2"),
+    chop 6 (sound (samples "mbd ~ mnz" "3 2") |+| speed (scale 0.4 2 rand))
+  ]
+]
+# cut "1 2 2 5"
+# binshf "1 0 0"
+-- # conv "0.6"
+# pan sinewave1
+# shape "0.8"
+
+d1 silence
+
+d2 silence
+
+hush

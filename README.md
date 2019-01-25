@@ -109,9 +109,3 @@ do
 
 
 (```devel``` branch includes many code fragments besides these explanations)
-
-
-
-
-
-

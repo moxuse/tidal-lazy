@@ -1,0 +1,44 @@
+cps (92/120)
+
+do
+  x <- lazy' 2
+  d1
+    -- $ slow 2
+    -- $ msvoC 0
+    $ msvoA 0.125
+    $ x
+    |+| mDefault
+    |+| slowPanS 2
+    -- |+| speed "1 0.5 -0.125 0.1"
+    |+| binfrz "1 0 1"
+    |+| wah "1 0.06 0 0.2"
+    |+| n "14 25 30"
+    |+| orbit "0"
+
+do
+  x <- lazy
+  d2
+    $ slow 2
+    $ msvo 0
+    $ msvoA 0.125
+    $ x
+    |+| mDefault
+    |+| slowPanS 2
+    |+| wah "0.04 0.06 0.02 0"
+    |+| speed "0.8 -0.75 1"
+    |+| n "~ 14 ~ 25 ~ 19"
+    |+| orbit "0"
+
+
+d2
+$ sound "[mhh*4, ml2:27*2 mbd*2]"
+-- |+| mGain
+|+| speed "0.75 0.02"
+|+| slowPanR 2
+|+| binfrz "1 0 1 1"
+|+| mDefault
+|+| orbit "1"
+
+d2 silence
+
+hush

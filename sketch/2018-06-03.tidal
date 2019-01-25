@@ -1,0 +1,44 @@
+d1 $ s "mhh(4,17)" |+| mGain
+
+
+cps (75/120)
+
+do
+  x <- lazy' 2 $ inst $ hh "[mhh:12, ml3/3]"
+  d2
+    $ msvo 0.125
+    $ x
+    |=| mGain
+    |+| mNudge
+    |+| slowSpeedR 2
+    |+| slowPanR 2 
+    |+| pipe "0"
+    |+| accelerate "-0.4 -0.2"
+    |+| n "23 12 ~ 8 4"
+
+
+|+| n (foldl (+) "<[2, 8] [0, 5]>" ["0 1 2", "[0 [1, 6, 10]]", "<0 3 5 2>"])
+
+
+d2 
+  $ slow 7
+  $ msvoS 0.125 
+  $ sound "ml3:24(5,9)" 
+  |+| n "[0,5,7]" 
+  |+| n "<1 0 -2>" 
+  |+| accelerate "{-0.3 -0.9 -0.13}%7"
+  |+| mDefault
+  |+| slowSpeedR 2 
+  -- |+| wah "0.5 0.7 0.3 0.04 0.4"
+  |+| room 0.1
+  -- |+| dist 0.2
+  |+| n (foldl (+) "<[1 ,3 , 6] [0, 5]>" ["0 1 5", "[0 [1, 3, 7]]", "<9 3 5 2>"])
+  |+| speed "5 4 2"
+  |+| end "0.06"
+  -- |+| sustain "0.01 0.03 0.6 0.3"
+  |+| pipe "<0>"
+
+d1 silence
+
+hush
+

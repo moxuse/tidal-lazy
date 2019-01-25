@@ -1,0 +1,32 @@
+cps  1.2
+
+d1
+$ slow 4
+-- $ msvoA 0.125
+$ stack [ 
+  (s "psr(2,4) uxay:4(3,8)"),
+  (s "procshort*2 ul*4")
+]
+-- |+| mNudge
+-- |+| mfDel "{0.09 0 0 0.1 0.3 0.08}%5"
+-- |+| flangeL
+|+| n "{0 1 2 4 [3 0] 8 5}"
+-- |+| n "{0 1 2 4 7 [3 0] 8 5}"
+|+| pipe "[0, 40]"
+|+| mGain
+
+d3
+$ slow 24
+$ s "ld3(4,12)"
+|+| n (foldl (+) "<0 1>" ["[0, 5]", "0 1 7", "[0, [5, 3]]", "<0 2 3>"])
+|+| crush (choose [4,8,12])
+|+| sustain 5
+|+| cutoff (scale 1200 4000 sine1)
+|+| pipe "[0, 40]"
+|+| room 0.3
+
+
+
+d2 silence
+
+hush

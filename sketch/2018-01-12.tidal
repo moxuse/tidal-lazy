@@ -1,0 +1,17 @@
+cps (98/120)
+
+do
+  x <- lazy' 3 $ inst $ hh ((sometimes rev . slow 2) "[msn2:2/3 mst:23 mst, ml3:9/4]/3")
+  d1
+    $ msvoC 0.25
+    -- $ msvo 0.125
+    $ whenmod 4 2 (within (0.3, 0.5) (striate (choose [2,3,4,8])))
+    $ x 
+    |+| unit (slow 2 "{r c r r r r s r r}%8")
+    |+| mfDel "{0.2 0 1 0 0.08}%6"
+    |+| crush 12
+    -- |+| mNudge
+    |+| room "0.1"
+    |+| n (slow 1.75 "23 32")
+ 
+hush

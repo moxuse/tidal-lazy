@@ -1,0 +1,51 @@
+cps 0.8
+
+-- let ly_1, ly_2, ly_3, ly_4, ly_5, ly_6 :: Pattern String
+let
+    ly_1 = "[0, 2, 4]"
+    ly_2 = "[2, 4, 6]"
+    ly_3 = "[4, 6, 7]"
+    ly_4 = "[6, 7, 9]"
+    ly_5 = "[7, 9, 11]"
+    ly_6 = "[9, 11, 0]"
+
+  d2
+    $ slow 8 
+    $ up (concat [ly_1, ly_2, ly_3, ly_4])
+    |+| s "ml2" 
+    |+| n 15 
+    |+| room 0.8 
+    |*| up "0.2" 
+    |+| mGain |+| shape 0.2 |+| sustain 2 |+| mNudge
+
+
+d1 silence
+
+:t choose
+
+
+
+(ly_1 ++ ly_2)
+
+(choose [ly_1, ly_2, ly_3, ly_4])
+
+concat [ly_1, ly_2, ly_3, ly_4]
+
+:t step'
+
+(take 16 $ lindenmayer 5 "0:1---,1:0---2-----0---2-,2:2-1-,-:--1-" "0")
+
+
+d1
+  $ msvo 0.125
+  $ msvoC 0
+  $ slow 8
+  $ stack[
+    (sound "[ml3(3,8) mhh*32]" |+| n "18 10 12 27" |+| crush "8 24 32 12 32"),
+    (sound 
+      $ step' ["mst:9", "mbd:9", "msn2:25", "mwb:11"] (take 128 $ lindenmayer 5 "0:-1,1-:-1-2--3,2:--0,-:2--0" "0"))
+  ]
+  |+| mDefault
+  |+| mfDel "{0.08 0 0 0 1 0.0 0.2 0 0}%12"
+
+hush

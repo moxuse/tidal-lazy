@@ -1,0 +1,33 @@
+cps (138/120)
+
+d1
+  -- $ density 2
+  $ msvoB 0.125
+  $ msvo 0
+  $ msvoA (-0.025)
+  $ mxur0 
+  |+| mDefault
+  |=| mGain
+  |+| n "0 4 6"
+  |+| orbit "0"
+
+d2 
+  -- $ slow 2
+  $ (0.12<~)
+  $ mxur1
+  |+| speed "-0.5 -1"
+  |+| conv "1 0 0 1"
+  |+| n "12"
+  |+| mGain
+  |+| slowPanS 2
+  |+| orbit "1"
+
+d2 silence
+
+
+mxur0 <- mxl
+
+mxur1 <- mxl
+
+hush
+

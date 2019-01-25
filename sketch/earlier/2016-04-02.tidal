@@ -1,0 +1,17 @@
+bps (240/120)
+
+d1 $ slowspread ($) [rev, (|+| accelerate "-1 1"), chop 8, every 3 (density 2.75), stut 2 0.5 0.45] 
+$ foldEvery [3,4] (25.3 <~) 
+$ slowcat [
+  every 2 (slow 0.3) $ sound (samples "birds3*3" (irand 16)),
+  every 5 (chop 3) $ sound (samples "sequential*3 tabla*2" (irand 8)) |+| pan "-1 1",
+  sound (samples "bottle*6" (irand 5)) |+| pan "0.3 -0.3"]  
+  -- |+| shape "0.5 [0.45 0.34]"
+  # outbus "20 20 30 40 60 60"
+
+d2 $ sound (samples "tabla*4 glitch2*4" (irand 5))
+  # outbus "30 20 50"
+
+d1 silence 
+
+d2 silence

@@ -1,0 +1,51 @@
+cps (80/120)
+
+do
+  x <- lazy' "<3 2.6 2 4.145>" defaultI
+  d1
+    $ (0.125 ~>)
+    $ msvoA 0.2333
+    $ msvoB 0
+    $ x
+    |+| n "27 20?"
+    |+| slowPanS 2
+    |=| mGain
+    |+| mNudge
+    |+| mfDel "{0.1 1 0.08 1 0.03 0.5 0.125 1}%5"
+    |+| flange "<0.1 0.4 0.6>" "<0.75 0.8>"
+    |+| orbit "0"
+
+d2
+  $ slow 24
+  $ chord [em9, fm, am, gm] "0*4 1*4 2*4 3*4"
+  |+| sound "pmosc*4"
+  |*| speed (slow 4 "0.6 0.8")
+  |+| accelerate "0.02"
+  |+| sustain (scale 1.2 1.5 $ saw1)
+  |+| shape "0.4"
+  |+| henon "0.4 0.3"
+  |+| wah "0.2"
+  |+| flange "0.1 0.4 0.6" "0.75"
+  |=| mGain
+  |+| orbit "1"
+
+
+d3
+  $ (0.125 ~>)
+  $ foldEvery [4,3] (within (0.25, 0.8) (slow 3))
+  $ foldEvery [2,7] (within (0.5, 0.75) (density 2))
+  $ whenmod 3 2 (off 0.125 (|+| up "{0 -1 -2 2 5}%4"))
+  $ msvoA 0
+  $ sound "mb:27*2"
+  |+| n "5"
+  |+| cut "2"
+  |+| up "0"
+  |+| mGain
+  |*| speed (slow 2 "1.2 0.8")
+  |+| flange "0.1 0.9 0.6" "0.7"
+  |+| orbit "1"
+
+d1 silence
+
+hush
+

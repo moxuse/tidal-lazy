@@ -1,0 +1,18 @@
+cps (82/120)
+
+d2
+  $ (0.115 <~)
+  $ slow 2
+  $ sound "mpd3/2 [mpd3 ml3:4/4]"
+  |+| slowSpeedR 3
+  |+| n "{5 2 1}"
+  |+| flangeL
+  |+| mDefault
+  |+| orbit "1"
+
+
+d2 silence
+
+
+hush
+

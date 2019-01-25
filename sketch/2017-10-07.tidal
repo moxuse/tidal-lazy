@@ -1,0 +1,28 @@
+cps (96/120)
+
+d2
+$ slow 16
+$ whenmod 4 2 (|+| speed "[-1 -0.666]*3 [-0.75 -1.5]*4 -1.125*2")
+$ stut 16 0.25 32
+$ sound "mch"
+|+| n "1"
+|+| wah "0.03"
+|+| orbit "1"
+|+| mGain
+
+
+d1
+$ msvoB 0.125
+$ msvoC 0
+$ whenmod 4 2 (within (0.2, 0.75) (slow 5))
+$ sound "[mbd2:7, mpd3/3] [mhh2*2 mps] mbd2*3 msn2*2"
+-- |+| mGain
+-- |+| slowSpeedR 1
+-- |+| 
+|+| mDefault
+|+| n (iter 3 $ "2 17 19 4")
+|+| orbit "0"
+
+
+
+d1 silence

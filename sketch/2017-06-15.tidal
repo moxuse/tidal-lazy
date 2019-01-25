@@ -1,0 +1,14 @@
+v1
+  $ slow 2
+  $ thing "ac*40"
+  |+| duration "3"
+  |+| rigid "1"
+  |+| x (slow 3 (scale (-0.5) 0.5 $ sine1))
+  |+| z (density 2 (scale (-0.5) 0.5 sine1))
+  |+| y "0.5"
+  |+| vscale "-0.7"
+  -- |+| randCam (slow 3 $ "0 0 0 0 0.2/10")
+  -- |+| vortex "3.5" "{0.9 0.2 0.18}" (slow 0.25 (scale (-80) 150 sine1))
+ 
+
+ v1 silence

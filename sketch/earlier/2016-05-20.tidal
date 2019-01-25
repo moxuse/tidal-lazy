@@ -1,0 +1,78 @@
+d1
+$ degradeBy 0.8
+ $ slow 4
+ $ every 6 (palindrome)
+ $ every 5 (density 2)
+ $ every 5 (gap 6)
+ $ every 4 (iter 4)
+ $ every 3 (slow 0.75)
+$ slowspread ($) [(# up "3"), (# up "4"), (# up "5") , (# up "0 5 6")]
+$ stack[
+  sound (samples "mbd:4 moe3*2 ~ glitch2*2" (irand 8))
+ |+| pan "[0.3 -0.75 0.5]"
+ |+| shape "0.1 0.5 0.9",
+  slow 2 (sound (samples "[moe2*2 mbd*4] ~ tabla " "6 0 2 2 1 3 ")),
+   slow 2 (sound (samples "{moe2*2  moe1 ~, [lt*2] mhh*2}" (irand 7))),
+  sound "bang bang"
+ ]
+ # binshf "0 1 0 1"
+# shape "0.4 0.8 0.6"
+# speed "0.4 -0.8 -1 2"
+# cut "1 1 1 2"
+# accelerate "1000 30 1 40"
+ 
+d1 silence
+
+d2 $ every 3 (density 0.5)
+  $ degradeBy 0.28
+  $ every 3 (striateL' 3 0.15 8)
+  $ every 4 (iter 3) 
+  $ every 4 (slow 3) 
+  $ every 5 (gap 3)
+$ slowspread ($) [(# up "3"), (# up "4"), (# up "5") , (# up "0 5 6")]
+  $ sound  (samples' "{moe4 moe3 tabla2 moe1 ~, [mbd*2 lt*3] ~ mhh*2}" (irand 7))
+  |+| pan sinewave1
+  # coarse "2 8 1 12" 
+  # binscr "0 0 1 1"
+  # binshf "0 1 0 0"
+
+
+d2
+$ slow 2
+$ foldEvery [4, 6] (gap 2)
+$ every 4 (striateL' 3 0.25 10)
+$ every 2 (density 0.5)
+$ every 2 (iter 4)
+$ foldEvery [3, 12] (gap 3)
+$ slowspread ($) [(# up "3"), (# up "4"), (# up "5") , (# up "0 5 6")]
+$ stack[
+  sound (samples "mnz moe1 ~  moe4" "2 3 4 4"),
+  (slow 4 (sound (samples "~ mbd jungbass*2 moe2" "1 4 4 4"))),
+  sound (samples "~ moe4 moe3 moe1*2" "5 3 4 5"),
+  sound "bang bang"
+ ]
+ # binscr "1 0 0 1" 
+ # cut "2 1 1 2"
+# speed "1 0.8 2 2"
+ # accelerate "0 0 1 2 0"
+ # binshf "0 1 1 0"
+ # shape "0.4"
+ # pan "-0.5 -0.3 0.1 0.5" 
+
+d2 silence
+
+d3
+$ slow 2
+$ slowspread ($) [(# cut "6"), (# cut "5"), (# cut "6"), (# cut "5")]
+$ slowspread ($) [(# up "0"), (# up "1"), (# up "3") , (# up "2")]
+$ stack[
+ sound (samples "mpd" "7" ) |+| up "-7"
+ -- sound (samples "mbd*3 moe4 mo2*4" "2") # cut "8"
+]
+-- # accelerate "0.8"
+# room "0.3"
+ # cut "8 6 8 6" 
+
+d3 silence
+
+hush

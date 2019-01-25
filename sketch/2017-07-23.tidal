@@ -1,0 +1,10 @@
+v1
+$ thing "horse*30 ~"
+|+| duration (scale 0.08 1 sine1)
+|+| x (slow 2.33 (scale (-0.75) 0.75 sine1))
+|+| z (scale (-1.0) (-2.3) sine1)
+|+| vscale (density 2 (scale 0.006 0.01 sine1))
+|+| y (slow 1.4 (scale 0.5 1.0 sine1))
+|+| randCam "{0 0 0.03/4 0 0 0.03/2 0}"
+
+v1 silence

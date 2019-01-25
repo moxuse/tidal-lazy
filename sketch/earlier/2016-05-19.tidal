@@ -1,0 +1,64 @@
+d1 
+$ degradeBy 0
+$ every 4 (striateL' 2 0.5 3)
+$ slow 2
+$ every 3 (density 2)
+$ foldEvery [3, 6]  (iter 4)
+$ every 3 (palindrome) 
+$ slowspread ($) [(# up "0"), (# up "2"), (# up "7") , (# up "0 5 6")]
+$ stack[ 
+  sound (samples "~ [moe1 mbd] sn ~" "2 4 3 5"),
+  sound (samples "bass3 ~ mbd moe2"  "2 5 3 3"),
+  sound (samples "~ moe1*2  moe1" "3 2"),
+  sound "bang"
+]
+# cut "3 2 3 1"
+# pan sinewave1
+# accelerate "2 0 0.5 1 3"
+# shape "0.5"
+# coarse "1 4"
+# binshf "0 1 1 0"
+# speed "0.75 -2 -0.9 1"
+
+d1 silence
+
+d1
+$ every 4 (striateL' 3 0.05 5)
+$ slow 2
+$ every 5 (chop 3)
+$ every 4 (iter 6)
+$ foldEvery [4, 6]  (iter 2)
+$ stack[
+  sound (samples "~ moe3 mbd*3 sn" "7 4 3 3"),
+  sound (samples " moe3 ~  moe2 ~" "2 7 6 2"),
+  sound (samples "mbd*2 ~ moe3 moe1*2" "3 2 5" ),
+      sound "bang"
+]
+# cut "4 1 1 2"
+# speed "0.75 -1 0.9 1"
+# coarse "1 8 1 1"
+# binshf "1 0 1 0"
+# accelerate "1 2 60 100"
+# pan sinewave1
+# shape "0.8"
+
+d1
+$ slow 2
+$ every 4 (iter 4)
+$ foldEvery[4, 6] (density 2)
+$ every 5 (striateL' 3 0.08 8)
+$ every 3 (gap 5)
+$ stack[
+  sound (samples "mbd*3 ~ moe1*2 ~" "3 6 5"),
+  sound (samples "moe1 moe1 moe4 sn" "5 3 1"),
+  sound "bang"
+]
+# cut "3 1 1 2"
+# coarse "2 1 1"
+# binshf "0 1 1 0"
+# accelerate "1 1 3 0"
+# pan sinewave1
+# shape "0.8"
+
+
+hush

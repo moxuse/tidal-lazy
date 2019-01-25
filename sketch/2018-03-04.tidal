@@ -1,0 +1,30 @@
+cps (84/120)
+
+do
+  x <- lazy' 2 defaultI
+  d1
+   $ msvo 0.125
+   $ x
+   |+| mNudge
+   |+| n "~ 5 43 30"
+   |+| mUp "[0 1 -5 -1]"
+   |+| slowSpeedR 3
+   -- |+| mfDel "{1 1 0.125 1 0 0 1 0.1}%3"
+   |+| slowPanR 2
+   -- |+| mGain
+   |=| mDefault
+
+
+d2
+  $ degradeBy 0.75
+  $ mStut "<0 1 5>" 0.5
+  $ s "ml3:3(4,9)"
+  |+| mNudge
+  |+| mGain
+  |+| shape "0.3"
+  |+| room "0.3"
+
+d2 silence
+
+hush
+

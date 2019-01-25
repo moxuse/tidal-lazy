@@ -1,0 +1,32 @@
+(cps 1.25)
+
+d1
+$ degradeBy 0.2
+$ slow 3
+$ off (1/32) (|*| up (choose [0, 5, 3, 7]))
+-- $ jux (iter 3)
+$ sometimes (stut 12 0.02 0.1)
+$ whenmod 2 1 (|+| n "2 4 7 26")
+$ s "[msn(3,7), mbd/2 mfl/2 moe3*3? [~ msn]*2? mbd*2 ,mhh*2(3,5) mhh*3/2 moe4/2, ml(3,5)]"
+-- |+| speed (slow 2 "1 1.75 2 -0.5 1.666")     
+-- |+| up (choose[0.666, 1.5, 1, 1, 1, 1])
+|+| binshf "0 0 1 0"
+|+| shape "0.4"
+|+| coarse "12 2 2 2"
+|+| mGain
+|+| binfrz "1 0 0 1"
+|+| wah "0.4 0.1 0"
+|+| pan (scale 0.1 0.8 $ rand)
+--  |+| conv "0 1 0 0"
+|+| room "0.04"
+|+| end "0.5 0.5"
+-- |+| disv "-1 -1 2" "3 3 3"
+
+t1 (xfadeIn 8)
+$ s "~"
+
+d1 silence
+
+d4 silence
+
+hush

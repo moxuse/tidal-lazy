@@ -1,0 +1,42 @@
+d1 
+$ every 3 (palindrome) 
+$ every 6 (density 2)
+$ every 5 (iter 4) 
+$ every 2 (slow 2)
+$ every 8 (gap 2)
+$ foldEvery [4, 6] (striateL' 2 0.025 8)
+$ every 5 (chop 3)
+$ slowcat ([
+  sound (samples "~ mbd*2 mbd ~" (irand 12)), 
+  sound (samples "mnz*2 ~ ~ mbd*2' cp" "2 7 4 2 2"), 
+  sound (samples "~ moe2*3 mbd*3" (irand 5)), 
+  sound "bang*2"
+  ])
+ # pan sinewave1 
+ # cut "4 3 2 3"
+# accelerate "2 1000 0.5 0"
+ # speed "1 0.9 0.5 6" 
+ -- # coarse "1 2 1 1 "
+# hresonance "0.1 0.2 0.1 0.1"
+ # binshf "1 1 0 1" 
+ -- # binfrz "0 1 0 1"
+ # shape "0.4"
+ # dist "0.4 0.2 0.2 1"
+ -- # binscr "1 0 0 1"
+ # room "0.01"
+
+d2 $ every 5 (density 0.5) $ every 3 (gap 5) 
+  $ sound (samples "mbd*3 jazz mnz*2  mhh*2" (irand 12))
+#  cut "2 1 2 1"
+# dist "1 0 0.5 0 "
+  # accelerate "1 2 0 1 1"
+  # coarse "1 1 2 32 1"
+  # binscr "1 0 1 1"
+  -- # shape "0.6"ZZ
+  # binshf "1 1 1 0"
+
+d1 silence
+
+d2 silence
+
+hush

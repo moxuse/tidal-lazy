@@ -1,0 +1,14 @@
+d1 $ sound $ samples "sqr" (tom "c2 e5 [c4]")
+
+
+d1 $ sound "sqr:60"
+
+d2 $ slow 3 $ every 3 (|*| up "5 0*2 3 0") 
+  $ sound "mpd:2*2" 
+  # up "0 3 0 3 4"
+  # cut "3"
+
+d2 $ slowspread (stut' 3 (0.75/2)) 
+([|+| up  "5 4 5 6 7")] $ sound "arpy*3" # up "2")
+
+hush

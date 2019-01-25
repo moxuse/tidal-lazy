@@ -1,0 +1,20 @@
+cps (96/120)
+
+
+d2
+  $ slow 2
+  $ stut 2 0.125 4
+  $ foldEvery [4, 5] (within (0.4,0.8) (chop 3))
+  $ every 3 (iter 2)
+  $ whenmod 8 4 (|*| speed "0.75")
+  $ whenmod 6 3 (off 0.125 (|*| speed "1.5"))
+  $ degradeBy 0.4
+  $ sound "ml:19(2,3) ml:4*4"
+  |+| up "{0 4 7 10 15 16}%7"
+  |+| room "0.04"
+  |+| wah (slow 2 $ "0.03 0 0 0.02 0.1")
+  |+| coarse "4 2 12 4 2"
+  |+| end "0.8 1"
+  |+| orbit "1"
+
+hush

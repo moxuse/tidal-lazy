@@ -1,0 +1,46 @@
+-- d2
+  -- $ slow 2
+  -- $ degradeBy 0.8
+  -- $ mStut' "<0 5>" "0.3"
+  -- $ s "ld0:2(5,8)"
+  -- |+| sustain "4"
+  -- -- |+| coarse "32 4 8 4"
+  -- |+| slowPanR 3
+  -- |=| mGain
+  -- |+| room "0.1"
+  -- -- |+| henon "0.3"
+  -- -- |+| convp "0.3"
+  -- -- |+| wah "0.02"
+  -- |+| orbit "0"
+
+
+d2
+  $ slow 2
+  $ degradeBy 0.95
+  $ mStut "<0 5>" "0.125 0.1"
+  $ s "[mpd:0(3,9) ml:10*2]"
+  |+| slowPanR 3
+  |+| flangeD
+  |+| dist "0.3"
+  -- |+| wah "0.2"
+  |+| room "0.1"
+
+-- d2
+-- -- $ slow 2
+-- $ degradeBy 0.5
+-- $ mStut' (slow 0.5 "<0 5 7>") 0.7
+-- $ s "ld1*16"
+-- |+| coarse "{2 4 2 8 16}%3"
+-- |+| sustain "0.125"
+-- |+| nudge "[0 0.01]*4"
+-- |+| dist "0.2 0 0.4 0 0.2 0.2"
+-- |+| brick "0.3 0 2 0.3 2"
+-- |+| slowPanR 3
+-- |+| room "0.1"
+-- |=| mGain
+
+d1 silence
+
+
+hush
+

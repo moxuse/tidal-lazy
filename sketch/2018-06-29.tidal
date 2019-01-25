@@ -1,0 +1,13 @@
+cps (90/120)
+
+do
+  x <- lazy' 1 $ defaultI
+  d1
+    -- $ msvoC 0.125
+    $ x
+    |+| mGain
+    |+| mNudge
+    -- |+| mfDel "{0.1 0.08 1 0 0 0 0.125}%11"
+    |+| n "4"
+
+hush
