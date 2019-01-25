@@ -1,10 +1,13 @@
+{-# LANGUAGE TypeSynonymInstances, FlexibleInstances, OverloadedStrings #-}
+
 module ExInstruments where
 
+import Sound.Tidal.Params
 import Sound.Tidal.Context
 
 data InstType = HH | SN | BD | CP | PD | PS
 data DefaultInstrument = DefaultInstrument {
-  hh' :: Pattern String, 
+  hh' :: Pattern String,
   sn' :: Pattern String, 
   bd' :: Pattern String,
   cp' :: Pattern String,

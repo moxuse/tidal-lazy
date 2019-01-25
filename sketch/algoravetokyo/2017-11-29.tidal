@@ -1,9 +1,10 @@
 cps (80/120)
 
 
+
 d2
   $ slow 24
-  $ chord [em9, fm, am, gm] "0*4 1*4 2*4 3*4"
+  $ chord' [em9, fm, am, gm] "0*4 1*4 2*4 3*4"
   |+| sound "pmosc*4"
   |*| speed (slow 4 "0.6 0.8")
   |+| accelerate "0.02"
@@ -13,10 +14,11 @@ d2
   |+| wah "0.2"
   |+| flange "0.1 0.4 0.6" "0.75"
   |+| mGain
-  |+| orbit "1"
+  -- |+| orbit "1"
 
 
 d3
+  $ degradeBy 0.6
   $ (0.125 ~>)
   $ foldEvery [4,3] (within (0.25, 0.8) (slow 3))
   $ foldEvery [2,7] (within (0.5, 0.75) (density 2))
@@ -31,9 +33,11 @@ d3
   |+| flange "0.1 0.9 0.6" "0.7"
   |+| orbit "1"
 
-d1 silence
+d2 silence
 
 d3 silence
 
 hush
+
+-- :i chord
 

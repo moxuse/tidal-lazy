@@ -14,28 +14,40 @@ $ s "ld0(3,7)"
 |+| pipe "[0, 40]"
 |+| mGain
 
-hush
+
+
+d3
+$ degradeBy 0.3
+$ s "psr(9,12)"
+|+| up (choose [1, 6, 7, 10, 13, 23])
+|+| n (choose [3, 4])
+|+| coarse "{0 8 27 0 0 12 4}"
+|+| mGain
+-- |+| pipe "0 40 [0,s0]"
+|+| wah 0.3
+
+d3 silence
 
 do
-  x <- lazy' 2 $ inst $ hh "mhh2:13" .sn "[msn:16, mb:5?]" . bd "mbd2:6"
+  x <- lazy' 2 $ inst $ hh "mhh2:8" .sn "[msn:10, mb:5?]" . bd "mbd2:6"
   d1
-    $ degradeBy 0.8
-    $ sometimes (|+| flangeL)
-    $ msvoA 0.125
+    $ degradeBy 0.4
+    -- $ sometimes (|+| flangeL)
+    -- $ msvoA 0.125
     $ x
     -- |+| mNudge
     |+| up "{0 3 -1 5 7 -2 -5}"
     |+| up "<0 1 0.5>"
     |*| speed "0.3"
-    |+| sustain "0.3"
+    |+| sustain "0.9"
     -- |=| mGain
     |+| n "0 0 1 0"
     |+| accelerate "{-0.03 0.2 0.04 -0.1 -0.15}"
-    |+| mDefault
+    |+|  mGain
     |+| slowPanR 3
-    -- |+| pipe "{[40,0] 0 0 [40, 0]}%3"
-    |+| room "0.05"
-    -- |+| n "6"
-    |+| n "12"
+    |+| pipe "{[40,0] 40 0 [40, 0]}%3"
+    -- |+| room "0.05"
+    |+| n "6"
+    -- |+| n "12"
 
 hush

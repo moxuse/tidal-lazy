@@ -1,9 +1,11 @@
+{-# LANGUAGE TypeSynonymInstances, FlexibleInstances, OverloadedStrings #-}
+
 -- custom osc send
 
 module UnityOsc where
 import Sound.Tidal.Stream
 import Sound.Tidal.Pattern
-import Sound.Tidal.Parse
+import Sound.Tidal.ParseBP
 import Sound.Tidal.OscStream
 import Sound.Tidal.Context
 
