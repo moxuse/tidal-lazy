@@ -7,7 +7,7 @@ import Sound.Tidal.Context
 
 -- pttern boost
 
-msvo time s = whenmod 4 3 (within (0.4, 0.8) (striate' 32 (1/16)))
+msvo time s = whenmod 4 3 (within (0.4, 0.8) (striate' 4 (1/8)))
   $ every 2 (within (0.6,0.8) (density 0.75) . (0.25<~))
   $ every 4 (within (0.5,1.0) (slow 2))
   $ every 6 (within (0.2,0.4) (hurry 2))
@@ -17,13 +17,13 @@ msvo time s = whenmod 4 3 (within (0.4, 0.8) (striate' 32 (1/16)))
   $ every 2 (off time (mvSpeed "-0.25 -0.5 3 -2")) 
   $ s
 
-msvoA time s = every 9 (within (0.3, 0.4) (striate' 32 (1/16)))
+msvoA time s = every 9 (within (0.3, 0.4) (striate' 4 (1/8)))
   $ every 4 (off time (|+| speed "-0.5 2 [0.4 -0.3] -2"))
   $ every 7 (within (0.7, 0.9) (chop 2))
   $ every 2 (within (0.3, 0.5) (slow 2))
   $ s
 
-msvoS time s = every 9 (within (0.3, 0.4) (striate' 32 (1/16)))
+msvoS time s = every 9 (within (0.3, 0.4) (striate' 4 (1/8)))
   $ every 6 (off time (|+| speed "-0.5 2 [~ -0.3] -2"))
   $ every 5 (within (0.2, 0.5) (|+| disv "-0.2 -0.1" "3 2"))
   $ every 7 (within (0.7, 0.9) (chop 2))
@@ -57,6 +57,7 @@ msvoC time s = every 4 (|+| mfDel (slow 2 (range 1 0.01 rand)))
     $ every 8 (within (0.25, 1.0) (# speed "<1 0.75 0.5 1.125>"))
     $ every 12 (within (0.4, 0.8) (# unit "s") . (|+| accelerate "<0.76 0 -0.16>") . (|+| loop "<0.125 0.75 0.5>"))
     $ s
+
 
 inverse 1 = 0
 inverse 0 = 1
