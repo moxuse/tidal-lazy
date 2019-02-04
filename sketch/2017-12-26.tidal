@@ -1,4 +1,4 @@
--- cps (110/120)
+cps (110/120)
 
 d2
 $ msvo 0.167
@@ -14,7 +14,7 @@ $ speed ((*0.12) . (+3) <$> "{3 0 5 0 9 4}%9") |*| speed "<1.125 1 0.75>"
 -- |+| mfDel "{0 0.3 1 0.02 0.08 1 0.07 0.9}%6"
 -- |+| dist "0.3"
 |+| room "0.4"
-|=| mGain
+# mGain
 |+| orbit "1"
 
 d2
@@ -22,10 +22,10 @@ $ msvo 0.125
 $ s "[[mhh:3*10, pmosc  msn2:4*3]/2, mbd2*2]"
 |+| speed ((*0.08) . (+3) <$> "{~ 3 0 5 0 9 4 ~}%12") |*| speed "<1.125 1 0.75 2>"
 -- |+| mNudge
-|=| mGain
+# mGain
 |+| unit "{r s r r r r r c}%3"
 |+| slowPanR 3
--- |+| mfDel "{1 0.05 0 0.03 0.75 0.08}%7"
+|+| mfDel "{1 0.05 0 0.03 0.75 0.08}%7"
 |+| n "10"
 |+| orbit "1"
 
@@ -37,11 +37,12 @@ hush
 
 do
   let
-    pat1 = (slow 2 $ "0/2 1/4 1*2 0/3 0 1/8 1 0/6 1/12 0/3 0/2 0 1 1/3 0 1/2")
+    pat1 = "0/2 1/4 1*2 0/3 0 1/8 1 0/6 1/12 0/3 0/2 0 1 1/3 0 1/2"
     -- pat1 = (slow 6 $ "1/2 1 1/4 0/4 0*8 0/6 1/2 0/4 1/2 1*4 0/2 1*3 0*2 1/2 0/4 0")
   d2
+    -- $ slow 2
     $ foldEvery [3,7] (within (0.4, 0.75) (slow 1.5))
-    $ sometimes (msvoC 0.125)
+    -- $ sometimes (msvoC 0.125)
     $ sometimes (msvo 0)
     $ stack [
       ((0.125 <~) $ gain pat1 |+| s "mhh:8")
@@ -52,26 +53,26 @@ do
     |+| unit "{r r r c s r r r}%3"
     |+| speed ((*0.09) . (+3) <$> "{3 0 5 0 9 4}%9") |*| speed "<1.125 1 0.75>"
     |+| n "{0 14 30 0/2}%9"
-    |+| flangeL
+    -- |+| flangeL
     |+| mNudge
-    -- |=| mDefault
-    |=| mGain
+    # mDefault
+    # mGain
     -- |+| mfDel (slow 1.85 $ "{0.06 0.75 0.05 1 0.125 0.1 1 0.3 1}%5")
     -- |+| cut "1 2 4 3 2 3 1 2"
     |+| orbit "1"
 
 
-d1 silence
+d2 silence
 
--- d3
--- $ slow 2
--- $ degradeBy 0.1
--- $ off 0.16 (|*| speed "<1.3333 0.75 0.98>")
--- $ sound "ml2:21(2,9)"
--- |+| speed ((*2.8) . (+3) <$> "{1 3 0 5 0 11 5}%13") |*| speed "<1.125 1 0.75>"
--- |+| mGain
--- |+| n (slow 2 $ "0 -1 26")
--- |+| orbit "1"
+d3
+$ slow 2
+$ degradeBy 0.1
+$ off 0.16 (|*| speed "<1.3333 0.75 0.98>")
+$ sound "ml2:21(2,9)"
+|+| speed ((*2.8) . (+3) <$> "{1 3 0 5 0 11 5}%13") |*| speed "<1.125 1 0.75>"
+|+| mGain
+|+| n (slow 2 $ "0 -1 26")
+|+| orbit "1"
 
 d3 silence
 
