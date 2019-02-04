@@ -1,3 +1,6 @@
+*.tidal
+!BootTidal.tidal
+
 .stack-work/
 tidal-lazy.cabal
 *~

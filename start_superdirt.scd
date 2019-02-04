@@ -2,7 +2,7 @@
 var numChannels, viznut_sig, viznut_buf;
 
 
-s.options.device_("Soundflower (2ch)");
+// s.options.device_("Soundflower (2ch)");
 
 // s.options.device_("Audinst HUD-mx1");
 
@@ -41,7 +41,7 @@ s.waitForBoot {
   numChannels =  ~dirt.numChannels;
 
   /**
-   * superdirt filter modules
+   * superdirt filter modulest
    */
 
   ~dirt.addModule('spectral-delay', { |dirtEvent|
@@ -370,9 +370,9 @@ s.waitForBoot {
          pipe: ~pipe
        ]
      )
-   }, { ~pipe.notNil && ~pipe != 0 });
+  }, { ~pipe.notNil and: { ~pipe != 0 }});
 
-   SynthDef("pipe" ++ numChannels, { | out, pipe, pan = 0 |
+   SynthDef("pipe" ++ numChannels, { | out, pipe = 0, pan = 0 |
      var input;
      input = In.ar(out, numChannels) ;
      OffsetOut.ar(pipe, input);
@@ -608,6 +608,23 @@ s.waitForBoot {
         1,
         0.1));
     env = EnvGen.ar(Env.perc(0.5, 2.2 * dur,  1 * amp, -9), gate, timeScale:sustain, doneAction:2);
+    OffsetOut.ar(out,
+      DirtPan.ar(sound, ~dirt.numChannels, pan, env)
+    )
+  }).store;
+
+
+  SynthDef(\txosc, {|out, sustain = 1, gate = 1, note = 0, speed = 1, begin=0, end=1, pan, accelerate, amp = 1, offset|
+    var sound, d_freq, dur, env, d_env, src;
+    dur = 1.0 * (end - begin)/speed;
+    d_freq = ((([0, 5, 12, 24, 36] + (note + 60)).midicps)) * (1.0 + Sweep.kr(1, accelerate)) * speed;
+    d_env = EnvGen.ar(Env.adsr(Rand(0.1, 0.25) * dur, ExpRand(0.01, 0.5), 0.2, 1.0, ExpRand(4, 10), 1));
+
+    sound = AllpassC.ar(
+      (DynKlank.ar(`[[d_freq/2,d_freq,d_freq*2], nil, [0.5, 1, 0.75]], WhiteNoise.ar([0.1, 0.1])) * 12).softclip * 0.3 * Decay2.ar(Impulse.ar((d_freq/50).clip(4,8)), 0.2, 0.5),
+    0.2, 1, 3.2);
+
+    env = EnvGen.ar(Env.perc(0.35, 1.5 * dur,  1 * amp, -2), gate, timeScale:sustain, doneAction:2);
     OffsetOut.ar(out,
       DirtPan.ar(sound, ~dirt.numChannels, pan, env)
     )
