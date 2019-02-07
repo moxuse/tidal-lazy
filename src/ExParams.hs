@@ -65,5 +65,3 @@ pipe = pI "pipe"
 -- out :: Pattern Int -> ParamPattern
 -- out = make' VI out_p
 -- out_p = I "out" (Just 0)
-
-

@@ -1,9 +1,9 @@
-cps (124/120)
+setcps (124/120)
 
 d1
 $ slow 2
 $ slow "<2 1 2 1 0.75>"
-$ whenmod 4 2 (within (0.2, 0.8) (|+| mfDel (slow 1.5 (scale 0.1 1 $ sine1))))
+$ whenmod 4 2 (within (0.2, 0.8) (|+| mfDel (slow 1.5 (range 0.1 1 $ sine))))
 $ stack [
   sound "{msn:12/4 [mpd2:25/6 mpd:19/2] mcp:1/7, ~ mhh:29(3,8)}" 
     |+| end (slow 2.4 $ "0.5 1 1 0.5")
@@ -13,7 +13,7 @@ $ stack [
 |+| binshfS 2
 |+| slowPanR 4
 |+| shape "0.3"
-|+| mGain
+# mGain
 
 d2
 $ slow 4
@@ -27,8 +27,8 @@ $ sound "msoz:14 mpd:23/2"
 |+| end "0.9"
 |+| room "0.02"
 |+| shape "0.1"
-|+| cutoff (slow 1.75 (scale 700 5000 $ sinewave1))
-|+| mfDel (slow 1.25 (scale 0.1 1 $ sine1))
+|+| cutoff (slow 1.75 (range 700 5000 $ sine))
+|+| mfDel (slow 1.25 (range 0.1 1 $ sine))
 
 do
   let pat = "[~ 0 ~ 1/6 1 ~ 1 1/8]"

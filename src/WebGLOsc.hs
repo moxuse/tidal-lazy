@@ -42,4 +42,3 @@ vfreq = makeF webGLShape "vfreq"
 vufreq = makeF webGLShape "vufreq"
 vphase = makeF webGLShape "vphase"
 vssize = makeF webGLShape "vssize"
-

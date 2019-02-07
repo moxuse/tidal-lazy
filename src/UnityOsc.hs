@@ -60,4 +60,3 @@ vortex x y angle = vortexRadX x |+| vortexRadY y |+| vortexAngle angle
 move x y z = moveX x |+| moveY y |+| moveZ z
 
 -- skybox = makeS unityShape "skybox"
-
