@@ -47,16 +47,16 @@ mGrav = mGain
   |+ slowSpeedR 4
 
 msvoB time s = every 2 (|> mfDel' (slow 3 (range 1 0.01 rand)))
-    $ every 4 (within (0.5, 0.75) (slow 3))
-    $ every 12 (within (0.4, 0.8) (|> unit "s") . (|> accelerate "<0.76 0 -0.16>") . (|> loop "<0.125 0.75 0.5>"))
-    $ every 3 (off time (stut 3 0.05 6) . (zoom (0.25, 0.75)))
-    $ s
+  $ every 4 (within (0.5, 0.75) (slow 3))
+  $ every 12 (within (0.4, 0.8) (|> unit "s") . (|> accelerate "<0.76 0 -0.16>") . (|> loop "<0.125 0.75 0.5>"))
+  $ every 3 (off time (stut 3 0.05 6) . (zoom (0.25, 0.75)))
+  $ s
 
 msvoC time s = every 4 (|+ mfDel' (slow 2 (range 1 0.01 rand)))
-    $ every 4 (within (0.5, 0.75) (|> speed "1 0.75 2 1 0.8"))
-    $ every 8 (within (0.25, 1.0) (|> speed "<1 0.75 0.5 1.125>"))
-    $ every 12 (within (0.4, 0.8) (|> unit "s") . (|> accelerate "<0.76 0 -0.16>") . (|> loop "<0.125 0.75 0.5>"))
-    $ s
+  $ every 4 (within (0.5, 0.75) (|> speed "1 0.75 2 1 0.8"))
+  $ every 8 (within (0.25, 1.0) (|> speed "<1 0.75 0.5 1.125>"))
+  $ every 12 (within (0.4, 0.8) (|> unit "s") . (|> accelerate "<0.76 0 -0.16>") . (|> loop "<0.125 0.75 0.5>"))
+  $ s
 
 
 inverse 1 = 0

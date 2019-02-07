@@ -58,5 +58,5 @@ inst a = getInst (a (Just defaultI))
 -- shorthand
 inst0 = inst $ sn "[mst:6, ml4:19/8]" . hh "mhh2:11" . pd "[msn2:12 mps:10/6]" . bd "mbd2:6"
 inst1 = inst $ hh "mhh2:10" . sn "mst:10" . pd "mwb:19". ps "mnt:19/4". bd "mbd:4"
-inst2 = inst $ hh "mst:9" . sn "mst:15" . cp "mwb:6". bd "mbd:2"
+inst2 = inst $ hh "mst:9" . sn "[msn2:15, mhh2:3]" . cp "mwb:3". bd "mbd:2"
 

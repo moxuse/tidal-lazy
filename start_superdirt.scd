@@ -10,7 +10,7 @@ var numChannels, viznut_sig, viznut_buf;
 
 // configure the sound server: here you could add hardware specific options
 // see http://doc.sccode.org/Classes/ServerOptions.html
-s.options.numBuffers = 1024 * 128; // increase this if you need to load more samples
+s.options.numBuffers = 1024 * 256; // increase this if you need to load more samples
 s.options.memSize = 8192 * 64; // increase this if you get "alloc failed" messages
 s.options.maxNodes = 1024 * 64; // increase this if you are getting drop outs and the message "too many nodes"
 s.options.numOutputBusChannels = 2; // set this to your hardware output channel size, if necessary
@@ -207,6 +207,7 @@ s.waitForBoot {
     dirtEvent.sendSynth('convolution' ++ numChannels,
       [
         out: ~out,
+        note: ~note,
         conv: ~conv
       ]
     )
@@ -268,6 +269,7 @@ s.waitForBoot {
     dirtEvent.sendSynth('convolution_p' ++ numChannels,
       [
         out: ~out,
+        note: ~note,
         convp: ~convp
       ]
     )
@@ -275,9 +277,9 @@ s.waitForBoot {
 
   SynthDef("convolution_p" ++ numChannels, { arg out, note = 0, pan = 0, convp = 0;
     var src, kernel, mix, env;
-    kernel = Mix.new(LFPulse.ar(([0,2,5,10,24] + (note + 60)).midicps, 0, 0.1, 0.04));
+    kernel = Mix.new(Pulse.ar(((note + 60)).midicps, 0.5, 0.1));
     src = In.ar(out, numChannels);
-    mix = RLPF.ar(Convolution.ar(src[0], kernel, 2048), 8500);
+    mix = Convolution.ar(src[0], kernel, 2048);
     ReplaceOut.ar(out, Pan2.ar((src * (1.0 - convp)) + (convp * mix),pan));
   }).store();
 
@@ -617,14 +619,14 @@ s.waitForBoot {
   SynthDef(\txosc, {|out, sustain = 1, gate = 1, note = 0, speed = 1, begin=0, end=1, pan, accelerate, amp = 1, offset|
     var sound, d_freq, dur, env, d_env, src;
     dur = 1.0 * (end - begin)/speed;
-    d_freq = ((([0, 5, 12, 24, 36] + (note + 60)).midicps)) * (1.0 + Sweep.kr(1, accelerate)) * speed;
+    d_freq = ([0,-12]+(note + 60).midicps) * (1.0 + Sweep.kr(1, accelerate)) * speed;
     d_env = EnvGen.ar(Env.adsr(Rand(0.1, 0.25) * dur, ExpRand(0.01, 0.5), 0.2, 1.0, ExpRand(4, 10), 1));
 
     sound = AllpassC.ar(
-      (DynKlank.ar(`[[d_freq/2,d_freq,d_freq*2], nil, [0.5, 1, 0.75]], WhiteNoise.ar([0.1, 0.1])) * 12).softclip * 0.3 * Decay2.ar(Impulse.ar((d_freq/50).clip(4,8)), 0.2, 0.5),
-    0.2, 1, 3.2);
+      (DynKlank.ar(`[[d_freq/2,d_freq,d_freq*2], nil, [0.25, 1, 0.75]], WhiteNoise.ar([0.07, 0.07])) * 12).softclip * 0.3 * Decay2.ar(Dust.ar((d_freq/35).clip(0.25,12)), 0.07, 0.35),
+    0.2, 0.5, 2);
 
-    env = EnvGen.ar(Env.perc(0.35, 1.5 * dur,  1 * amp, -2), gate, timeScale:sustain, doneAction:2);
+    env = EnvGen.ar(Env.perc(0.5, 1.5 * dur,  1 * amp, -2), gate, timeScale:sustain, doneAction:2);
     OffsetOut.ar(out,
       DirtPan.ar(sound, ~dirt.numChannels, pan, env)
     )
