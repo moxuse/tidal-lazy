@@ -6,6 +6,8 @@ import Sound.Tidal.Pattern
 import Sound.Tidal.Params
 import Sound.Tidal.Context
 
+portaTime :: Pattern Double -> ControlPattern
+portaTime = pF "portaTime"
 
 tsdelay :: Pattern Double -> ControlPattern
 tsdelay = pF "tsdelay"
