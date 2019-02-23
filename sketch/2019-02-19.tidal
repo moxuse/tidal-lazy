@@ -1,0 +1,19 @@
+do
+  let 
+    layer = s "[ml3:9, mnt2:28]" 
+      |+ squiz "<1 2 4 3>" 
+      |+ sus 0.9
+  x <- lazy'' "t(3,11) ttff" $ inst2
+  d1
+    $ msvo 0.125
+    $ unison (s "mbd") layer
+    $ x
+    |+ shape 0.2
+    |+ mfDel
+    |+ rotAccelerate 3
+    |+ mDefault
+    |+ mNudge
+    |+ n "59"
+
+hush
+

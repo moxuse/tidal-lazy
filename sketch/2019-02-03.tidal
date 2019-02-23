@@ -1,0 +1,32 @@
+setcps 0.45
+
+
+do
+  x <- lazy'' "tft fft" inst2
+  d1
+    $ msvoC 0.125
+    $ degradeBy 0.4
+    $ x
+    |> mDefault
+    |+ n "5 8 ~ 20 5"
+
+
+d2 $ slow 2 $ up ("[0, 2, 3, 10, 22]" + (slow 2 $ "<-1 3>")) |+ s "[txosc, mhh]"
+  |+ room 0.8
+  |+ cutoff ((slow 5 (range 1000 8700 sine)))
+  |+ up "5"
+  |+ mGain
+
+
+d3  
+$ (0.25~>) $ slow 2 
+$ up ("[0,2,3](3,8)" + "18" + "<4 0>")
+|+| s "ml4" 
+|+| n 19 
+|+ lpf (slow 3 $ range 400 1200 sine)
+|+| room 0.5 
+|+ mGain 
+|+ sustain 2 
+|+ mNudge 
+
+hush

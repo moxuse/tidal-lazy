@@ -1,0 +1,15 @@
+setcps 0.55
+
+do
+  x <- lazy'' "tft" $ inst1
+  d1
+    $ x
+    |+ mGain
+    |+ unit "{r r r r c s r}"
+    |+ rotPipe 3
+    |+ shape 0.3
+    |+ room 0.1
+    |+ n "~ 7 ~"
+
+
+  hush

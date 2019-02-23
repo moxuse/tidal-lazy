@@ -1,0 +1,33 @@
+setcps 0.4
+
+d1 
+$ every 4 (|+ wah 0.3)
+$ msvo 0.125
+$ s "[mst:8(6,8), mbd:15(3,8), msn3:9(2,9), mpd2:2]"
+|+ mfDel
+|+ conv "0.8 0 0 0 0 0 0 0"
+|+ dist "0.15 0.0 0.2 0"
+|+ mDefault
+|+ mNudge
+|+ up (scale "kumai" ("[0, 2, 4] 0 0 0 0" + "<0 2 3 1>/4")) 
+|+ attack "0.32 0 0 0 0 0"
+|+ hold "0.4"
+-- |+ sus "0.3 1 1 1 1"
+
+d2
+$ degradeBy 0.8
+$ whenmod 4 3 (slow 2) . (rev)
+$ sometimesBy 0.4 (stutWith 2 0.75 (|* speed 0.5))
+$ sound "ml2(<6 3 2 4>,8,<0 1>)" 
+-- $ sound "ml5(<6 3 2 4>,8,<0 1>)" 
+|+ up (scale "kumai" ("<0> .. <-5 -6 4 7 14 0  3 6>" + "<4 2 0>"))
+|+ wah 0.03
+|+ shape 0.3
+|+ n "[6, 15?]"
+-- |+ n "[3, 2?]"
+|+ room 0.2
+
+d2 silence
+
+hush
+

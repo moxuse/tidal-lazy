@@ -1,0 +1,15 @@
+setcps (125/120/2)
+
+
+do
+  x <- lazy'' "tf" $ inst1
+  d1
+    $ x
+    |+ mGain
+    |+ rotPipe 4
+    |+ room 0.1
+    |+ slowSpeedR 3
+    |+ n "22 ~ 24 12"
+
+
+hush

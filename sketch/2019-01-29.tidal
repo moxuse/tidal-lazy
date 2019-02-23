@@ -1,0 +1,53 @@
+setcps "<0.45>"
+
+do
+  -- x <- lazy' 2 inst1
+  x <- lazy'' "tft" inst1
+  d1
+    $ degradeBy 0.8
+    $ sometimesBy 0.2 (0.125<~)
+    $ msvoC 0.125
+    $ whenmod 4 3 (rot "<1 2>")
+    $ sometimesBy 0.25 (|+| flangeL)
+    $ x
+    |+ mDefault
+    |+ shape 0.2
+    |> pan (range (-0.5) 0.5 rand)
+    |< accelerate "{0.03 0.1 0.04 0.05 2 0 0.04}%13"
+    |+ sustain "0.75 1.5 1 0.9"
+    |+| nudge "[0 -0.02]*2"
+    |+ n "[9 18]/2 ~ 49 39"
+    |+ wah "0 0.02 0.01 0 0.3"
+
+
+d2
+$ slow 2
+$ whenmod 4 3 (slow 2)
+$ up "[5 5 0 0]/2"
++| sound "[ml:5, [~ mwb:7 ~]/1.5]"
+|+ mGain
+|+ pipe "{6 [0,40] 0 0}%9"
+|+ room 0.2
+
+
+d3
+$ slow "<1 2>"
+$ degradeBy 0.6
+$ whenmod 4 3 (hurry 1.5)
+$ sometimesBy 0.3 ((off 0.075 (|+| up "5")) . (off 0.125 (|-| up 5)))
+$ often (stutWith 2 0.085 (|+| up 5))
+$ whenmod 3 2 (within (0, 0.35) (slow 2))
+$ rot "<1 0>"
+$ sound "<ml4(5,13) ml4:6(8,15)>"
+|+ up (scale "<minor>" ("0 .. <3 6 12 7 18>" + (slow 1.75 $ "{0 -5 3 2 7 -2}%13"))) 
+|> nudge "[0 -0.02]*4"
+|+ mNudge
+|* speed "<0.5 1 0.8>"
+|+ rotPipe 3
+|+ room 0.2
+|+ n "18"
+|+ mGain
+
+d1 silence
+
+hush
