@@ -142,6 +142,29 @@ s.waitForBoot {
     ReplaceOut.ar(out, Pan2.ar((signal * (1.0 - binshf)) + (binshf * [IFFT(chain), IFFT(chain_r)]), pan));
   }).store;
 
+  ~dirt.addModule('binshiftN', { |dirtEvent|
+    dirtEvent.sendSynth('binshiftN' ++ numChannels,
+      [
+        out: ~out,
+        binshfN: ~binshfN
+      ]
+    )
+  }, { ~binshfN.notNil });
+
+
+  SynthDef("binshiftN" ++ numChannels, { |out, pan = 0, binshfN = 0|
+    var signal, chain, chain_r, thr, shifter;
+    signal = In.ar(out, numChannels) * 1.4;
+    chain = FFT(LocalBuf(2048), signal[1]);
+    chain_r = FFT(LocalBuf(2048), signal[0]);
+	thr = LFNoise2.kr(4, 8).abs + 0.125;
+	shifter = LFNoise2.kr(4, 128);
+		// MouseX.kr(0.25, 4, \exponential);
+    chain =  PV_BinShift(chain, thr, shifter);
+    chain_r =  PV_BinShift(chain_r, thr, shifter);
+    ReplaceOut.ar(out, Pan2.ar((signal * (1.0 - binshfN)) + (binshfN * [IFFT(chain), IFFT(chain_r)]), pan));
+  }).store;
+
 
   ~dirt.addModule('binsmear', { |dirtEvent|
     dirtEvent.sendSynth('binsmear' ++ numChannels,
@@ -384,7 +407,7 @@ s.waitForBoot {
 
   // ~dirt.orderModules(['sound', 'vowel', 'flange', 'shape',  'crush', 'coarse', 'mod', 'wah', 'brick', 'spectral-delay','decay-filter','binfreeze', 'binscramble', 'binshift', 'binsmear', 'conv', 'convn', 'convp', 'henon', 'distortion', 'hpf', 'lpf', 'bpf', 'envelope', 'tremolo', 'phaser', 'convolution', 'convolution_n', 'convolution_p']);
 
-  ~dirt.orderModules(['sound', 'vowel', 'flange', 'shape',  'crush', 'coarse', 'mod', 'wah', 'brick', 'spectral-delay','decay-filter','binfreeze', 'binscramble', 'binshift', 'binsmear', 'conv', 'convn', 'convp', 'henon', 'distortion', 'hpf', 'lpf', 'bpf', 'envelope', 'tremolo', 'phaser', 'convolution', 'convolution_n', 'convolution_p', 'pipe']);
+	~dirt.orderModules(['sound', 'vowel', 'flange', 'shape',  'crush', 'coarse', 'mod', 'wah', 'brick', 'spectral-delay','decay-filter','binfreeze', 'binscramble', 'binshift', 'binshiftN', 'binsmear', 'conv', 'convn', 'convp', 'henon', 'distortion', 'hpf', 'lpf', 'bpf', 'envelope', 'tremolo', 'phaser', 'convolution', 'convolution_n', 'convolution_p', 'pipe']);
 
 
 

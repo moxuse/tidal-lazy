@@ -42,6 +42,12 @@ mDefault = mGain
   |+ binshfR
   |+ slowPanS 3
 
+mDefaultN = mGain
+  |+ shape "0.15"
+  |+ binshfNR
+  |+ slowPanS 3
+
+
 mGrav = mGain
   |+ shape "0.2"
   |+ slowPanR 3

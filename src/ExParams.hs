@@ -26,6 +26,9 @@ binfrz = pF "binfrz"
 binshf :: Pattern Double -> ControlPattern
 binshf = pF "binshf"
 
+binshfN :: Pattern Double -> ControlPattern
+binshfN = pF "binshfN"
+
 binsmr :: Pattern Double -> ControlPattern
 binsmr = pF "binsmr"
 
