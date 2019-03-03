@@ -3,7 +3,7 @@ do
     layer = s "[ml3:9, mnt2:28]" 
       |+ squiz "<1 2 4 3>" 
       -- |+ dist "0.1"
-      -- |+ mDefaultN
+      |+ mDefaultN
       |+ sus 0.9
   x <- lazy'' "f(3,11) ttff" $ inst2
   d1
@@ -18,13 +18,13 @@ do
     |+ mNudge
     |+ n "59"
 
-
-layer2 = sound "[ml5:7, ml4:10]"
-  |+ up (scale "<phrygian>" ("[0, 3, 4]" + "<6 2 0 6 0>")) 
+layer2 = sound "[ml5:7, ml4:15]"
+  |+ up (scale "<phrygian>" ("[0, 3, 4]" + "<6 2 0 6 0>" + 6)) 
   |+ room 0.25
-  |+ rotAccelerate 2
   |+ mGain
 
+
+d2 silence
 
 hush
 
