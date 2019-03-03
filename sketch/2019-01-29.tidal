@@ -32,13 +32,13 @@ $ up "[5 5 0 0]/2"
 
 d3
 $ slow "<1 2>"
-$ degradeBy 0.6
+$ degradeBy 0.2
 $ whenmod 4 3 (hurry 1.5)
 $ sometimesBy 0.3 ((off 0.075 (|+| up "5")) . (off 0.125 (|-| up 5)))
 $ often (stutWith 2 0.085 (|+| up 5))
 $ whenmod 3 2 (within (0, 0.35) (slow 2))
 $ rot "<1 0>"
-$ sound "<ml4(5,13) ml4:6(8,15)>"
+$ sound "<ml4(5,13) ml5:13(8,15)>"
 |+ up (scale "<minor>" ("0 .. <3 6 12 7 18>" + (slow 1.75 $ "{0 -5 3 2 7 -2}%13"))) 
 |> nudge "[0 -0.02]*4"
 |+ mNudge
