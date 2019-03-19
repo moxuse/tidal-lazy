@@ -1,0 +1,18 @@
+setcps (125/120/2)
+
+d1 $ s "hh*4" |+ gain 0.0
+
+do
+  x <- lazy'' "ft" $ inst2
+  d1
+    $ x
+    -- |+ mfDel
+    -- |+ squiz "{1 2 1 4 2}%3"
+    |+ rotPipe 3
+    |+ n "51"
+    -- |+ mGain
+    |+ mDefault
+    |+ room 0.2
+
+hush
+

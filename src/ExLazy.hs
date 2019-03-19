@@ -153,10 +153,12 @@ lazy'' pat instr = do
   pb <- partialPat pat instr
   pc <- partialPat pat instr
   pd <- partialPat pat instr
+  let pe = sound (sew pat (euclid 8 16 (hh' instr)) (euclid 5 16 (hh' instr)))
   return $ stack [
       pa
     , pb
     , pc
     , pd
+    , pe
     ] 
 

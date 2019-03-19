@@ -646,15 +646,35 @@ s.waitForBoot {
     d_env = EnvGen.ar(Env.adsr(Rand(0.1, 0.25) * dur, ExpRand(0.01, 0.5), 0.2, 1.0, ExpRand(4, 10), 1));
 
     sound = AllpassC.ar(
-      (DynKlank.ar(`[[d_freq/2,d_freq,d_freq*2], nil, [0.25, 1, 0.75]], WhiteNoise.ar([0.07, 0.07])) * 12).softclip * 0.3 * Decay2.ar(Dust.ar((d_freq/35).clip(0.25,12)), 0.07, 0.35),
+      (DynKlank.ar(`[[d_freq/2,d_freq,d_freq*2], nil, [0.25, 1, 0.75]], BrownNoise.ar([0.07, 0.07])) * 4).softclip * 0.3 * Decay2.ar(Dust.ar((d_freq/35).clip(0.25,12)), 0.2, 0.35),
     0.2, 0.5, 2);
 
-    env = EnvGen.ar(Env.perc(0.5, 1.5 * dur,  1 * amp, -2), gate, timeScale:sustain, doneAction:2);
+    env = EnvGen.ar(Env.perc(1, 1.5 * dur,  1 * amp, -4), gate, timeScale:sustain, doneAction:2);
     OffsetOut.ar(out,
       DirtPan.ar(sound, ~dirt.numChannels, pan, env)
     )
   }).store;
 
+	SynthDef(\fm7, {|out, sustain = 1, note = 0, speed = 1, begin=0, end=1, pan, accelerate, amp = 1, offset|
+	var env, dur;
+	var freq = (note + 60).midicps;
+    var ctls = [
+        // freq, phase, amp
+		[SinOsc.kr(Line.kr(30, freq, 0.9)).range(60, freq), 0, EnvGen.ar(Env.perc(0.01,1))],
+		[LFNoise2.kr(Line.kr(15, freq * 13, 0.13)), SinOsc.kr(freq * 3, 0, 2), EnvGen.ar(Env.perc(0.02,1.4))],
+        [LFNoise1.kr(2).exprange(10, freq / 2), 0, EnvGen.ar(Env.perc(0.05,2.0))],
+		[SinOsc.kr(Line.kr(20, freq / 12, 0.3)).exprange(3, freq * 2.75) , 0, EnvGen.ar(Env.perc(0.02,1.3))],
+		[LFNoise2.kr(Line.kr(15, 2, 0.2)).exprange(1, 8), 0, EnvGen.ar(Env.perc(0.02,1.2))],
+		[LFPulse.kr(Line.kr(30,freq * 4, 0.2)).exprange(20, freq * 14), 0.1, EnvGen.ar(Env.perc(0.06,1.0))]
+    ];
+	var src = FM7.arAlgo(0, ctls, LFNoise2.kr(1, 2).abs);
+	src = CombN.ar(src, LFNoise2.kr(2, 0.125) + 0.1, 0.2, 0.8);
+	dur = 0.5 * (end - begin)/speed;
+	env = EnvGen.ar(Env.perc(0.02, dur, amp * 0.5, -8), timeScale:sustain, doneAction:2);
+	OffsetOut.ar(out,
+      DirtPan.ar(src,  ~dirt.numChannels, pan, env)
+    )
+}).add;
 
 }; //wait for boot.
 )

@@ -1,0 +1,24 @@
+setcps 0.45
+
+f = s "ld0(3,8)" 
+  |+ up (scale "lydian" "[0,2,4]" + "<0 5 0 3 0 2 5 3 2 0>" -24)
+  |+ sus 1.9
+  |+ cutoff (slow 3 (range 300 1200 sine))
+  |+ conv 0.6
+  |+ room 0.1
+  |+ mGain
+
+do
+  x <- lazy'' "f(3,11) ft" $ inst3
+  d1
+    $ degradeBy 0.3
+    $ msvo 0
+    $ unison (s "mbd2") f
+    $ x
+    |+ mDefault
+    |+ rotAccelerate 3
+    |+ n "56 34"
+
+d1 silence
+
+hush
