@@ -2,6 +2,7 @@
 
 module Ex where
 
+import qualified Data.Map.Strict as Map
 import ExEffects
 import Sound.Tidal.Context
 
@@ -40,6 +41,12 @@ mDefault = mGain
   |+ shape "0.15"
   |+ binshfR
   |+ slowPanS 3
+
+mDefaultN = mGain
+  |+ shape "0.15"
+  |+ binshfNR
+  |+ slowPanS 3
+
 
 mGrav = mGain
   |+ shape "0.2"
@@ -80,3 +87,8 @@ mStut' pt sp s = sometimes (stut 4 1 1)
 
 mvSpeed pt s = within (0.2, 0.85) (# speed (sometimesBy 0.75 ((slow "<0.75 2 1.25>") . (sometimes rev)) pt)) $ s
 
+unison p f pt = overlay (rotR shiftT f) pt
+  where matches = matchManyToOne (flip $ Map.isSubmapOfBy (==)) p pt
+        matched :: ControlPattern
+        matched = filterJust $ (\(t, a) -> if t then Just a else Nothing) <$> matches
+        shiftT = start $ whole ((queryArc matched (Arc 0 1))!!0)

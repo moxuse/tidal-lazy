@@ -14,7 +14,8 @@ panR = pan (range 0.2 0.8 $ rand)
 
 mGain = gain 1.25
 
-binshfR = binshf (choose [0,0,0, 0.75, 0.3, 1])
+binshfR = binshf (choose [0.5, 0.75, 0.3, 0.8])
+binshfNR = binshfN (choose [0.5, 0.75, 0.3, 0.8])
 binshfS n = binshf (slow n $ range 0.0 0.7 sine)
 binfrzR = binfrz (choose [0,0,0,0,0, 0.75, 0.3, 1, 1])
 slowSpeedR n = speed (slow n $ choose [1,1,1,1, 0.6666, 0.5, 2, -0.75, 4])

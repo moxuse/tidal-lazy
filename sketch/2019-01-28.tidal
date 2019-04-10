@@ -1,0 +1,39 @@
+setcps 0.56
+
+do
+  x <- lazy' 2 inst1
+  d1
+    $ slow 2
+    $ every 2 (|+ wah 0.03) . (within (0.7, 1.0) (slow 1.5))
+    $ every 4 (within (0.2, 0.75) (chop "<4 3>") . (0.125~>))
+    $ x
+    |+ mGain
+    |> n "45 29 ~ 6 ~ ~ 34"
+    |+| speed 1
+    |+ slowSpeedR 3
+    |+ binshf 0.3
+    |+| shape "0.2"
+    |+ mNudge
+    |+| pipe "{0 [0,40] 0 0}%3"
+
+
+d2
+$ slow "<1 2>"
+$ whenmod 3 2 (rot "1")
+$ every 5 (|+ wah 0.03) . (within (0.7, 1.0) (slow 1.5))
+$ every 4 (within (0.2, 0.75) (chop "<2 3>") . (0.125~>))
+$ sometimesBy 0.3 (off 0.125 (|+| up "0"))
+$ sound "[~ ml4:18, [~ mb2:25]/1.125, ml4:27/2 ~]"
+|+| up (arp (slow 3 $ "<down>") (slow "<2 4>" $ "<d'm9 f'minor>"))
+|+| up (slow 1 $ "<0 1>")
+|+ accelerate "{0.0 -0.05 0 0 0  0.0 0 -0.02}%12"
+|+ mGain
+|+ sustain 1.5
+|+ shape 0.25
+|+| pipe "{0 [0,40] 0 0}%3"
+|> room "0.4"
+|> cps "<0.5 0.42 0.53>"
+
+d1 silence 
+
+hush

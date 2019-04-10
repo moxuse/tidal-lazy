@@ -128,16 +128,17 @@ replicateN :: Int -> Pattern a -> Pattern a
 replicateN n p =  (fastCat) (replicate n p)
 
 pickSeedA def = randpick [
-  fastAppend (euclid 4 13 (hh' def)) "~"
+  fastAppend (euclid 4 5 (hh' def)) "~"
   ,overlay (euclid 3 9 (bd' def)) (sn' def)
-  ,fastAppend (fastAppend (euclid 2 5 (bd' def)) "~") (replicateN 2 (cp' def))
+  ,overlay (euclid 2 5 (sn' def)) (hh' def)
+  ,fastAppend (fastAppend (euclid 2 5 (bd' def)) "~") (replicateN 3 (cp' def))
   ]
 
 pickSeedB def = randpick [
-  overlay (replicateN 2 (sn' def)) $ fastAppend (euclid 5 13 (bd' def)) "~"
+  overlay (replicateN 2 (sn' def)) $ fastAppend (euclid 4 5 (bd' def)) "~"
   ,fastAppend "~" (fastAppend (replicateN 4 (sn' def)) "~")
   ,overlay (replicateN 4 (bd' def)) (fastAppend (euclid 3 8 (cp' def)) "~")
-  ,(euclid 3 15 (bd' def))
+  ,(euclid 3 8 (bd' def))
   ,fastAppend "~" (euclid 2 5 (bd' def))
   ]
 
@@ -152,10 +153,12 @@ lazy'' pat instr = do
   pb <- partialPat pat instr
   pc <- partialPat pat instr
   pd <- partialPat pat instr
+  let pe = sound (sew pat (euclid 8 16 (hh' instr)) (euclid 5 16 (hh' instr)))
   return $ stack [
       pa
     , pb
     , pc
     , pd
+    , pe
     ] 
 

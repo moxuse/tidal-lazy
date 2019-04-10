@@ -1,0 +1,21 @@
+do
+  let 
+    layer = slow 0.75 $ s "[[msn:30?, msn2:3], [~ mhh2*3 ~ mhh*5?]]" 
+      |+ mDefaultN
+      |+ dist 0.1
+      |+ rotAccelerate 2
+      |+ mNudge
+      |+ n 12
+  x <- lazy'' "f(3,12)" $ inst2
+  d1
+    $ degradeBy 0.7
+    $ msvoA 0.125
+    $ unison (s "mbd") layer
+    $ x
+    |+ mGain
+    -- |+ unit "{r r r s c r}%8"
+    |+ sus "0.2 1 0.5 1"
+    |+ speed "0.8 1 -0.75 1"
+    |+ n "24"
+
+  hush

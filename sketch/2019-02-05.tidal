@@ -1,0 +1,43 @@
+setcps 0.46
+
+do
+  x <- lazy'' "t(2,8)" $ inst $ (hh "mst") . (sn "[~ mnt cp:3?]/3") . cp "mst:16" 
+  d1
+    $ (0.1<~)
+    $ degradeBy 0.4
+    $ msvo 0.125
+    $ x
+    |+ rotAccelerate 3
+    |+ slowPanS 4
+    |< mGain
+    |+ n "38 45"
+    |+ room 0.1
+    |+ rotPipe 3
+
+d2 silence
+
+d2
+$ sound "ml5(<3 5>,8)" 
+|+ up (scale "minor" ("[0,2,4]" + "<0 3 4 6 6 3 2 5>" + "[0 1]/4"))
+|+ hpf (slow 3 (range 400 100 sine))
+|+ n "[13]"
+|+ nudge "[0 0.25]*2"
+|+ room 0.1
+|+ rotPipe 2
+-- |+ cps (smooth (slow 2 $ range 0.3 0.6 saw))
+
+d3
+$ degradeBy 0.3
+$ whenmod 4 3 (slow 2) . (rev)
+$ sometimesBy 0.4 (stutWith 2 0.75 (|* speed 0.5))
+$ sound "ml2(<6 3 2 4>,8,<0 1>)" 
+|+ up (scale "minor" ("<0> .. <-5 -6 14 0 -4 8 3 6>" + "<4 2 0>"))
+|+ wah 0.03
+|+ shape 0.3
+|+ n "[6, 15?]"
+|+ room 0.7
+
+d1 silence
+
+hush
+

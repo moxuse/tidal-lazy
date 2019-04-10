@@ -1,0 +1,38 @@
+do
+  let 
+    layer = s "[ml3:9, mnt2:28]" 
+      |+ squiz "<1 2 4 3>" 
+      |+ dist "0.1"
+      |+ mDefault
+      |+ sus 1.2
+  x <- lazy'' "f(3,11) ttff" $ inst2
+  d1
+    $ msvo 0.125
+    $ unison (s "mbd") layer
+    $ unison (s "mst") layer2
+    $ x
+    |+ shape 0.2
+    |+ mfDel
+    |+ rotAccelerate 3
+    |+ mDefault
+    |+ mNudge
+    |+ n "59"
+
+layer2 = sound "[ml5:7, ml4:15]"
+  |+ up (scale "<phrygian>" ("[0, 3, 4]" + "<6 2 0 6 0>" + 6)) 
+  |+ room 0.25
+  |+ mGain
+
+
+d2 
+$ slow 2 
+$ s "ld2" 
+|+ mDefault 
+|+ sus 8.3
+|+ room 0.3
+|+ up (scale "<phrygian>" ("[0, 3, 4]" + "<6 2 0 8 0>" + "-5"))
+
+d2 silence
+
+hush
+

@@ -1,0 +1,45 @@
+setcps 0.45
+
+do
+  let b = "t(3,18) tft"
+  d1 
+    $ fast 2
+    $ msvo 0
+    $ sometimesBy 0.3 (within (0.2, 0.5) (|+ flangeD))
+    $ slow 1 $ stack[
+      sound (sew b "mbd(3,13) ~" "[mhh:12(5,13) ~, mnt*2, mbd?]") |+| n "5 18",
+      sound (sew b "[mbd(5,9), tabla]" "~ [mst:3(2,3) ~]") |+ n "4 3",
+      sound (sew b "mbd(3,8) ~ mwb*2" "[mbd:7, mst:5(3,6) ~]") |+| n "34 10" -4
+    ]
+    |+ mDefault
+    |* gain "[1 0.7]*4"
+    |+ shape 0.2
+    |< unit "{r r r s r s r c s}%5"
+    |< binshf "0.6 0 0.5"
+    |+ slowSpeedR 4
+    |< accelerate "{0.04 -0.25 1 -0.4 0.08 -0.3 0 -0.05}%6"
+    -- |+| cps (smooth (fast 2 $ "<0.4 0.35 0.5 [0.35 0.2] 0.6>"))
+    |+ n "[7 3] ~ 2 7 24"
+
+
+d2 $ sound "[ml2:17, mwb:8]"
+|+ up (scale "<phrygian>" ("[0, 3, 4]" + "<6 5 6 4 2 1 0 3> -6")) 
+|+ ring 0.3 |+ ringf 30 |+ ringdf 1800
+|+ room 0.5
+|+ mGain
+
+d3 
+$ sound "ml4:2(<8 12 5 5 3 3>, 17)"
+|+ up (scale "<phrygian>" ("0 .. <12 6 23 7>" + (slow 2 $ "{0 -5 3 2 12 -2}%13"))) 
+|+ room 0.1
+|+ wah 0.02
+|+ shape 0.2
+|+ mGain
+|+ n "<0 7 26>"
+
+do
+  setcps 0.45
+  d1 silence
+
+hush
+

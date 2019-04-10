@@ -1,0 +1,26 @@
+setcps 0.5
+
+d1 
+$ s "{ml5*3 mb:5*3 ml5*2}" 
+|+ mGain
+-- |+ coarse 8
+|+ up "{8 20 7 5 0 0 3}%4" 
+|+ pipe "{40 60 60 60 60 0 60}%13" 
+|+ room 0.3
+|+ n "{8 26 18 21}" 
+
+do
+  x <- lazy'' "t(2,10) tftt" $ inst3
+  d2
+    $ msvo 0.125
+    $ x
+    |+ mDefault
+    |+ n "{~ 6 30 7 ~ 46}%4"
+    |+ room 0.1
+
+hush
+
+
+d2 silence
+
+d1 $ s "hh*4" |+ gain 0 |+  room 0.4
