@@ -1,0 +1,76 @@
+setcps (142/240)
+
+do
+  x <- lazy' "2" $ inst2
+  d1
+    $ degradeBy 0.5
+    $ (0.125<~)
+    $ slow "<2 3>"
+    $ unison "mst" ("[ml5:12?, zap:16]" |+ dist 0.1 |+ room 0.04)
+    $ x
+    |+ mDefault
+    |+ speed (choose[0.65, 2, 0.5, (-0.75)])
+    |+ sus "<2.0 0.5 0.3>"
+    |+ bpf (slow 0.65 (range 1800 6000 sine))
+    -- |+ cutoff 5000
+    |+ rotAccelerate 3
+    -- |+ up "[0,5,7]" 
+    |+ room 0.04
+    -- |+ squiz "<1.25 2>"
+    |+ n "36 48 68? ~"
+    |+ cut 2
+
+d2
+$ (0.125~>)
+$ sometimesBy 0.5 (0.075<~)
+$ slow 2
+$ s "zap:2"
+|+ up (scale "ionian" ("[0,3,4,9]"))
+|+ room 0.01
+|+ rotPipe 3
+|+ speed (-0.3)
+|+ sus 1.0
+|+ conv 0.3
+|+ bpf (slow 5 (range 800 3000 sine))
+|+ dist 0.4
+|+ mGain
+
+d3
+$ (0.125~>)
+$ sometimesBy 0.25 (0.125~>)
+$ sometimesBy 0.5 (0.075~>)
+$ slow 4
+$ s "ml:14(4,6)"
+|+ up (scale "<lydian dorian>" ("[0,3,4,9]" + "<-12 -7 -12>" + "<7 7 3 3 5 5>"))
+|+ room 0.1
+|+ rotPipe 3
+|+ hpf 220
+|+ shape 0.5
+|+ sus 4.5
+|+ mGain
+
+d4
+$ slow 3
+$ degradeBy 0.35
+$ sometimesBy 0.3 (0.125~>)
+$ every 4  (0.125<~)
+$ s "ml2:18(3,12)"
+|+ up (scale "<lydian dorian>" ("{0 1 5 8 3 0 10 5}" + "<0 0 5 2>" + 12))
+|+ shape 0.2
+|+ room 0.1
+|+ conv "0.3"
+|+ mGain
+
+d4 silence
+
+d5
+$ slow 3
+$ degradeBy 0.3
+$ s "mb2:12(2,10)"
+|+ up (scale "<lydian dorian>" ("{0 3 0 5 -2}" + "<0 7>" + "<0 5 2 2>"))
+|+ shape 0.2
+|+ sus 0.8
+|+ flangeL
+|+ mGain
+
+hush
