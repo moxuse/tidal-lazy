@@ -5,12 +5,14 @@ f = s "ld0(3,8)"
   |+ sus 1.9
   |+ cutoff (slow 3 (range 300 1200 sine))
   |+ conv 0.6
-  |+ room 0.1
+  |+ room 0.05
   |+ mGain
 
+
 do
-  x <- lazy'' "f(3,11) ft" $ inst3
+  x <- lazy'' "f(2,11) tft" $ inst3
   d1
+    $ sometimesBy 0.3 (within (0.8,1.0) (|+ mfDel))
     $ degradeBy 0.3
     $ msvo 0
     $ unison (s "mbd2") f
@@ -18,7 +20,27 @@ do
     |+ mDefault
     |+ rotAccelerate 3
     |+ n "56 34"
+    |+ chorus 0.008
 
-d1 silence
+
+d2 
+$ slow 2
+$ degradeBy 0.45
+$ stack [
+  (s "ml4(2,7)" |+ up (cF 0 "a1")),
+  (s "ml5(3,8)" |+ up (cF 0 "a2")),
+  (s "ml4(2,9)" |+ up (cF 0 "a3")),
+  (s "ml5(2,6)" |+ up (cF 0 "a4"))
+  ]
+  |+ n 27
+  |+ coarse (choose [8, 12, 16])
+  |+ conv 0.4
+  |+ room 0.1
+  |+ chorus 0.01
+
+
+d2 silence
+
+
 
 hush
