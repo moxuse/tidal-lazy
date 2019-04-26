@@ -405,9 +405,30 @@ s.waitForBoot {
    },[\ir, \ir, \ir]).store;
 
 
+	~dirt.addModule('chorus', { |dirtEvent|
+    dirtEvent.sendSynth('chorus' ++ numChannels,
+      [
+        out: ~out,
+        chorus: ~chorus
+      ]
+    )
+  }, { ~chorus.notNil and: { ~chorus != 0 } });
+
+	SynthDef("chorus" ++ numChannels, { | out, pan = 0, chorus = 0.1 |
+    var input, effect;
+    input = In.ar(out, numChannels);
+
+    effect = Mix.fill(6, {
+			DelayN.ar(input, chorus, LFNoise1.kr(Rand(5,10),0.01,0.02));
+		});
+
+    ReplaceOut.ar(out, Pan2.ar(effect, pan));
+  }).store;
+
+
   // ~dirt.orderModules(['sound', 'vowel', 'flange', 'shape',  'crush', 'coarse', 'mod', 'wah', 'brick', 'spectral-delay','decay-filter','binfreeze', 'binscramble', 'binshift', 'binsmear', 'conv', 'convn', 'convp', 'henon', 'distortion', 'hpf', 'lpf', 'bpf', 'envelope', 'tremolo', 'phaser', 'convolution', 'convolution_n', 'convolution_p']);
 
-	~dirt.orderModules(['sound', 'vowel', 'flange', 'shape',  'crush', 'coarse', 'mod', 'wah', 'brick', 'spectral-delay','decay-filter','binfreeze', 'binscramble', 'binshift', 'binshiftN', 'binsmear', 'conv', 'convn', 'convp', 'henon', 'distortion', 'hpf', 'lpf', 'bpf', 'envelope', 'tremolo', 'phaser', 'convolution', 'convolution_n', 'convolution_p', 'pipe']);
+	~dirt.orderModules(['sound', 'vowel', 'flange', 'chorus', 'shape',  'crush', 'coarse', 'mod', 'wah', 'brick', 'spectral-delay','decay-filter','binfreeze', 'binscramble', 'binshift', 'binshiftN', 'binsmear', 'conv', 'convn', 'convp', 'henon', 'distortion', 'hpf', 'lpf', 'bpf', 'envelope', 'tremolo', 'phaser', 'convolution', 'convolution_n', 'convolution_p', 'pipe']);
 
 
 
