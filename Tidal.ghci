@@ -2,7 +2,7 @@ import Sound.Tidal.Context
 
 -- tidal <- startTidal superdirtTarget defaultConfig
 
-tidal <- startTidal (superdirtTarget {oLatency = 0.1, oAddress = "127.0.0.1", oPort = 57120}) (defaultConfig {cFrameTimespan = 1/20, cCtrlAddr = "0.0.0.0", cCtrlPort = 6000})
+tidal <- startTidal (superdirtTarget {oLatency = 0.1, oAddress = "127.0.0.1", oPort = 57120}) (defaultConfig {cFrameTimespan = 1/20, cCtrlAddr = "0.0.0.0", cCtrlPort = 6010})
 
 tidalUnity <- startTidal tidalUnityTarget defaultConfig
 
