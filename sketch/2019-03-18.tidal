@@ -1,4 +1,4 @@
-setcps 0.45
+setcps 0.5
 
 f = s "ld0(3,8)" 
   |+ up (scale "lydian" "[0,2,4]" + "<0 5 0 3 0 2 5 3 2 0>" -24)
@@ -10,22 +10,35 @@ f = s "ld0(3,8)"
 
 
 do
-  x <- lazy'' "f(2,11) tft" $ inst3
+  x <- lazy'' "f(2,11) ft" $ inst3
   d1
-    $ sometimesBy 0.3 (within (0.8,1.0) (|+ mfDel))
-    $ degradeBy 0.3
+    -- $ sometimesBy 0.3 (within (0.8,1.0) (|+ mfDel))
+    $ degradeBy 0.6
     $ msvo 0
     $ unison (s "mbd2") f
     $ x
     |+ mDefault
+    |+ mNudge
+    |+ cutoff 5800
     |+ rotAccelerate 3
-    |+ n "56 34"
-    |+ chorus 0.008
+    |+ n "57 34"
+    |+ chorus 0.007
+
+
+d3
+$ slow 4
+$ s "[mpd:57(2,8), mb:41(2,8)]" |+ up (cF 0 "a5")
+|+ end 0.6
+|+ chorus 0.01
+|+ slowPanR 3
+|+ nudge "[0 0.05]*4"
+|+ room 0.08
+|+ n 9
 
 
 d2 
 $ slow 2
-$ degradeBy 0.45
+$ degradeBy 0.35
 $ stack [
   (s "ml4(2,7)" |+ up (cF 0 "a1")),
   (s "ml5(3,8)" |+ up (cF 0 "a2")),
@@ -35,11 +48,11 @@ $ stack [
   |+ n 27
   |+ coarse (choose [8, 12, 16])
   |+ conv 0.4
-  |+ room 0.1
+  |+ room 0.08
   |+ chorus 0.01
 
 
-d2 silence
+d1 silence
 
 
 
