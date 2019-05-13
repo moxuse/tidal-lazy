@@ -697,6 +697,14 @@ s.waitForBoot {
     )
 }).add;
 
+SynthDef(\wnoise, {|out, sustain = 0.5, note = 0, pan = 0, amp = 1.0, begin = 0, end = 1.0|
+	var src, env, dur;
+	dur = 0.5 * (end - begin);
+	env = EnvGen.ar(Env.perc(0.02, dur, amp, -0.8), timeScale:sustain, doneAction:2);
+	src = ClipNoise.ar(0.1) * amp;
+	OffsetOut.ar(out, DirtPan.ar(src, 2, pan, env));
+}).store()
+
 }; //wait for boot.
 )
 
