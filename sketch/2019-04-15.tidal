@@ -1,0 +1,27 @@
+d1 
+$ degradeBy 0.2
+$ stack
+[
+  (s "mst*4") |+ n (choose[2, 15, 5]) |+ dist 0.1 |+ convn 0.2 
+  , (s "mbd:4(2,5)")
+]
+|+ shape 0.6
+|+ crush 8
+|+ cps (slow 12 (range 0.35 4.4 $ sine))
+|+ room 0.05
+
+d2 $ slow 2
+$ degradeBy 0.4
+$ s "ml2(8,11)"
+|+ up (scale "lydian" "[0,1,4,8]" + (slow 4 "<0 2 4 5 3 7 1>"))
+|+ conv 0.7
+|+ mGain
+|+ n 4
+
+hush
+
+do
+  x <- lazy'' "tftt" $ inst3
+  d1
+    $ x
+    |+ mGain

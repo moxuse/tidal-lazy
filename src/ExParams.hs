@@ -9,12 +9,6 @@ import Sound.Tidal.Context
 portaTime :: Pattern Double -> ControlPattern
 portaTime = pF "portaTime"
 
-tsdelay :: Pattern Double -> ControlPattern
-tsdelay = pF "tsdelay"
-
-xsdelay :: Pattern Int -> ControlPattern
-xsdelay = pI "xsdelay"
-
 -- Custom effects by moxus
 
 binscr :: Pattern Double -> ControlPattern
@@ -62,8 +56,12 @@ flangefq = pF "flangefq"
 flangefb :: Pattern Double -> ControlPattern
 flangefb = pF "flangefb"
 
+chorus :: Pattern Double -> ControlPattern
+chorus = pF "chorus"
+
 pipe :: Pattern Int -> ControlPattern
 pipe = pI "pipe"
+
 
 
 -- this is exprimental

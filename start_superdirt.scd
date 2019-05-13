@@ -405,9 +405,30 @@ s.waitForBoot {
    },[\ir, \ir, \ir]).store;
 
 
+	~dirt.addModule('chorus', { |dirtEvent|
+    dirtEvent.sendSynth('chorus' ++ numChannels,
+      [
+        out: ~out,
+        chorus: ~chorus
+      ]
+    )
+  }, { ~chorus.notNil and: { ~chorus != 0 } });
+
+	SynthDef("chorus" ++ numChannels, { | out, pan = 0, chorus = 0.1 |
+    var input, effect;
+    input = In.ar(out, numChannels);
+
+    effect = Mix.fill(6, {
+			DelayN.ar(input, chorus, LFNoise1.kr(Rand(5,10),0.01,0.02));
+		});
+
+    ReplaceOut.ar(out, Pan2.ar(effect, pan));
+  }).store;
+
+
   // ~dirt.orderModules(['sound', 'vowel', 'flange', 'shape',  'crush', 'coarse', 'mod', 'wah', 'brick', 'spectral-delay','decay-filter','binfreeze', 'binscramble', 'binshift', 'binsmear', 'conv', 'convn', 'convp', 'henon', 'distortion', 'hpf', 'lpf', 'bpf', 'envelope', 'tremolo', 'phaser', 'convolution', 'convolution_n', 'convolution_p']);
 
-	~dirt.orderModules(['sound', 'vowel', 'flange', 'shape',  'crush', 'coarse', 'mod', 'wah', 'brick', 'spectral-delay','decay-filter','binfreeze', 'binscramble', 'binshift', 'binshiftN', 'binsmear', 'conv', 'convn', 'convp', 'henon', 'distortion', 'hpf', 'lpf', 'bpf', 'envelope', 'tremolo', 'phaser', 'convolution', 'convolution_n', 'convolution_p', 'pipe']);
+	~dirt.orderModules(['sound', 'vowel', 'flange', 'chorus', 'shape',  'crush', 'coarse', 'mod', 'wah', 'brick', 'spectral-delay','decay-filter','binfreeze', 'binscramble', 'binshift', 'binshiftN', 'binsmear', 'conv', 'convn', 'convp', 'henon', 'distortion', 'hpf', 'lpf', 'bpf', 'envelope', 'tremolo', 'phaser', 'convolution', 'convolution_n', 'convolution_p', 'pipe']);
 
 
 
@@ -675,6 +696,14 @@ s.waitForBoot {
       DirtPan.ar(src,  ~dirt.numChannels, pan, env)
     )
 }).add;
+
+SynthDef(\wnoise, {|out, sustain = 0.5, note = 0, pan = 0, amp = 1.0, begin = 0, end = 1.0|
+	var src, env, dur;
+	dur = 0.5 * (end - begin);
+	env = EnvGen.ar(Env.perc(0.02, dur, amp, -0.8), timeScale:sustain, doneAction:2);
+	src = ClipNoise.ar(0.1) * amp;
+	OffsetOut.ar(out, DirtPan.ar(src, 2, pan, env));
+}).store()
 
 }; //wait for boot.
 )
