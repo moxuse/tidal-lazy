@@ -11,7 +11,6 @@ I use [tidal-vim](https://github.com/munshkr/vim-tidal) plugin on Vim.
 
 ### load modules on tidal-vim
 
-
 #### using stack
 
 move to tidal-lazy's directory and do
@@ -19,9 +18,10 @@ move to tidal-lazy's directory and do
 `
 stack build
 `
+
 in your editor, change GHCI execution command to
 
-`stack GHCI`
+`stack ghci`
 
 
 #### using cabal
