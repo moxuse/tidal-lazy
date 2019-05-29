@@ -1,20 +1,39 @@
 d1 
 $ unison 
-  "wnoise" ("[mbd2:6, mst:9 mhh:6]*4" 
+  "wnoise" (sometimes (chop 2) $ "[mbd2:8/2, mst:18]*2" 
   |+ mGain 
-  |+| cps ("0.5 0.75 0.6")
-  |+ n (slow 3 $ "1 8 ~ 1 9"))
-$ s "[wnoise, msn:4]*4" 
-|+ sustain (slow 8 (range 1 0.2 $ sine))
+  |+ dist 0.2
+  |+ crush 8
+  |+ n (slow 4 $ "8 23"))
+$ sometimes (|+ rotAccelerate 3)
+$ sometimesBy 0.2 (within (0.2, 0.4) (striate 4))
+$ s "[wnoise, [msn:4 msn2:4]/2, mhh/4, ml2:8/4]*4" 
+|+ sustain (slow 5 (range 0.36 1 $ rand))
+|+ hpf 100
 |+ mGain
+|+ shape 0.3
 |+ slowPanR 3
-|+ conv (slow 12 (range 0.2 0.9 sine))
-|+ cutoff (slow 16 (range 8000 300 $ sine))
-|+ up (scale "lydian" "[0, 4, 7, 15, 23]" + "-4")
-|+ cps (slow 8 (range 0.4 5.8 $ sine))
-|* cps (slow 5 "0.4 0.5 0.3 [0.5 0.7 0.93 0.6] 0.8")
-|+ n (slow 4 "3 5 13")
-|+ room 0.1
+|+ conv (slow 12 (range 0.125 0.89 sine))
+|+ up (scale "chromatic" (slow 8 $ "[0, 3, 5, 10, 34, 45]" + "<-6>"))
+|* speed (choose [2, 4, 1, -2 ,-4, 0.5, 3.34, 1])
+|+ cps (slow 5 (range 0.2 2.1 $ sine))
+|* cps (slow 3 "0.5 1.25 0.4 [0.4 0.6 0.73 1.0] 0.4")
+|+ n (slow 2 "5 29 27")
+|+ room 0.2
+
+do
+  x <- lazy'' "tf f(3,8)" $ inst $ sn "mb:17" . bd "mbd:5"
+  d2
+    $ slow 4
+    $ x
+    |+ sustain 0.7
+    |+ shape 0.3
+    |+ mGain
+    |+ mfDel
+    |+ n "12 40"
+    |+ room 0.2
+
+d2 silence
 
 hush
 

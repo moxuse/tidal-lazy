@@ -697,6 +697,27 @@ s.waitForBoot {
     )
 }).add;
 
+	SynthDef ("melo2", {|amp=0.8, note=1, velo=0.4, out, sustain=1|
+		var src;
+		src = RLPF.ar(Mix.fill(5, {
+				SinOsc.ar(
+					(note+[0,5,7,12,-12].choose + 60).midicps,
+					0,
+			SinOsc.ar((note + 60).midicps * 2.0, pi, SinOsc.ar((note + 60).midicps * 3.0))
+				)
+			}),  LFNoise2.kr(2,23,60).midicps, 0.3);
+	    src = Pan2.ar((src * 5).softclip * 0.2,  LFNoise2.ar(0.2));
+		2.do({src = CombC.ar(src, 0.1 + LFNoise2.kr(2, 0.02), {[0.03.rand, 0.04.rand] + 0.1}, 1)});
+	  Out.ar(out, src * EnvGen.ar(Env.perc(2, 4, 1, -8), timeScale:sustain, doneAction:2, levelScale:1) );
+}).store;
+
+SynthDef("mbass",{arg freq=440, out, sustain=1;
+var src,env;
+	src=SinOsc.ar(freq,SinOsc.ar(freq*2));
+	env=EnvGen.kr(Env.perc(0.1,0.9,0.8,4),doneAction:2);
+	Out.ar(out, Pan2.ar(src*env,LFNoise1.ar(1)));
+}).store;
+
 SynthDef(\wnoise, {|out, sustain = 0.5, note = 0, pan = 0, amp = 1.0, begin = 0, end = 1.0|
 	var src, env, dur;
 	dur = 0.5 * (end - begin);

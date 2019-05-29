@@ -32,7 +32,7 @@ $ s "ld2"
 |+ room 0.3
 |+ up (scale "<phrygian>" ("[0, 3, 4]" + "<6 2 0 8 0>" + "-5"))
 
-d2 silence
+d1 silence
 
 hush
 

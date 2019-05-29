@@ -1,0 +1,27 @@
+setcps 0.5
+
+d2
+$ slow 4
+$ sound "[melo2*2]"
+|+ sus 6
+|+ up (scale "lydian" "[0,5,7]" + "<2>")
+|+ room 0.1
+|+ cutoff (slow 9 (range 800 4200 sine))
+
+
+do
+  x <- lazy'' "tftt f(3,8)" $ inst $ (sn "[mhh, mst/3]") . (hh "[mhh2, zap/4]") . (cp "mst:2/3")
+  d1
+    $ msvoB 0.125
+    $ slow 2
+    $ x
+    |+ sus 0.4
+    |+ mDefault
+    |+ chorus (slow 8 (range 0.1 0.01 sine))
+    |+ n 26
+
+d1 silence
+
+
+hush
+
