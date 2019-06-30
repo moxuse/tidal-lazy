@@ -1,0 +1,39 @@
+do
+  x <- lazy' 3 $ inst2
+  d1
+    $ rot "<3 1>"
+    $ msvoB 0
+    $ x
+    |+ mGain
+    |+ slowPanR 3
+    |+ sus 0.5
+    |+ chorus 0.002
+    |+ wah "[0.2 0 0.0]*2"
+    |+ nudge "[0 0.02]*2"
+    |+ n "~ ~ ?4 ~ 8"
+
+-- do not use
+d2
+$ (0.125 ~>)
+$ slow "2" $ sound "[flau/2, ml2:12(4,9), mwb:18(4,13)]"
+|+ up (scale "<minor>" ("[-21, -12, -5, -7 ,0, 3, 29 ,35]" + "0 3 4 23 7" + "<0 6 0 4>" + "-6")) 
+|+ chorus 0.004
+|+ coarse "2 2 12 8 2 4 12"
+|+ sus "0.5 0.7"
+|+ n "0 5 ~ 0"
+|+ mGain
+
+d2 silence
+
+
+d3
+$ s "[flau/2, ml3/2]"
+|+ sus 4
+|+ up ("[0, 8]" + "<0 5 7>" + "<-12 0 5 -6>" + "<0 2 -2>")
+|+ n 2
+|+ chorus 0.01
+|+ mGain
+|+ room 0.1
+
+
+hush

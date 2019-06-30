@@ -4,7 +4,7 @@ d2
 $ slow 4
 $ sound "[melo2*2]"
 |+ sus 6
-|+ up (scale "lydian" "[0,5,7]" + "<2>")
+|+ up (scale "lydian" "[0,5,7]" + "<2 0>")
 |+ room 0.1
 |+ cutoff (slow 9 (range 800 4200 sine))
 

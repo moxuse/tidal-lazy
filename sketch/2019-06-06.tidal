@@ -1,0 +1,31 @@
+setcps (109/120/2)
+
+do
+  x <- lazy' "2" $ inst2
+  d1
+    $ degradeBy "<0.3 0.75>"
+    $ msvo 0
+    $ x
+    |+ sus "{0.1 0.1 0.1 0.275}"
+    |+ cutoff (slow 8 (range 3000 18000 sine))
+    -- |+ coarse "{2 2 4 12 2 8 4 2 8}%2"
+    |* speed 1.25
+    |+ wah "0 0.2"
+    -- |+ slowSpeedR 3
+    |+ slowPanR 2
+    -- |+ chorus 0.01
+    |+ mGain
+    |+ n "4? 44? ~ 0?"
+    |+ room 0.02
+
+ hush
+
+
+d2 $ slow 2 $ s "flau"
+|+ up (scale "lydian" "[0, 5, 7]" + "6")
+-- |+ conv 0.1
+-- |+ wah 0.00125
+|+ sus 4
+|> gain 1.25
+|+ room 0.02
+

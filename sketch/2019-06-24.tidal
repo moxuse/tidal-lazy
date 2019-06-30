@@ -1,0 +1,38 @@
+setcps (123/120/2)
+
+d1 
+-- $ degradeBy 0.125
+$ sometimesBy 0.75 (|+ nudge "[0 0.0125]*2")
+$ every 7 (within (0.5, 0.8) (rot 1))
+$ every 4 (within (0.75, 1) (slow 2) . (0.125~>) . (within (0, 0.2) (slow 4)))
+$ every 3 (within (0, 0.125) (striate 3))
+$ every 12 (degradeBy 0.6)
+$ every 8 (within (0, 0.25) (gap 3))
+$ sometimesBy 0.1 (|+ slowSpeedR 3)
+$ sometimesBy 0.25 (within (0, 0.2) (stut 3 0.125 4))
+$ unison "mbd" (s "[mst2(3, 7), zap*3]/2" |+ n "<3 40 26>" |+ coarse "2 8" |+ mDefault)
+$ s "[mhh*16, [mbd(1,4) mbd:2(3,8)]/2, [~ ~ msn2 ~]]" 
+|+ mGain
+|+ gain "[0.1 0.9]*2"
+|+ shape 0.2
+|+ cutoff (range 900 19000 (slow 7 $sine))
+|+ coarse "{2 12 2 4 2 2 2 2}%13"
+|+ room 0.025
+|+ slowPanS 3
+|+ room 0.07
+|+ n "15 [7 38]/2"
+
+d4 $ slow 32 $ s "sync"
+
+do
+  x <- lazy'' "ft t(2,11)" $ inst0
+  d2
+    $ degradeBy 0.85
+    $ x
+    |+ shape 0.3
+    |+ mDefault
+    |+ n 32
+
+d3 silence  
+
+hush

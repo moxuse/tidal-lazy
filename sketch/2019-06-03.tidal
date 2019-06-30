@@ -1,0 +1,22 @@
+setcps 0.45
+
+do
+  x <- lazy'' "ft f(3,9)" $ inst3
+  d1
+    $ msvoC 0
+    $ often (slow 2)
+    $ sometimes (rot 1)
+    $ x
+    |+ mDefault
+    |+ sus (slow 2 (range 0.28 0.6 sine))
+    |+ dist 0.05
+    |+ chorus 0.01
+    |+ slowSpeedR 3
+    |+ brick  "{0.04 3 1}"
+    -- |+ mNudge
+    |+ room 0.1
+    |+ n "46"
+
+d2 $ s "mposc*2" |+ n "[1, 5]"
+
+hush

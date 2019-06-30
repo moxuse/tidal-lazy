@@ -1,0 +1,56 @@
+setcps (123/120/2)
+
+do
+  x <- lazy' "<3 2>" $ inst1
+  d1
+    $ degradeBy 0.45
+    $ sometimesBy 0.125 (msvoB 0)
+    $ sometimes (within (0.0, 0.25) (density "<1.125 0.75>"))
+    $ every 9 (within (0.75, 1) (striate 3))
+    $ every 7 (within (0.25, 0.75) (0.125 ~>) . (rot 2) . (rev))
+    $ every 12 (within (0.25, 0.5) (chop 3))
+    $ x
+    |> sus "[0.125 0.2 0.125 1]*2"
+    |+ chorus 0.01
+    |+ speed 1.25
+    -- |+ slowSpeedR 3
+    |+ slowPanS 3
+    -- |+ speed 1.2
+    -- |+ coarse "{2 12 2 4 8 12 2 2 8}%3"
+    -- |+ crush "{2 1 2 3 8}%3"
+    -- |+ brick "{0 2 0 0 1 0 2 1 0}%8"
+    |+ cutoff (slow 9 (range 4800 12000 sine))
+    |+ mGain
+    |+ slowPanR 3
+    |+ room 0.01
+    |+ n 0
+
+
+hush
+
+
+d2
+$ slow 2
+$ whenmod 4 3 (slow 2)
+$ up "[5 5 0 0]/2"
++| sound "[ml:5, [~ mwb:7 ~]/1.5, mb2/6]"
+|+ mGain
+|+ pipe "{6 [0,40] 0 0}%9"
+-- |+ room 0.2
+
+d3
+$ slow "<1 2 1 3>"
+$ degradeBy 0.2
+$ sometimesBy 0.3 ((off 0.075 (|+| up "5")) . (off 0.125 (|-| up 5)))
+$ whenmod 3 2 (within (0, 0.35) (slow 2))
+$ rot "<1 0>"
+$ sound "<ml4(5,13) ml4(10,15) ~>"
+|+ up (scale "<minor>" ("0 .. <2 4 10 7>" + (slow 2 $ "{0 -5 0 2 7}%5"))) 
+|> nudge "[0 0.02]*4"
+|* speed "<0.5 1 0.75>"
+|+ rotPipe 3
+|+ room 0.01
+|+ n "18"
+|+ mGain
+
+

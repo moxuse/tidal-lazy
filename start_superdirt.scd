@@ -518,7 +518,7 @@ s.waitForBoot {
   }).store;
 
 
-  s.sendMsg(\b_allocRead, 10, Platform.resourceDir ++ "/sounds/sui1.aif");
+	// s.sendMsg(\b_allocRead, 10, Platform.resourceDir ++ "/sounds/sui1.aif");
 
   SynthDef(\moe2, {|out, sustain = 1, gate = 1, note = 0, speed = 1, begin=0, trate = 5,end=1, pan, accelerate, amp = 1, offset|
     var sound, d_freq, dur,r_dur, env;
@@ -724,7 +724,23 @@ SynthDef(\wnoise, {|out, sustain = 0.5, note = 0, pan = 0, amp = 1.0, begin = 0,
 	env = EnvGen.ar(Env.perc(0.02, dur, amp, -0.8), timeScale:sustain, doneAction:2);
 	src = ClipNoise.ar(0.1) * amp;
 	OffsetOut.ar(out, DirtPan.ar(src, 2, pan, env));
-}).store()
+}).store();
+
+SynthDef(\flau, {|out, sustain = 2, note = 0, pan = 0, amp = 1.0, begin = 0, end = 1.0|
+	var src;
+	var mod = LFNoise0.kr(18, 20);
+		var freqs = (((0,12..45) + (note + 60)).midicps);
+	var env = EnvGen.kr(Env.perc(0, 4, 1, 2), 1, levelScale: amp, doneAction: 2);
+	src = RLPF.ar((DynKlang.ar(`[freqs, nil, mod ], 1, 0) * 6).softclip * 0.3, 2000, 0.4)
+	* Decay2.ar(Dust.ar(Line.kr(125, 10, 0.5)), 0.0, Line.kr(0.025, 0.76, 0.8), 0.3);
+	3.do({
+		src = CombC.ar(
+			src,
+			0.1, {[0.01.rand,0.03.rand] + 0.085}, 0.26
+		)
+	});
+	OffsetOut.ar(out, DirtPan.ar(src, 2, pan, env));
+}).store();
 
 }; //wait for boot.
 )

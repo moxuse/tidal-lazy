@@ -1,0 +1,6 @@
+do
+  d1 $ s "hh*4"
+  d2 $ s "mposc" |+ n  8
+
+
+  hush

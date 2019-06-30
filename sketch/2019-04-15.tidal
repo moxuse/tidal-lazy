@@ -3,7 +3,7 @@ $ degradeBy 0.2
 $ stack
 [
   (s "mst*4") |+ n (choose[2, 15, 5]) |+ dist 0.1 |+ convn 0.2 
-  , (s "mbd:4(2,5)")
+  , (s "mbd:17(2,5)")
 ]
 |+ shape 0.6
 |+ crush 8
@@ -17,6 +17,8 @@ $ s "ml2(8,11)"
 |+ conv 0.7
 |+ mGain
 |+ n 4
+
+d2 silence
 
 hush
 
