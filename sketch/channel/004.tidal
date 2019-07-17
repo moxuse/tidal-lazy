@@ -1,13 +1,13 @@
-setcps (118/120/2)
+setcps (123/120/2)
 
 
 d4 $ slow 32 $ s "sync"
 
 
 do
-  let layer = (s "ml6:5?") |+ up ("[0,2,9,24,48]" - 6) |+ cutoff (slow 7 $ range 800 15000 sine) |+ speed (-1)
+  let layer = (s "<ml6:5? ml6:25>") |+ up ("[0,2,9,24,48]" - 6) |+ cutoff (slow 7 $ range 800 15000 sine) |+ speed (-1)
   x <- lazy'' "tff t(4,9)" $ inst $ bd "mbd2:23" . sn "[zap/2, ml4:8?]"
-  -- x <- lazy' 2 $ inst $ bd "mbd2:23" . sn "[zap/2, ml4:8?]"
+  -- x <- lazy' 2 $ inst $ bd "mbd2:23" . sn "[zap:31/2, ml4:8?]" . cp "mcp:1"
   d1
     $ degradeBy 0.5
     $ unison "mbd2" layer

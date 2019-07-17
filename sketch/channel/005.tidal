@@ -4,7 +4,7 @@ do
   -- x <- lazy' 2 inst1
   x <- lazy'' "fftff" inst3
   d1
-    $ degradeBy 0.68
+    $ degradeBy 0.48
     $ sometimesBy 0.2 (0.125<~)
     $ msvo 0.125
     $ whenmod 4 3 (rot "<1 2>")
@@ -47,7 +47,7 @@ $ sound "<ml4(5,13) ml4(10,15) ~>"
 -- 7 + rev
 -- ml5(3,9)
 
-d2 silence
+d1 silence
 
 hush
 
@@ -55,9 +55,9 @@ hush
 --- after 
 
 do
-  x <- lazy' "<2>" $ inst3 {bd' = "mbd:17"}
+  x <- lazy' "<2>" $ inst1 {bd' = "mbd:17"}
   d1
-    $ degradeBy 0.45
+    $ degradeBy 0.125
     $ sometimesBy 0.125 (msvoB 0)
     $ sometimes (within (0.0, 0.25) (density "<1.125 0.75>"))
     $ every 9 (within (0.75, 1) (striate 3))
@@ -70,7 +70,7 @@ do
     -- |+ slowSpeedR 3
     |+ slowPanS 3
     -- |+ speed 1.2
-    -- |+ coarse "{2 12 2 4 8 12 2 2 8}%3"
+    |+ coarse "{2 12 2 4 8 12 2 2 8}%3"
     -- |+ crush "{2 1 2 3 8}%3"
     -- |+ brick "{0 2 0 0 1 0 2 1 0}%8"
     |+ cutoff (slow 9 (range 4800 12000 sine))
@@ -79,7 +79,6 @@ do
     |+ room 0.01
     |+ n 0
 
-inst1 {hh' = "mhh"}
 
 
-
+hush

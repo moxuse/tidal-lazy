@@ -6,7 +6,7 @@ do
   x <- lazy'' "ttf t(4,5)" $ inst2
   d1
     $ whenmod 4 3 (rot "<1 2>")
-    $ sometimes (within (0.4, 0.6) (striate' 16 (1/16)))
+    $ sometimes (within (0.4, 0.6) (striate' 8 (1/8)))
     $ x
     |+ rotAccelerate 2
     |+ slowSpeedR 3
