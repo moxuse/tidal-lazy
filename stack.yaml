@@ -33,13 +33,12 @@ resolver: lts-13.4
 #  - auto-update
 #  - wai
 packages:
-- .
+  - .
 # Dependency packages to be pulled from upstream that are not in the resolver
 # using the same syntax as the packages field.
 # (e.g., acme-missiles-0.3)
 extra-deps:
-- tidal-1.0.13
-
+  - tidal-1.1.2
 # Override default flag values for local packages and extra-deps
 # flags: {}
 

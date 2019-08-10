@@ -6,7 +6,7 @@ var numChannels, viznut_sig, viznut_buf;
 
 // s.options.device_("Audinst HUD-mx1");
 
-s.options.device_("ZOOM TAC-2");
+// s.options.device_("ZOOM TAC-2");
 
 // configure the sound server: here you could add hardware specific options
 // see http://doc.sccode.org/Classes/ServerOptions.html
