@@ -1,0 +1,51 @@
+setcps (146/120/2)
+
+d2
+$ whenmod 3 2 (rot "<0 2 1>")
+$ whenmod 4 3 (rot "-3") . (0.125~>)
+$ slice 8 "<~ 0 3 6> <5 ~ 1 ~ ~ 0 6> 0 <4 ~ ~ 5> 2 <7 0> <[0 5] 2 1*2> <~ 7 [1 2]>"
+$ every 11 (within (0, 0.6) (mStut 0.125 4) . (|+ crush 8) . (|+ sus 2))
+$ every 7 (within (0, 0.35) (slow 2) . (|+ flangeD))
+$ every 5 (within (0.5, 0.75) $ (slow 1.5) . (|+ sus 1.2))
+$ every 10 (within (0.0, 0.5) (striate 4))
+$ every 4 (within (0.5, 0.8) (chop 2) . (|+ coarse 8) . (jux (iter 3)))
+$ every 6 (within (0, 0.25) (gap 3) . (|+ dist 0.1))
+$ sometimesBy 0.2 (within (0, 0.35) (|+ sus 1.125) . (|+ mfDel))
+$ sometimesBy 0.45 (within (0.2, 0.7) (|+ wah 0.02))
+$ s "[foo, mhh:12*2]"
+|+ cutoff (range 7200 10900 $ (slow 7 $ sine))
+|+ n 25
+|+ speed "{1.2 -1.2 1.2 1.2 1.2 1.2}"
+|+ slowPanS 4
+|+ coarse "{12 2 4 8 2 8}"
+|* sus 0.5
+|+ shape 0.2
+|+ mGain
+
+do
+  x <- lazy' "<2 4>" $ inst3 {sn'="mst:95?", hh'="[~ mhh:9]/2", cp'="[~ mcp:1]/2"}
+  d1
+    $ within (0.25, 1) (0.125~>)
+    $ every 2 (|+ mDefault)
+    $ every 5 (within (0.25, 0.48) (|+ convn 0.1))
+    $ every 9 (within (0.5, 1) (chop 2))
+    $ every 7 (within (0, 0.4) (gap 3) . (|+ brick 1.3))
+    $ msvoB 0
+    $ x
+    |+ crush 8
+    |+ sus 0.8
+    |+ n "18 <34 45>"
+
+
+d2 silence
+
+d3
+$ degradeBy 0.4
+$ s "jungbass(5,8)"
+|+ mGain
+|+ up "<0 3 8 0 1 13 4 0>"
+|+ room 0.2
+|+ n 1
+
+
+hush
