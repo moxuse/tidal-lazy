@@ -1,8 +1,8 @@
 setcps 0.45
 
 do
-  -- x <- lazy' 2 inst1
-  x <- lazy'' "fftff" inst3
+  x <- lazy' 2 inst1
+  -- x <- lazy'' "fftff" inst3
   d1
     $ degradeBy 0.48
     $ sometimesBy 0.2 (0.125<~)
@@ -65,7 +65,7 @@ do
     $ every 12 (within (0.25, 0.5) (chop 3))
     $ x
     |> sus "[0.125 0.2 0.125 0.2]*2"
-    |+ chorus 0.005
+    |+ chorus 0.0015
     |+ speed 1.25
     -- |+ slowSpeedR 3
     |+ slowPanS 3
@@ -73,10 +73,10 @@ do
     |+ coarse "{2 12 2 4 8 12 2 2 8}%3"
     -- |+ crush "{2 1 2 3 8}%3"
     -- |+ brick "{0 2 0 0 1 0 2 1 0}%8"
-    |+ cutoff (slow 9 (range 4800 12000 sine))
+    |+ cutoff (slow 4 (range 800 12000 sine))
     |+ mGain
     |+ slowPanR 3
-    |+ room 0.01
+    |+ room 0.001
     |+ n 0
 
 

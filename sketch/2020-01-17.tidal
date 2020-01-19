@@ -1,0 +1,18 @@
+setcps (128/240)
+
+do
+  x <- lazy' "<4 2 2>" $ inst0
+  d1
+    $ x
+    |+ mDefault
+    |* sus (rot "<1 0 2>" $ "0.125 0.5 1 0.2")
+    |+ accelerate (rot "<0 1 2>" $ "-0.25 0.125 0 -0.8 0 0")
+    |+ room 0.025
+    |+ slowSpeedR 2.5
+    |* gain (rot "<1 0>" $ "0.85 0.75 1 0.5")
+    |+ n (rot "<0 3 1>" $ "0 0 0 8")
+    |+ pipe (rot "<0 2 1>" $ "0 0 0 40 0")
+
+
+
+hush

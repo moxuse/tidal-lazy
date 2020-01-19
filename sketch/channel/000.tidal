@@ -14,8 +14,8 @@ do
       |+ sus 1.2
   x <- lazy'' "tfftt" inst2 {bd'="mbd:2"}
   d1
-    $ degradeBy 0.128
-    $ msvo 0
+    $ degradeBy 0.48
+    $ msvoB 0
     $ sometimes (within (0, 0.5) (|+ tsdelay 0.07))
     $ unison (s "mbd") layer
     $ unison (s "mst" |+ mGain) layer2
@@ -31,6 +31,8 @@ do
 
 
 d1 $ "hh*4" |+ gain 0
+
+d1 silence
 
 hush
 
