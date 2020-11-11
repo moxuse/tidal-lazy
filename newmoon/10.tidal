@@ -1,0 +1,31 @@
+setcps (130/120/2)
+
+do
+  let pat = "{1 1 [1 ~]/2 ~ 1 [1 [~ 1]]/2 1 0}%8"
+  let pat2 = "{1 ~ [~ ~ 0 ~]/4 1 0 [~ 0, 1 ~]/2 0 [~ 0 1]/3}%16"
+  let x = gain pat
+  let y = gain pat2
+  let z = gain (inverse <$> pat2)
+  d1
+    -- $ msvoC 0
+    -- $ msvoB 0
+    $ every 2 (within (0.25, 0.5) (0.125~>) . (|+ coarse "2 8 4 2"))
+    $ every 3 (within (0.25,0.8) (rev) . (iter 1) . (|+ mfDel) . (|+ crush "0 2 8 6 8"))
+    $ stack [
+      x |+ s "mhh*4" |+ n "19 5 0 0 3" |+ nudge "[0, 0.01]*2"
+      -- , y |+ s "mbd:7" |+ sus 0.75 |+ accelerate "1 -0.3 -3 0.5"
+      , degradeBy 0.85 $ x |+ s "mcp" |+ slowSpeedR 2
+      , z |+ s "mst:15" |+ shape 0.3 |* gain (slow 3 (range 0.3 0.8 sine))
+      -- , x |+ "~ ~ ~ dig2"
+      -- , y |+ "~ ~ ~ dig3"
+      -- , x |+ "dig4 ~ dig4 ~"
+      , degradeBy 0.9 $ y |+ s "mwb2:3?" |+ slowSpeedR 3 |+ wah 0.03 |+ hpf 200 |+ sus 0.9
+    ]
+    |+ mGain
+    |+ accelerate "{0 -0.05 [0 -1 -0.03] 2 -1 0 0.03 4 0.2 3}%6"
+    |+ slowPanR 4
+ 
+
+hush
+
+

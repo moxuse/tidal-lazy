@@ -11,7 +11,7 @@ import Sound.Tidal.Context
 
 tidalUnityTarget :: OSCTarget
 tidalUnityTarget = OSCTarget {oName = "tidal-unity", 
-                          oAddress = "127.0.0.1",
+                          oAddress = "192.168.3.4",
                           oPort = 5000,
                           oPath = "/unity_osc",
                           oShape = Just [

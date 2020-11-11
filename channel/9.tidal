@@ -1,0 +1,26 @@
+setcps 0.5
+
+d1
+$ striate' "<8 12 20 14 16>/3" (slow 4.3 (range 0.05 0.25 sine))
+$ s "[mcp:1 mhh2:24, mst:17, mbd:3, mnz:24]"
+|+ speed (range 1.29 (1.4) sine)
+|+ up "[0, 15]"
+|+ coarse 8
+|+ dist 0.2
+|+ room 0.29
+|+ mGain
+|+ hpf 1400
+|* gain (range 1 0.4 saw)
+|+ cps "<0.74 2.2 1.14 0.5>/4.3"
+
+
+d2 $ s "[mcp:0?, mhh2:3, ~ mb?, mst:6*3, mbd:3/2]"
+  |+ mGain
+  |+ slowPanR 3
+  |+ up "<-5>"
+
+d2 silence
+
+uhush
+
+hush

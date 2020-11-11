@@ -1,0 +1,25 @@
+setcps (129/240)
+
+do
+  x <- lazy' 2 $ inst $ bd "mst"
+  d1
+    $ degradeBy "0.8"
+    $ msvoB 0
+    $ msvo 0
+    $ x
+    |+ wah "0 0.14 0 0 0.03"
+    |+ mGain
+    |+ shape 0.2
+    |+ slowPanR 3
+    |+ squiz "2 2 0 3"
+    |+ sus "<0.25 0.6 0.75 0.5>"
+    |+ n "~ 30 27"
+
+d3 $ s "<mbd:6 ~> ~ <mcp mst:19> ~"  |+ mGain |+ nudge (0.125)
+
+d2 $ slow 64 $ s "sync"
+
+d1 silence
+
+hush
+
