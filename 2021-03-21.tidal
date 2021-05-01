@@ -1,0 +1,55 @@
+setcps (126/120/2)
+
+do
+  let pat = "{<0 1 ~> 0*2 [0*2 1] ~ [~ 1*2] ~ <0*2 ~ 1> 0*2}%4"
+  let pat2 = "{[~ 0] 1 ~ 0 <1 ~> [~ 1]/2 <[1 ~]/2 1> <0 1>}%4"
+  let x =  gain pat
+  let w =  gain (inverse <$> pat)
+  let y =  gain pat2
+  let z =  gain (inverse <$> pat2)
+  d1
+    $ mask "t t <f t>"
+    -- $ mask "t f f t"
+    $ sometimesBy 0.2 (within (0.25,0.75) (|+ squiz 1.5) .( |+ accelerate "{0 0.0.4 0.04 -1 2 0 1}%4"))
+    $ every 2 (within (0.5, 0.6) (ply 2) . (|+ accelerate "1.25") . (|+ sus 0.5))
+    $ sometimesBy 0.24 (within (0.5, 0.75) (rev))
+    $ sometimesBy 0.1 (within (0.75,0.8) (|+ wah 0.2) . (|+ flangeD))
+    $ stack [
+      w # s "mbd2:9" |+ up "12 6 0 -3 8 12" |+ accelerate "<1.03 0.93 -0.5> 2 0 -1" 
+      , x # s "mhh:28" |+ up "10 5 9 3 -3"
+      , z # s "msn2:10" |+ up "14 10 -5 4 0 12" 
+      , degradeBy 0.75 $ x # s "zap:12" |+ slowSpeedR 3 |+ slowSpeedR 3
+      , z # s "[[mst:9? [~ zap:19]]/2 zap:12]/4" |+ wah 0.3 |+ gain "{1 0.2 1 0.1 1 0.3}"  |+ sus "{0.3 0.4 0.1 1 0.7 0.1}" |+ slowSpeedR 2 
+    ]
+    |+ shape 0.2
+    |+ mGain
+    |+ slowPanR 3
+    |+ shape "{0 0.1 0.2 0 0 0.4}"
+
+d1 silence
+
+d2 $ s "flau(3,7)"
+  |+ sus 3
+  |+ conv 0.3
+  |+ cutoff (slow 9 $ range 783 3800 sine)
+  |+ up (scale "lidian" "[0, 2, 6, 1]" + "<19 24>/4" -  24 )
+
+
+do
+  let pat = "{[~ 1] [~ 1] [~ ~ ~ 1]/2 [~ 1]/2 <~ 1> ~ ~ 1}%4"
+  -- let pat = "{[~ 1] [~ 1] [1 ~ 1 1]/2 [~ 1]/2 <~ 1> [0 1] 1 [0 1]/2}%4"
+  let x = gain pat 
+  d3
+    $ x # s "mb:13" 
+    |+ cutoff 180
+    |+ gain 0.9
+    |+ shape 0.2
+    |+ up (scale "dorian" "3 5 -2 0 2 1 <8 0>" + "<6 11>")
+    |+ sus 0.3
+
+d3 silence
+
+d2 silence >> d1 silence
+
+d4 $ slow 4 $ s "sync"
+
