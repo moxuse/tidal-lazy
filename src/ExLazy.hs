@@ -12,51 +12,51 @@ randpick xs = fmap (xs !!) $ randomRIO (0, length xs - 1)
 
 binPats :: Pattern Time -> [Pattern Double]
 binPats n = [
-  (slow n $ "1 1/4 0 0/6 1 0/2 0 1/3 1/2 1 1 0/4 0*2 0/2 1/2 0*2"),
-  (slow n $ "1/2 0 1/4 0 [1 0] 0/4 1 0*2 0/6 1 1/3 1 1/4 0 1/2 0/4 1"),
-  (slow n $ "0 0 1/4 0/2 0 1/2 1 0/3 1/2 0 1 1/4 0/3 1? 0 1/5"),
-  (slow n $ "0 1/4 1 0 1/4 0 0 1/4 [0 0/3] 0 1/6 0*2 1/2 0*2 1 0/6"),
-  (slow "<4 5 4 1.75>" "[0 [1 0 [1 0]]]/4 1/2 [0 1/2]/2 0 [1 0? 1]*2 1/3"),
-  (slow "<5 4 6>" "0 1*2 [1/2 [0? 1]] 1 1/2 [1 [0 [1 0]?]?]/2 1? [0 [1 0 1]?]/3")]
+  (slow n $ "1 0 0 0 1 0 0 1  1 0 0 1 0 0 0 1"),
+  (slow n $ "1 0 0 1 0 1 1 0  0 0 1 0 1 1 0 0"),
+  (slow n $ "1 0 1 0 1 0 0 0  1 0 1 1 0 0 0 0"),
+  (slow n $ "0 1 0 1 1 1 0 0  1 0 0 1 1 0 0 1"),
+  (slow n $ "1 0 0 1 1 0 0 1  1 0 0 1 0 0 0 0"),
+  (slow n $ "1 1 1 1 0 0 1 1  0 0 1 1 0 0 0 1")]
   
 
 seqlist = [
-  "0 3 0 3 3 0 0 3",
-  "1 0 1 0 1 1 2 2",
-  "0 3 0 0 1 3 3 3",
-  "0 2 1 2 0 1 0 0",  
-  "0 2 1 0 1 1 0 2",
-  "1 1 3 1 3 2 1 3",
-  "0 0 3 3 1 0 0 1"]
+  "0 0 0 0 3 3 3 3",
+  "1 1 1 1 1 1 1 1",
+  "1 1 1 1 3 3 3 3",
+  "2 2 2 2 2 2 2 2",  
+  "1 0 0 0 0 0 2 2",
+  "2 2 2 2 3 3 3 3",
+  "1 1 1 1 0 0 0 0"]
 
-pat0 bpt c = whenmod 3 2 (within (0.2, 0.8) (slow "2 0.75"))
+pat0 bpt c = whenmod 12 10 (within (0.5, 0.6) (slow "<2 1>"))
   $ stack [
-  ((0.125 ~>) $ gain bpt |+| s (hh' c))
-  ,(gain (inverse <$> bpt) |+| s (sn' c))
-  ,((0.125 <~) $ gain (inverse <$> bpt) |+| s (bd' c))]
-  |+| gain "[1 0.8 1]*2"
-pat1 bpt c = whenmod 3 1 (within (0.5, 0.8) (slow 2)) 
-  $ stack [
-  ((0.125 ~>) $ gain bpt |+| s (hh' c))
-  ,(gain bpt |+| s (slow 2 (cp' c)))
-  ,(gain (inverse <$> bpt) |+| sound (sn' c))
-  ,((0.125 <~) $ gain (inverse <$> bpt) |+| s (bd' c))]
-  |+| gain "[1 0.8 1 0.75]*2"
+  (degradeBy 0.125 $ s (replicateN 16 (hh' c)))
+  ,((0.125 ~>) $ gain bpt |+ s (hh' c))
+  ,(gain (slow 4 (inverse <$> bpt)) |+ s (bd' c))
+  ,(degradeBy 0.75 $ gain (inverse <$> bpt) |+ s (sn' c))]
+  |+ gain "[0.25 1 0.8 1]*2"
 
-pat2 bpt c = whenmod 3 2 (within (0.2, 0.8) (slow "2 0.75"))
+pat1 bpt c = stack [
+  (degradeBy 0.25 $ s (replicateN 16 (hh' c)))
+  ,(gain (slow 4 (inverse <$> bpt)) |+ sound (bd' c))
+  ,((0.065 <~) $ gain (slow 3 (inverse <$> bpt)) |+ s (sn' c))]
+  |+ gain "[0.5 1 0.8 1 0.75]*2"
+
+pat2 bpt c = whenmod 7 5 (within (0.25, 0.5) (slow "2"))
   $ stack[
-  (gain bpt |+| sound (bd' c))
-  ,((slow 4) $ gain bpt |+| sound (cp' c) |+| sustain "0.25" |+| up "0 2 -3 0")
-  ,((0.125 <~) $ gain bpt |+| sound (hh' c))
-  ,(gain (inverse <$> bpt) |+| sound (sn' c))
-  ,(slow 4 $ (0.125 ~>) $ degradeBy 0.5 $ gain bpt |+| sound (slow 2 (ps' c)))]
-  |+| gain "[1 0.8 0.75]/2"
+  (degradeBy 0.3 $ gain bpt |+ sound (replicateN 2 (sn' c)))
+  ,((slow 2) $ degradeBy 0.75 $ gain bpt |+ sound (cp' c))
+  ,(gain bpt |+ sound (replicateN 16 (hh' c)))
+  ,((0.065 ~>) $ gain (sometimes (slow 3) (inverse <$> bpt)) |+ sound (bd' c))
+  ]
+  |+ gain "[0.5 1 0.8 0.75]*2"
 
-pat3 bpt c = stack [
-  (gain bpt |+| s (hh' c))
-  ,(gain (inverse <$> bpt) |+| s (sn' c))
-  ,((0.125 <~) $ gain (inverse <$> bpt) |+| s (bd' c))]
-  |+| gain "[1 0.8 0.75]*2"
+-- pat3 bpt c = stack [
+--   (gain bpt |+ s (hh' c))
+--   ,(gain (inverse <$> bpt) |+ s (sn' c))
+--   ,((0.25 <~) $ gain (inverse <$> bpt) |+ s (bd' c))]
+--   |+ gain "[0.5 1 0.8 0.75]*2"
 
 pat4 = whenmod 4 2 (off 0.175 (|+| speed "1.5"))
   $ whenmod 3 2 (within (0.2, 0.8) (slow "2 0.75"))
@@ -69,10 +69,11 @@ pat7 = whenmod 4 2 (within (0.4, 0.8) (0.125<~))
 pat8 = sound "[mbd2(3,5), mhh2 msn2, mps/2 ml2/4 ~ mps/4]" # gain "1" 
 
 paatternList1 bpt c = [
-  (pat0 bpt c),
-  (pat1 bpt c),
-  (pat2 bpt c),
-  (pat3 bpt c)]
+  (pat0 bpt c)
+  , (pat1 bpt c)
+  , (pat2 bpt c)
+  -- (pat3 bpt c)
+  ]
 
 paatternList2 bpt = [
   (pat4),
@@ -105,7 +106,7 @@ chooseUr1 c bpt = do
   p0 <- (randpick (paatternList1 bpt c))
   p1 <- (randpick (paatternList1 bpt c))
   p2 <- (randpick (paatternList1 bpt c))
-  p3 <- (randpick (paatternList2' bpt c))
+  p3 <- (randpick (paatternList1 bpt c))
   return [("0", p0), ("1", p1), ("2", p2), ("3", p3)]
 
 chooseUr2 bpt = do

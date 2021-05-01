@@ -1,0 +1,15 @@
+u1 $ thing "crab*40"
+|+ x sine
+|+ moveY (-0.002)
+|+ y 0.6
+|+ vscale 1.7
+|+ z (sine)
+|+ duration 5
+-- |+ rigid 1
+|+ dlight "d"
+-- |+ ripple 0.2
+|+ randCam (slow 4 $ "0 0.1 0 0.03")
+
+
+u1 silence
+

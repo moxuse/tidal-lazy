@@ -1,0 +1,64 @@
+setcps (148/120)
+
+d1 
+$ degradeBy 0.9
+-- $ sometimesBy "<0.3 0.75>" (msvoB 0.125)
+-- $ sometimesBy "<0 0.5 0.1>" (msvo 0) . (within (0.5, 0.75) (|+ squiz 2))
+$ sometimesBy "<0.75 0.1 0 1>" (msvoC 0) 
+$ s "[mhh:0*8, [[~ mbd:6*2]/3 ~ mbd:1 ~]/2, [808:5 ~ 808:5*2 ~]/2, [~ ~ mbd:6(3,8) ~]/4]"
+|+ mGain
+|+ slowPanR 3 
+-- |+ accelerate "{0 -0.02 0.04 2 -0.9 1}%5"
+|+ slowSpeedR 5
+|+ shape 0.3
+|+ mfDel
+|+ gain "[[0 1 0.3 0.8 0 0]/6 [0.4 1 0 0]/4 0.9 [0.7 0.2]/2]*2"
+
+
+d2
+$ s "[mcp/4, [zap:20 808:5 zap:28/2 ~]/4 mb:5*2]/3"
+|+ sus "<0.35 [0.4 0.2 0.4 0.7]/4>"
+|+ up "[<0 5> <4 1> [0 1 2 2]/3]/2"
+|* gain "1 [~ 1 ~ ~]/4 [1 0 1 1]/4"
+|+ chorus 0.008
+|+ gain 0.3
+-- |+ mGain
+
+d4
+$ degradeBy 0.5
+$ s "ml5(3,16)"
+|+ up (scale "lydian" "[5 [2 0]/2 [5, 7]]" + "<18 25>")
+|+ mGain
+|+ n 15
+|+ coarse 8
+|+ dist 0.2
+|+ room 0.2
+
+
+d3
+$ slow 4
+-- $ degradeBy 0.4
+$ up (scale "micsoridian" "~ [0 ~ 2] 5 [4 [~ 5]/2]/2 ~ [0 3 1]" + "<0 2 4>")
+|+ s "ml"
+|+ gain 1.1
+|+ chorus 0.01
+|+ bpf 5200
+|+ coarse 2
+|+ n 24
+
+do
+  x <- lazy' 2 $ inst0
+  d1
+    $ slow 2
+    $ degradeBy 0.7
+    $ x
+    |+ slowSpeedR 3
+    |+ mDefault
+    |+ lpf 5500
+    |+ room 0.1
+    |+ n 2
+
+d3 silence
+
+hush
+

@@ -16,18 +16,18 @@ do
 
 d2 silence
 
-d2
-$ sound "ml5(<3 5>,8)" 
-|+ up (scale "minor" ("[0,2,4]" + "<0 3 4 6 6 3 2 5>" + "[0 1]/4"))
-|+ hpf (slow 3 (range 400 100 sine))
-|+ n "[13]"
-|+ nudge "[0 0.25]*2"
-|+ room 0.1
-|+ rotPipe 2
+-- d2
+-- $ sound "ml5(<3 5>,8)" 
+-- |+ up (scale "minor" ("[0,2,4]" + "<0 3 4 6 6 3 2 5>" + "[0 1]/4"))
+-- |+ hpf (slow 3 (range 400 100 sine))
+-- |+ n "[13]"
+-- |+ nudge "[0 0.25]*2"
+-- |+ room 0.1
+-- |+ rotPipe 2
 -- |+ cps (smooth (slow 2 $ range 0.3 0.6 saw))
 
 d3
-$ degradeBy 0.3
+$ degradeBy 0.5
 $ whenmod 4 3 (slow 2) . (rev)
 $ sometimesBy 0.4 (stutWith 2 0.75 (|* speed 0.5))
 $ sound "ml2(<6 3 2 4>,8,<0 1>)" 
@@ -35,7 +35,7 @@ $ sound "ml2(<6 3 2 4>,8,<0 1>)"
 |+ wah 0.03
 |+ shape 0.3
 |+ n "[6, 15?]"
-|+ room 0.7
+|+ room 0.4
 
 d1 silence
 

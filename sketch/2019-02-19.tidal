@@ -12,7 +12,7 @@ do
     $ unison (s "mst") layer2
     $ x
     |+ shape 0.2
-    |+ mfDel
+    -- |+ mfDel
     |+ rotAccelerate 3
     |+ mDefault
     |+ mNudge
@@ -27,10 +27,11 @@ layer2 = sound "[ml5:7, ml4:15]"
 d2 
 $ slow 2 
 $ s "ld2" 
-|+ mDefault 
+|+ mGain
 |+ sus 8.3
-|+ room 0.3
-|+ up (scale "<phrygian>" ("[0, 3, 4]" + "<6 2 0 8 0>" + "-5"))
+|+ room 0.1
+|+ wah 0.03
+|+ up (scale "<phrygian>" ("[0, 3, 4, 12, 32, 17]" + "<6 2 0 8 3>" + "-3"))
 
 d2 silence
 

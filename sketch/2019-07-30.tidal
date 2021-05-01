@@ -1,0 +1,27 @@
+setcps 0.55
+
+do
+  x <- lazy' 2 $ inst2 { hh'="mst:28" }
+  d1
+    $ degradeBy 0.9
+    $ x
+    |+ mGain
+    |+ slowSpeedR 2
+    |+ slowPanR 2
+    |+ sus "1 0.7 0.2"
+    -- |+ shape 0.2
+    |+  n "18 ~ ~ 7 25"
+
+
+d1 silence
+
+d2 
+-- $ sometimesBy 0.24 (stutWith 2 0.75 (|* speed 1.5))
+$ s "ml5(4,16)" |+ mGain
+|+ up (scale  "minor" "<0 -2 -4 2>.. <7 9 12 8>" + "[-12 0 5]" + (rot "<0 0 1 2>" $ "0 12 0 -12 0"))
+|+ gain "[1 0.4 0.7 0.3]"
+|+ room  0.1
+|+ n "11 [7? 0?]/2 16? 39"
+
+
+hush

@@ -1,0 +1,44 @@
+setcps (110/120)
+
+do
+  let pat ="{0 0 1 [0 ~ 0 1] 0 0 [1 ~ 0] 0 ~ ~ ~ [~ 1] 0 0 ~ 0}%6"
+  let pat2 ="{1 0 1 1 1 1 0 1 1 1}%3"
+  let pat3 ="{1 0 0 1 0 ~ 1 1 0 11 0 0}%8"
+  let x = gain pat
+  let y = gain (inverse <$> pat)
+  let z = gain 1
+  let u = gain pat3
+  let v = gain (inverse <$> pat3)
+  d1
+    $ iter (wchoose [(1,4)])
+    $ within (0.25, 0.85) (msvoB 0)
+    $ stack [
+      x # s "mhh2:3" |+ binscr (range 0.3 0.0 sine) |+ up 12
+      , y # s "mst:4? ~" |+ slowSpeedR 3 |+ shape (range 0.4 0.0 sine)
+      , y # s "~ msn:15" |+ sus 0.2 |+ slowSpeedR 8 |+ shape (range 0.2 0.0 sine)
+      , sometimesBy 0.1 (off (0.8) (rev) . (|+ shape 0.2)) $ z # s "mbd:16"
+      , slow 2 $ degradeBy 0.0 $ y # s "[dig0, dig1] ~ ~ ~ ~ ~"  
+      , (0.25~>) $ degradeBy 0.0 $ u # s "dig2? ~ ~ ~ dig2? ~"
+      , slow 4 $ (0.5~>) $ degradeBy 0.3 $ z # s "{dig3 dig2 ~ dig3}"
+      , slow 3 $ (0.5~>) $ degradeBy 0.3 $ z # s "{dig5 dig5 ~ dig4}%3"
+      , degradeBy 0.9 $ fast 1.5 $ s "mwb:2" |+ slowSpeedR 5
+      , degradeBy 0.95 v # s "ml5:13?" |+ slowSpeedR 3 |+ gain 0.1 |+ hpf 1200 |+ wah 0.1
+    ] 
+    |+ mGain
+    |+ slowPanR 3
+
+hush
+
+
+u1 $ thing "stone2*10 trash8*10 paper*9"
+|+ rigid 1
+|+ duration 4
+|+ y 1.8
+|+ z (-0.9)
+|+ x (slow 3 (range (-1.5) 0.0 sine))
+|+ vscale "<0.3 0.5 0.2>"
+
+
+uhush
+
+

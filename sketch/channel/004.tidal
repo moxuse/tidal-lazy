@@ -1,0 +1,27 @@
+setcps (123/120/2)
+
+
+d4 $ slow 32 $ s "sync"
+
+
+do
+  let layer = (s "<ml6:5? ml6:25>") |+ up ("[0,2,9,24,48]" - 6) |+ cutoff (slow 7 $ range 800 15000 sine) |+ speed (-1)
+  x <- lazy'' "tff t(4,9)" $ inst $ bd "mbd2:23" . sn "[zap/2, ml4:8?]"
+  -- x <- lazy' 2 $ inst $ bd "mbd2:23" . sn "[zap:31/2, ml4:8?]" . cp "mcp:1"
+  d1
+    $ degradeBy 0.5
+    $ unison "mbd2" layer
+    $ msvoB 0
+    $ sometimesBy 0.2 (within (0, 0.75) (striate 3))
+    $ x
+    |+ coarse "{2 2 4 8 12 2}%8"
+    |+ mGain
+    |+ speed 1.5
+    |+ slowPanS 3
+    |+ slowSpeedR 3
+    |+ room 0.015
+    |+ n "12 26"
+
+-- ml3, toka, 48
+
+hush

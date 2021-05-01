@@ -1,0 +1,19 @@
+do
+  let layer = (s "ml6:5?") |+ up ("[0,2,9,24,48]" - 12) |+ cutoff (slow 7 $ range 800 15000 sine) |+ speed (-1)
+  x <- lazy'' "tff t(4,9)" $ inst $ bd "mbd2:23" . sn "[zap/2, ml4:8?]"
+  -- x <- lazy' 2 $ inst $ bd "mbd2:23" . sn "[zap/2, ml4:8?]"
+  d1
+    $ degradeBy 0.5
+    $ unison "mbd2" layer
+    $ msvoB 0
+    $ sometimesBy 0.2 (within (0, 0.75) (striate 3))
+    $ x
+    |+ coarse "{2 2 4 8 12 2}%8"
+    |+ mGain
+    |+ slowPanS 3
+    |+ slowSpeedR 3
+    |+ room 0.05
+    |+ n "12 26"
+
+hush
+

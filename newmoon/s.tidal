@@ -1,0 +1,47 @@
+setcps (120/120/2)
+
+do
+  x <- lazy' "<3 2 2 4>" inst2
+  d1
+    -- $ msvoB 0
+    -- $ msvo 0
+    $ sometimesBy 0.4 (within (0.3, 0.5) (rev).(|+shape 0.3))
+    $ unison "mbd" "[~ msz:10*2, mwb:3]/2" 
+    $ unison "mst" ("[mhh:8*2, ml3:9 ~ msn:4]/2" |+ mGain)
+    $ x
+    |+ mGain
+    |+ slowPanR 3
+    |+ slowSpeedR 3
+    |+ n "8"
+
+d1 silence
+
+d2
+  $ mask "[f t f]*2"
+  $ off 0.35 (|+ up "7")
+  $ off 0.75 (|+ up "14")
+  $ s "<ml5(9,16) ml5(7,16)>"
+  |+ up (scale "ionian" "[2, 6, 9 [5 8 <4 11> <0 2>]]" + "<1 8 3>")
+  |+ n 3 
+  |+ room 0.05
+  |+ gain 1.5
+
+d2 silence
+ 
+do
+  x <- lazy' "<3 2 2 4>" inst0
+  d1
+    $ degradeBy 0.5
+    $ sometimesBy 0.4 (within (0.3, 0.5) (rev).(|+shape 0.3))
+    $ unison "mbd2" "[~ zap:19*2, mwb:3]/2" 
+    $ unison "mst" ("[zap:8*4, ml3:9 ~ mcp:4]/2" |+ mGain)
+    $ x
+    |+ mGain
+    |+ slowPanR 3
+    |+ slowSpeedR 3
+    |+ mfDel 
+    |+ room 0.05
+    |+ n 16
+ 
+
+hush

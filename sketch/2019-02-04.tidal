@@ -9,12 +9,12 @@ do
     |+ rotAccelerate 2
     |+ slowSpeedR 3
     |+ shape 0.2
-    |+ slowSpeedR 3
+    -- |+ slowSpeedR 3
     |+ rotPipe 2
     |+ slowPanS 4
     |+ room 0.1
     |< mGain
-    |+ n "<24 6> ~ 27"
+    |+ n "<24 7> ~ 27"
 
 
 

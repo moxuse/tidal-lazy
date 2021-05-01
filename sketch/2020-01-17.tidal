@@ -1,0 +1,28 @@
+do
+  setcps (125/240)
+  d4 $ slow  16 $ s "sync"
+
+d2  $ s "[[mst,mbd/2] msn2:19]" |+ shape 0.2 |+ mGain |+ n "2"
+
+
+do
+  x <- lazy' "2" $ inst $ hh "[mhh2:33, ~ zap:4/8]" . sn "[mst:5 ~]/3" . ps "[zap:25/4]" . bd "[mbd2:3/3 , mst:9/4]"
+  d1
+    $ within (0.5, 0.95) (degradeBy 0.95)
+    $ whenmod 4 3 (within (0.3,0.85) (|+ nudge 0.125) .(iter 3))
+    $ whenmod 5 4 (within (0.25,1) (hurry 1.75) . (|+ up  (range 0 2 $ saw)))
+    $ sometimes (within (0.25,0.45) (|+ wah 0.07))
+    $ x
+    |+ mDefault
+    |* sus (rot "<1 0 2>" $ "0.125 0.5 1 0.75")
+    |+ accelerate (rot "<0 1 2>" $ "-0.0025 0.125 0 0.5 0")
+    |+ slowSpeedR 2.5
+    |* gain (rot "<0 1>" $ "0.85 0.75 1 0.5")
+    |+ n (rot "<0 3 1>" $ "0 0 0 8")
+    |+ pipe (rot "<0 2 1>" $ "0 0 0 40 0")
+    |+ room 0.01
+    |+ cutoff (range 4000 6000 $ (slow 4 sine))
+
+d1 silence
+
+hush

@@ -1,0 +1,47 @@
+setcps (124/120)
+
+do
+  let pat ="{1 0 1 1 1 0 [0 0] 0 ~ ~ ~ 1 0 0 0 0}%4"
+  let pat2 ="{1 0 1 0 1 [0 1 1] ~ 1 0 0 ~ 0 }%6"
+  let pat3 ="{1 0 1 1 0 ~ ~ ~ 0 1 1 0 0}%8"
+  let x = gain pat
+  let y = gain (inverse <$> pat)
+  let z = gain pat2
+  let u = gain pat3
+  let v = gain (inverse <$> pat3)
+  d1
+    $ iter (wchoose [(1,8)])
+    $ every 6 (rot (wchoose [(1,3)]))
+    $ every 4 (within (0,2.65) (|+ binshf 0.5)) .(rev)
+    $ within (0.25, 0.85) (msvoB 0)
+    $ stack [
+      x # s "mhh:0" |+ slowSpeedR 4 |+ shape (range 0.3 0.0 sine)
+      , y # s "mst:8?" |+ slowSpeedR 3 |+ shape (range 0.4 0.0 sine)
+      , y # s "mbd2:2?" |* gain (slow 3(range 0.24 1 saw))
+      , (0.25~>) $ degradeBy 0.5 $ z # s "<[dig1?, dig2?] ~ dig2?>"  
+      , (0.25~>) $ degradeBy 0.2 $ u # s "<[dig0? dig1?] dig0 ~>"
+      , degradeBy 0.5 $ z # s "<dig4 dig3 dig4? dig5?>"
+      , degradeBy 0.94 $ fast 1.5 $ s "ml4:12" |+ slowSpeedR 5
+      , degradeBy 0.98 v # s "mwb:21?" |+ slowSpeedR 3 |+ gain 0.9 |+ hpf 1200 |+ coarse 12 |+ wah 0.05
+    ] 
+    |+ mGain
+    |+ slowPanR 3
+
+hush
+
+
+
+u1 
+-- $ iter 3 
+$ slow 4
+$ thing "salmon2*10 stone2*10 crab*10"
+|+ y 1.5
+|+ rigid 1
+|+ duration 3
+|+ y 0.2
+|+ x (slow 3 (range (-0.8) (-0.4) sine))
+|+ z (-0.8)
+|+ vscale 0.5
+
+uhush
+

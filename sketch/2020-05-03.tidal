@@ -1,0 +1,18 @@
+setcps (113/120/2)
+
+do
+  x <- lazy' 2 $ inst2
+  d1
+    $ degradeBy 0.5
+    $ msvoB 0
+    $ x
+    |+ slowPanR 3
+    |+ mGain
+    |+ room 0.02
+    |+ slowSpeedR 3
+    |+ shape 0.2
+    |+ n "18 ~ 27? 47"
+
+
+d2 $ slow 32 $ s "sync"
+

@@ -1,0 +1,101 @@
+setcps (109/120/2)
+
+layer2 = sound "[ml5:7, ml4:15]"
+  |+ up (scale "<phrygian>" ("[0, 3, 5]" + "<6 2 0 6 0>" + 6)) 
+  |+ room 0.125
+  |+ mGain
+
+do
+  let 
+    layer = s "[ml3:9, mnt2:28]" 
+      |+ squiz "<1 2 4 3>" 
+      |+ dist "0.1"
+      |+ mDefault
+      |+ sus 1.2
+  x <- lazy'' "tfftt" inst2 {bd'="mbd:2"}
+  d1
+    $ degradeBy 0.48
+    $ msvoB 0
+    $ sometimes (within (0, 0.5) (|+ tsdelay 0.07))
+    $ unison (s "mbd") layer
+    $ unison (s "mst" |+ mGain) layer2
+    $ x
+    |+ shape 0.2
+    -- |+ mfDel
+    |+ rotAccelerate 3
+    |+ slowPanR 6
+    -- |+ mDefault
+    |+ mNudge
+    |+ mGain
+    |+ n "<59>"
+
+
+d1 $ "hh*4" |+ gain 0
+
+d1 silence
+
+hush
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------------
+
+
+d4 $ slow 16 $ s "sync"
+
+do
+  x <- lazy'' "ttf t(4,5)" $ inst2
+  d1
+    $ whenmod 4 3 (rot "<1 2>")
+    $ sometimes (within (0.4, 0.6) (striate' 16 (1/16)))
+    $ x
+    |+ rotAccelerate 2
+    |+ slowSpeedR 3
+    |+ shape 0.2
+    |+ slowSpeedR 3
+    |+ rotPipe 2
+    |+ slowPanS 4
+    |+ room 0.1
+    |> mGain
+    |+ n "<24 7> ~ 27"
+    |+ cps (range 0.3 1.2 (slow 7 $ sine))
+
+-- second pattern
+
+
+do
+  x <- lazy'' "tf" $ inst1
+  d1
+    $ x
+    |+ mGain
+    |+ rotPipe 4
+    |+ room 0.1
+    |+ slowSpeedR 3
+    |+ n "22 ~ 24 12"
+
+
+hush

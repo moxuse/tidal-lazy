@@ -1,0 +1,21 @@
+setcps (113/240/2) 
+
+do
+  x <- lazy' 2 $ inst1
+  d1
+    $ msvoB 0.125
+    $ (0.125<~)
+    $ every 8 (within (0.6, 0.8) (rev))
+    $ unison "mbd" ("[mwb:5?]/2" |+ accelerate (-0.02) |+ up "<0 0 1 1> -12"|+ coarse 8)
+    $ degradeBy 0.4
+    $ x
+    |+ squiz "{0 1 2 4}"
+    -- |+ n "~ 12? 28 42"
+    |+ n "0? ~ 0 0"
+    |+ room  0.03
+    |+ mGain
+    -- |+ slowSpeedR 2
+
+
+d2 $ slow 32 $ s "sync"
+
