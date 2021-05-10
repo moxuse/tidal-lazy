@@ -10,13 +10,16 @@ import Sound.Tidal.Stream
 import Sound.Tidal.Context
 
 tidalUnityTarget :: Target
-tidalUnityTarget = Target {oName = "tidal-unity", 
-                          oAddress = "192.168.3.4",
-                          oPort = 5000,
-                          oLatency = 0.1
-                          -- oPreamble = [],
-                          -- oTimestamp = MessageStamp
-                          }
+tidalUnityTarget = 
+              Target { oName = "tidal-unity", 
+                     oAddress = "192.168.3.4",
+                     oPort = 5000,
+                     oLatency = 0.1,
+                     oSchedule = Live,
+                     oWindow = Nothing,
+                     oHandshake = False,
+                     oBusPort = Nothing
+                     }
 
 unityShape :: OSC
 unityShape = OSC "/unity_osc" $ ArgList [("thing", Just $ VS ""),
