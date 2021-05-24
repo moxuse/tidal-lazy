@@ -1,0 +1,71 @@
+setcps (123/120/2)
+
+do
+  let pat = "{0 1 [0 1] ~ 1 [~ 1]/2 [1 [~ 0]/2]/2 [1 ~]/2}%12"
+  let pat2 = "{0 [~ 1] ~ 1 [~ 0] [~ 0, 1 ~]/2 ~ [0 1]/2 [~ 1]/2}%12"
+  let x = gain pat
+  let y = (gain (inverse <$> pat))
+  let z = gain pat2
+  let w = gain (inverse <$> pat2)
+  d1 
+    -- $ msvoB 0
+    $ mask "t f f f"
+    -- $ mask "t t <f t>/2 t"
+    $ every 7 (jux (0.25~>) . (mask "t t [f t] t") . (|* sus 0.25) . (|+ up "[5 2 -7]*2"))
+    $ every 5 (within (0.5, 1) (|+ leslie 0.5) . (|+ lrate (slow 3 (range 0.3 8 sine))) . (|+ lsize 1))
+    $ every 9 (within (0, 0.3) (|+mfDel))
+    $ every 3 (within (0.75, 1) (rev))
+    -- $ every 2 (within (0, 0.125) (0.125~>) . (|+ real "[0.09 0.4]*2") . (|+ imag "[0.2 0.5 0 0.8]*2") . (|+ sus 0.125) . (|+ bpf 920))
+    $ every 6 (within (0, 0.5) (stutWith "<3 5 8>" (3/8) ((|+ crush 8) . (|+ accelerate "[1 -0.04]*2 -0.2 [0.06 -0.9 0.02]*2") . (|+ lpf 1000))))
+    $ unison "mbd mhh" (mask "t t f t" $ s "~ [dig0, dig4?]")
+    $ cat [
+      stack [
+        msvo 0 $ x |+ s "mhh2:14" |+ sus 0.3 |+ n "12 11 12 13 13" |+ nudge "[0, 0.01]*2"
+        , y |+ s "mbd:7" |+ accelerate (slow 0.35 $ "[0.9 0.4 -0.3 -0.28]*2 0")
+        , degradeBy "<0.8 0.2 0.9 0.5>" $ w |+ s "[<mcp:1 ~>, [909:6/4 mst:5]/2]" |+ slowSpeedR 2  |* speed 2 |+ gain 0.8
+        , z |+ s "msn:10" |+ begin "0.5 0.6 0.2 0.5 0.75" |* gain (slow 3 (range 0.3 0.8 sine)) |+ slowPanR 3
+         , (0.125<~) $ x |+ "dig0 ~ <~ dig1*2>"
+        , within (0.25, 0.75) (msvoB 0) $ degradeBy "<0.3 0.5 0.95>" $ w |+ s "<mwb2:3 zap:6>/2" |+ wah 0.1 |+ sus "[1 0.3 0.25 0.9]*3" |+ n "<0 -9>" |+ accelerate "<0.02 1 0.3 0.05 0.2>/0.75"
+      ] ,
+      stack [
+        y |+ s "mhh*2" |+ n "12 0 0" |+ sus 0.3 |+ nudge "[0, 0.01]*2"
+        , (0.125~>) $ x |+ s "808:10" |+ begin "0 0.2 0.8 0.5 0 0" |+ sus "{0.2 0.1 0.35 1}" |* gain (slow 3 (range 0.3 0.8 sine)) |+ slowPanR 3
+        , s "[msn3:10(4,12,1), mbd:7(3,8)]" |+ shape 0.2 |+ n "<0 2>"
+        , (rot "<0 1 3>") $ s "[~ <ml5:11(8,12)>]" |+ sus 0.2 |+ cut 10 |+ pan 0.3 |+ dist 0.3 |+ up (scale "lydian" "[~ ~ [0 12 -3 5 4 -2 -3]]" + 4) |+ leslie 0.2 |+ lrate (slow 3 (range 0.3 1 sine)) |+ lsize 1
+        , z |+ "~ ~ dig4/12"
+        , s "mst:0*8" |+ shape 0.2 |* gain "{~ ~ ~ ~ [0 1] ~ ~ ~ 1 ~ ~ ~ 1 ~ [0 1] ~}%16"
+        ]
+      ]
+    |+ gain 1.1
+    |+ shape 0.2
+    |+ accelerate "{0.03 0 -0.05 [0 -1 -0.03]*8 2 [-0.8 0 0.03]*4 4 0.2 -0.3}%6"
+    |+ slowPanR 4
+    -- |+ flange 0.1 0.02 |+ modl 0.3
+
+
+
+d15 $ every 2  (0.25<~) $ (0.5~>) $ gain "<1 ~>" |+ "dig5"
+
+d15 silence
+
+d14 $ slow 1 $ s "sync"
+
+d14 silence
+
+
+hush
+
+do
+  x <- lazy'' "f t t f t f " $ inst0
+  d1
+    $ rev
+    $ every 2 (within (0.1, 0.125) (|+ wah 0.02))
+    $ stutWith 5 (2/6) (|+ speed (slow 1.5 (range (-0.3) (-1.0) sine)))
+    $ x
+    |+ hpf (range 3000 7000 $ slow 3 sine)
+    |+ mGain
+    |+ crush 8 
+    |+ mfDel
+    -- |+ n 10
+    |+ n 35
+ 
