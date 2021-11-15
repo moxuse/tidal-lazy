@@ -1,0 +1,19 @@
+setcps (125/120) 
+ 
+d1
+  $ (0.075~>)
+  $ every 2 (within (0.6, 0.8) (slow 2) . (rev))
+  $ sometimesBy 0.125 (within (0.4, 0.75) (|+ coarse  8) . (density 2) . (msvoB 0))
+  $ every 4 (within (0.25, 0.5) (degradeBy 0.25) . (0.125~>) . (|+ mfDel))
+  $ unison "mbd2" ("[mwb:6?]/2" |+ accelerate (-0.02) |+ up "<0 0 1 1>"|+ coarse 8)
+  $ sometimesBy 0.16 (|+ mDefault)
+  $ degradeBy 0.1
+  $ s  "[mbd2 ~, [mbd2 ,mhh*2, <mbd mhh2> mst:5*3]/0.75, mhh2*8]"
+  |+ n "9 9? 10 42"
+  |+ room  0.01
+  |+ mGain
+  |+ slowPanR 3
+
+
+d2 $ slow 32 $ s "sync"
+

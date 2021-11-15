@@ -1,0 +1,29 @@
+setcps (138/120/2)
+
+do
+  let pat = "{~ ~ <0 ~ ~ 1*2>/2 ~ [<~ 0> 1] [1 <~ 0 ~ 1> 1 0]/4 ~ ~ ~ [~ 1 0 1]/4}%8"
+  let pat2 = "{<~ 1*3> [0 1] 0 [1 <0 ~>] <1 [0 1]> [<~ 0> 1] 0 [~ 1]}"
+  let x =  gain pat
+  let y =  gain pat2
+  let z =  gain (inverse <$> pat)
+  let w =  gain (inverse <$> pat2)
+  d1
+    $ sometimesBy 0.3 (msvoB 0)
+    $ mask (slow 4 $ "t f <t f> t")
+    $ sometimesBy 0.3 (within (0.3, 0.75) ((rev) . (slow 2)))
+    $ unison "mbd2" (s "<zap:9? [~ mwb:12?]>" |+ mGain)
+    $ stack [
+      w # s "mhh:12" |+ up "{[10 9] [7 -3] [-5 2] [-2 7] [0 1]}%8"
+      , x # s "msn2:18" |+ up "{[10 29] [0 -3] [15 2] [2 -7] [10 1]}%9" |+ modl 0.2
+      , z # s "mst:0" |+ up "{[10 9]/2 [0 -3] [5 2] [2 -7] [0 1]}%9" |+ shape 0.3
+      , y # s "mbd2:2" |* speed "[1.97 0.6 4 2] [1 0.85] [1.25 0.75] 4.5 1.8" |+ cutoff (slow 2 (range 350 5200 $ sine))
+    ]
+    |+ mGain 
+    |+ slowPanS 3
+    |* slowSpeedR 3
+    |+ sus "<0.9 0.25> <0.4 0.75> 1.4 0.5 1.3 1"
+    |+ loop "{0 0 0 2 0 0 0 1 0 0 0}" 
+
+
+d4 $ slow 16 $ s "sync"
+

@@ -1,0 +1,48 @@
+setcps (132/120/2)
+
+do
+  d1
+    $ (0.135~>)
+    $ sometimesBy 0.35 (within (0.5, 0.8) (|+ cutoff 3200))
+    $ sometimesBy 0.125 (within (0.3, 0.5) (|+ modl 0.3) . (rev))
+    $ stack [
+      ((0.005<~) $ s "[mhh(5,10)]*2 [mhh(5,10,2)]*2" |+ sus 0.5 |+ accelerate "[-1.2 -0.8]*4" |* speed "[<4 2> 1.5]*8" |+ up "[8 6 ~ -9]*2 <~ 8> [~ -1 3]*2 <~ 16 ~ ~>")
+      , ((0.01<~) $ s "~ ~ ~ ~ ~ mst:9/2 mst:6/2 ~" |+ shape 0.1 |* speed "<0.6 0.45>")
+      , ((0.025<~) $ s "mbd2:9*2")
+      -- , ((0.0125~>) $ s "<zap:21*2 zap:6*3>" |+ cutoff 1800 |+ up "3 -5 7 -2" |+ speed "<0.4 0.8 1.96> <-0.6 -0.5>" |+ sus "<0.7 0.5> 1" |+ accelerate "<-0.7 -1.2> <-0.4 1.35>")
+    ] 
+    |+ shape 0.3
+    |+ mGain
+    |+ slowPanS 3
+
+d2   
+  $ s "msn:3(<7 12 21>,21,3)"
+  |+ up (scale "minor" ("[[-2 -24 0] [1 -4] [-7 5 2] [-1 4 0]]/<2 3>" + "[2, 13]" + "<4 2 -1 3>" + 3))
+  |+ chorus (slow 6 (range 0.02 0.002 sine))
+  |+ hpf 180
+  |+ conv 0.3
+  |+ cutoff (slow 5 (range 800 8000 sine))
+  |+ sus (slow 4 (range 0.5 0.05 sine))
+  |+ gain 1.025
+  |+ slowPanS 3
+  |+ n "[0 1 4 17]*4"
+
+
+d2
+  $ (0.25~>) . (iter 3)
+  $ stack [
+    (s "ade:0(2,<12 16>,3)")
+  ]
+  |+ up (scale "aeolian" ("[[-1, -4, 6] [2, -4] [-7, 5, 2] [-1, 4]]" +"<8 14>" + "<-6 -3>/2"))
+  |+ room 0.2
+  |+ cutoff 7000
+  |+ coarse "<2 4>"
+  |+ sus 1.35
+  |+ gain 1.1
+
+d1 silence 
+
+d2 silence
+
+d4 $ slow 16 $ s "sync"
+

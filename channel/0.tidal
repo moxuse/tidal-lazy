@@ -1,0 +1,29 @@
+setcps(128/120)
+
+do
+  let pat ="{0 0 ~ ~ ~ 1 0 0 ~ 0 1 0 0 0}%8"
+  let pat2 ="{1 0 ~ 0 1 1 ~ 0 ~ 1 0 0}%6"
+  let x = gain pat
+  let y = gain (inverse <$> pat)
+  let z = gain pat2
+  d1
+    $ iter (wchoose [(1,9)])
+    $ sometimesBy 0.125 (|+ squiz "{1 0 2 0 2 0 0 2}%8")
+    $ every 4 (within (0,0.25) (|+ binshf 0.5)) .(rev)
+    $ whenmod 4 2 (within (0.5,0.9) (|+ mDefault))
+    $ within (0.5, 0.9) (msvoB 0.125)
+    $ stack [
+      x # s "mhh:0" |+ slowSpeedR 4
+      , y # s "mbd:7"
+      -- , z # s "mst:7"  |+ slowSpeedR 3
+      -- , x # s "msn:0?"
+      -- , fast 8 $ s "808:9?" |+ conv 0.4
+      -- , degradeBy 0.9 y # s "mwb:4?"  |+ slowSpeedR 3
+    ] 
+    |+ slowPanS 3 
+    |+ mGain
+
+d2 $ slow 32 $ s "sync"
+
+hush
+

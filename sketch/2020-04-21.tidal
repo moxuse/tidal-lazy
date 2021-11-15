@@ -1,0 +1,21 @@
+setcps (86/120) 
+
+do
+  x <- lazy' 2 $ inst2   
+  d1
+    $ unison "mhh2" ("[ml5:18?, mhhi*2]" |+ speed (-1) |+ up "<0 0 1 1>" -12 |+ coarse 8)
+    $ (0.075~>)
+    $ msvoB "<0 0.125 0.125>"
+    $ sometimesBy 0.16 (|+ mDefault)
+    $ sometimesBy 0.2 (|+ chorus "0.03") . (|+ binshf "{0.3 0.0 2 0.07 0.0 3}%3")
+    $ sometimesBy 0.1 (rot "<1 0>")  . (|+ slowSpeedR 3)
+    $ degradeBy "<0.85 0.35>"
+    $ x
+    |+ accelerate (rot "<0 1 3>" $ "{0.03 0.0 -0,1 0.0 -0.05}%3")
+    |+ n "~ 23? 57 59"
+    |+ slowPanR 3
+    |+ hpf 408
+
+d2 $ slow 32 $ s "sync"
+
+

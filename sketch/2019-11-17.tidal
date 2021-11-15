@@ -1,0 +1,13 @@
+setcps (120/240)
+
+d1 
+$ slow 3 
+ -- $ degradeBy 0.125
+$ s "[mwb, mcp:8] mfl*9 [mps*3 ml4]" 
+|+ up (scale "minor" "3 [4 1 2 -2 2 0 6 3 -1] 7" - 18) 
+|+ n "6 8 [8 5 8]" 
+|+ gain 1.2
+|+ room 0.05
+|+ wah 0.03 
+
+hush

@@ -1,0 +1,15 @@
+setcps (118/120)
+
+do
+  x <- lazy' 2 inst2
+  d1 
+    $ unison "mbd" (slow 2 $ "[mwb2:14? msn2:3]" |+ up "<0 2>" |+ accelerate "-0.6" |+ mGain)
+    $ every 2 (within (0.25,0.5) (rev . (|+ squiz 2)))
+    $ msvoB 0
+    $ mask "f [f [f f t] f] t [f t f]"
+    $ x
+    |+ mGain
+    |+ slowSpeedR 3
+    |+ slowPanR 2
+    |+ accelerate "0 0.2 -1 0 -0.04 -1"
+    |+ n "8 28 8"

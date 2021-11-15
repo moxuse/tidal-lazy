@@ -103,7 +103,7 @@ They are composable by dot operator so you could set instrument partially.
 
 
 ```
-inst $ inst $ hh "myhat:2" . sn "mysnr:1"
+inst $ hh "myhat:2" . sn "mysnr:1"
 ```
 
 ## Use as a Pattern ParamMap

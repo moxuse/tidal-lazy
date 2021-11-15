@@ -1,5 +1,5 @@
 name:                tidal-lazy
-version:             0.1.0.0
+version:             0.1.0.1
 github:              "githubuser/tidal-lazy"
 license:             BSD3
 author:              "Author name here"
@@ -24,7 +24,7 @@ dependencies:
 - containers >= 0.6.0.1
 - base >=4.7 && <5
 - random
-- tidal >= 1.1.2
+- tidal >= 1.7.4
 
 library:
   source-dirs: src
@@ -41,7 +41,7 @@ executables:
     - containers >= 0.6.0.1
     - base >=4.7 && <5
     - random
-    - tidal >= 1.0.7
+    - tidal >= 1.7.4
     - tidal-lazy
 
 tests:

@@ -1,0 +1,27 @@
+setcps (152/120/2)
+
+do
+  let pat = "<0 1 ~> [1 0] [~ 0 ~ 1] 1 [1 0] ~ <~ 1> 0"
+  let pat2 = "~ 1 0 0 <1 ~> [~ 1] <[1 0] 0> <0 1>"
+  let x =  gain pat
+  let y =  gain pat2
+  let z =  gain (inverse <$> pat2)
+  d1
+    $ msvoC 0
+    $ sometimesBy 0.4 (within (0.25,0.75) (|+ squiz 2 ) .( |+ accelerate "{0 0.0.4 0.04 -1 2 0 1}%4"))
+    $ sometimesBy 0.4 (within (0.5,0.75) (rev . msvoB 0))
+    $ sometimesBy 0.2 (within (0,0.6) ((iter 2) . (|+ mfDel)))
+    $ stack [
+      x # s "mhh2:1" |+ slowSpeedR 3
+      , y # s "mbd:9" 
+      , x # s "mb2:1?" |+ sus 0.2 |+ accelerate "<0.03 -0.93 -0.5> 0 -1" 
+      , z # s "msn2:10?" 
+      -- , x # s "zap:30?" 
+      , z # s "[mst:9? zap:12]/3" |+ wah 0.08 |+ gain "{1 0.2 1 0.1 1 0.3}"  |+ sus "{0.3 0.4 0.1 1 0.7 0.1}" |+ slowSpeedR 2 
+    ]
+    |+ mDefault
+    |+ room "{0 0.02 0.04 0.05 0 0.1}"
+    -- |+ dist 0.2
+    -- |+ n 21
+  
+uhush

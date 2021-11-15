@@ -1,0 +1,108 @@
+setcps (146/120/2)
+
+d4 $ slow 64 $ s "sync"
+
+do
+  let pat = "{<0 1 ~ 1> 0 0 ~ ~ 1 0 <~ 0 ~ 1> 0 1 ~ 0 ~ 1 0 1}%16"
+  let pat2 = "{~ 1 0 0 <1 ~> [~ 1] <1 0 0> <0 1>}%4"
+  let x =  gain pat
+  let y =  gain pat2
+  let z =  gain (inverse <$> pat)
+  let w =  gain (inverse <$> pat2)
+  d1
+    -- $ (0.25~>)
+    -- $ mask (slow 2 $ "t f [f t f t] [t f]/2")
+    -- $ mask (slow 1 $ "t f t t")
+    -- $ mask (slow 2 $ "f t <t f> t f")
+    $ sometimesBy 0.3 (within (0.5,1) (|+ binshfR) . (|+ dist 0.076) .( |< accelerate "{0 0.0.4 0.04 -1 1 -0.3 0 0.07}%3"))
+    $ every 6 (within (0.8,1) (msvoA 0) . (|+ squiz "0 <2 0 1 0>") . (|> wah 0.03))
+    $ sometimesBy 0.5 (within (0, 0.8) ((mask "f <f t> t <t f t>") . (|+ mfDel' "0.9 0.5 0.2") ))
+    $ sometimesBy 0.3 (within (0.6, 0.75) ((rev) . (slow 2)))
+    $ unison "mbd" (s "zap:24?" |+ mGain)
+    $ stack [
+      x # s "mhh:0" |+ up "{[0 9] [-7 3] [5 2] [0 7] [0 1]}%9"
+      , z # s "mbd:2" |* speed "[0.97 0.6 5 2] [1 0.85] [1.25 1.75] 1.5" |+ cutoff (slow 2 (range 350 2200 $ sine))
+      , degradeBy 0.75 $ w # s "<mnz:19 mst:9>" |+ slowSpeedR 3  |+ sus "<0.23 1 0.1 0.6 0.8>" |+ slowSpeedR 3
+      , degradeBy 0.6 $ y # s "[msn2:1, zap:18?]/3" |+ sus "{0.3 0.4 0.2 1 0.17 0.1}" |+ slowSpeedR 2 
+      , degradeBy 0.65 $ w # s "[mst:1, ml4:9?]/2" |+ slowSpeedR 2 |+ n "<12 9>" 
+    ]
+    -- |+ mDefault
+    |+ mGain |+ slowPanS 3
+    -- |+ wah 0.03
+    |+ sus "<0.9 0.25> <0.4 0.75> 0.4 0.5 0.3 1"
+    |< room 0
+
+
+setcps (146/120/2.5)
+
+d2 $ s "~ mst:4 ~ ~" |+ mGain
+
+d3 
+  $ off 0.125 (off 0.33 (|+ up "7"))
+  $ mask "[f f f t t]/2" $ s "ml5:11(9,16)"
+  |+ up (scale "dorian" "{1 3 0 -2 5 <8 12> 6}%2" + 5 + 24 ) 
+  |+ hpf 500 
+  |+ wah 0.1
+  |+ squiz 0.86
+  -- |+ delay 0.3
+  -- |+ delaytime 0.28
+  |+ mGain 
+  |+ room 0.1
+
+d6 silence
+
+d1 silence >> d5 silence >> d2 silence
+
+d5 
+  $ mask (slow 2 $ "f f <t f> f")
+  $ off 0.125 (|+ up "7")
+  $ s "[ml2:4(6,16), zap:4(3,16)]" 
+  -- $ s "[ml5:13(6,16), zap:4(3,16)]" 
+  |+ up (scale "dorian" "{<8 3>/2 0 1 <3 -2> <0 5> <2 0>/2 <6 3>/2 3}" + 5 + "<0 5>/2")
+  |+ sus "{0.3 0.4 0.8 0.3 0.8 0.1}"
+  |+ delay 0.3
+  |+ delaytime 0.2
+  |+ shape 0.15
+  |+ room 0.1
+  |+ mGain
+
+do
+  d3 silence >> d6 silence
+  d1
+    $ mask (slow 2 $ "t f <t f> t f")
+    $ degradeBy 0.27
+    $ off 0.35 (off 0.35 (|+ speed "2"))
+    $ s "[ml:6(5,23), msoz:8(3,16)]"
+    |+ chorus 0.021
+    |+ coarse 3
+    |+ cutoff (slow 3 (range 600 7000 $ sine))
+    |+ hpf 100
+    |+ sus (range 0.1 1.0 $ rand)
+    |* speed 1.63
+    |+ accelerate "{-1.04 0.36 -1.21 1 0.4 -1.04}"
+    |+ up "<0 5 8 7>/2"
+    |+ room 0.2
+    |+ gain 1.2
+
+  d6
+    $ off 0.125 (off 0.43 (|+ up "<5 7>/2"))
+    $ s "~ mpd3:16/2 ~"
+    |+ shape 0.2
+    |+ wah 0.04
+    |+ sus 1.25
+    |* speed 0.5
+    |+ up "<0 0 -5 -2>/2"
+    |+ gain 1.2
+
+d1 silence
+
+
+-- do
+  -- d1 
+    -- |+ room 0.05
+    -- |+ mGain 
+    -- |+ delay 0.135
+    -- |+ cps "<1.35  0.45>"
+  -- d3 silence
+
+
