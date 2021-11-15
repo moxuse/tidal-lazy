@@ -87,8 +87,15 @@ mStut' pt sp s = sometimes (stut 4 1 1)
 
 mvSpeed pt s = within (0.2, 0.85) (# speed (sometimesBy 0.75 ((slow "<0.75 2 1.25>") . (sometimes rev)) pt)) $ s
 
-unison p f pt = overlay (rotR shiftT f) pt
+unWrapPlace :: Maybe Arc -> Arc
+unWrapPlace x = 
+  case x of
+    Nothing -> Arc 0 1
+    Just  x -> x
+
+unison p f pt = overlay (rotR shiftT f) pt  
   where matches = matchManyToOne (flip $ Map.isSubmapOfBy (==)) p pt
         matched :: ControlPattern
         matched = filterJust $ (\(t, a) -> if t then Just a else Nothing) <$> matches
-        shiftT = start $ whole ((queryArc matched (Arc 0 1))!!0)
+        place = whole ((queryArc matched (Arc 0 1))!!0)
+        shiftT = start $ (unWrapPlace place)

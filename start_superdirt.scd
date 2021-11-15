@@ -1,6 +1,8 @@
 (
 var numChannels, viznut_sig, viznut_buf;
-
+var diversions = ();
+var syncTempo = TempoClock.new; // sync Tempo
+var tempo = 120 / 150;
 
 // s.options.device_("Soundflower (2ch)");
 
@@ -10,6 +12,7 @@ var numChannels, viznut_sig, viznut_buf;
 
 // configure the sound server: here you could add hardware specific options
 // see http://doc.sccode.org/Classes/ServerOptions.html
+s.options.sampleRate = 44100;
 s.options.numBuffers = 1024 * 256; // increase this if you need to load more samples
 s.options.memSize = 8192 * 64; // increase this if you get "alloc failed" messages
 s.options.maxNodes = 1024 * 64; // increase this if you are getting drop outs and the message "too many nodes"
@@ -21,24 +24,63 @@ s.waitForBoot {
   ~dirt = SuperDirt(2, s); // two output channels, increase if you want to pan across more channels
   ~dirt.loadSoundFiles;   // load samples (path can be passed in)
   //s.sync; // wait for samples to be read
-
-  ~dirt.loadSoundFiles(Platform.resourceDir ++ "/sounds/superdirt/*", true);   // load samples (path can be passed in)
+  ~dirt.loadSoundFiles(Platform.resourceDir ++ "/sounds/superdirt/*", true);   // load samples (path can be passed in)P
   s.sync; // wait for samples to be read
 
   ~dirt.start(57120, [0, 0]);   // start listening on port 57120, create two busses each sending audio to channel 0
 
   // optional, needed for the sclang tests only:
-  (
-
-    ~d1 = ~dirt.orbits[0]; // one orbit
-    ~d2 = ~dirt.orbits[1];
-
-  );
+	// (
+	//
+	// 	~d1 = ~dirt.orbits[0]; // one orbit
+	// 	~d2 = ~dirt.orbits[1];
+	// );
 
 
   s.latency = 0.1; // increase this if you get "late" messages
 
   numChannels =  ~dirt.numChannels;
+
+	//clock for Orca sync
+
+	~dirt.soundLibrary.addSynth(\sync, (play: {
+		/*syncTempo.clear;
+		syncTempo = TempoClock.new;
+		syncTempo.tempo = tempo;
+		syncTempo.schedAbs(0, { arg beat, sec;
+			var current;
+			current = (beat * 8).asInteger;
+			NetAddr("localhost", 49160).sendMsg("frame:" ++ current);
+			1
+		});*/
+		NetAddr("localhost", 49160).sendMsg("frame:0");
+	}));
+
+	~dirt.soundLibrary.addSynth(\dig0, (play: {
+		NetAddr("localhost", 49160).sendMsg("write:E;2;16");
+	}));
+	~dirt.soundLibrary.addSynth(\dig1, (play: {
+		NetAddr("localhost", 49160).sendMsg("write:E;2;18");
+	}));
+	~dirt.soundLibrary.addSynth(\dig2, (play: {
+		NetAddr("localhost", 49160).sendMsg("write:E;2;20");
+	}));
+	~dirt.soundLibrary.addSynth(\dig3, (play: {
+		NetAddr("localhost", 49160).sendMsg("write:E;2;22");
+	}));
+	~dirt.soundLibrary.addSynth(\dig4, (play: {
+		NetAddr("localhost", 49160).sendMsg("write:E;16;16");
+	}));
+	~dirt.soundLibrary.addSynth(\dig5, (play: {
+		NetAddr("localhost", 49160).sendMsg("write:E;16;18");
+	}));
+	~dirt.soundLibrary.addSynth(\dig6, (play: {
+		NetAddr("localhost", 49160).sendMsg("write:E;16;20");
+	}));
+	~dirt.soundLibrary.addSynth(\dig7, (play: {
+		NetAddr("localhost", 49160).sendMsg("write:E;16;22");
+	}));
+
 
   /**
    * superdirt filter modulest

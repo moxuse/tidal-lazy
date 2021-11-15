@@ -1,0 +1,9 @@
+u1 $ thing "crab*10 salmon1*10 ac*8"
+|+ duration 4
+|+ y 1.8
+|+ x (slow 1.5 (range (-0.8) 0.9 sine))
+|+ z (slow 0.5 (range (-0.8) 0.8 sine))
+|+ rigid 1
+
+
+uhush

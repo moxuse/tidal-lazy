@@ -1,0 +1,146 @@
+setcps (120/150)
+
+do
+  x <- lazy' 8 $ inst3
+  d2
+    $ (0.5<~)
+    $ slow 2
+    $ every 2 (mask "[<f t> f f t]*2")
+    $ every 3 (stutWith 2 0.25 (|+ speed (range 2 0.2 $ slow 5 sine)))
+    $ sometimesBy 0.5 (|+ mDefault)
+    $ sometimesBy 0.4 (|+ brick "{0.3 1.0 2.0 0.08 0.7 3}%3") . (|+ dist "<0 0.2>") . (|+ vowel  "a e o")
+    $ sometimesBy 0.3 (|+ coarse "[2 2 4 2 2 2]") . (|+ slowSpeedR "[2 3 0.75]/9") 
+    $ degradeBy 0.75
+    $ x
+    |+ accelerate (rot "<0 1 3>" $ "{0.03 -1 0.2 0.0 -0.26}%3")
+    |+ unit "{s r r s r}"
+    |+ n "31 [~ 31]/2 24 <12 ~>"
+    |+ end "<0.75 0.025> 0.125 <0.2 0.05> <0.05 1.5>"
+    |+ slowSpeedR 4
+    |* speed 0.7
+    |+ room "{0.025 0 0.03 0 0.05}%3"
+    |+ gain 0.5
+
+d1 
+  $ (0.5<~)
+  $ every 2 (mask "[t f f f]*2")
+  $ every 8 (within (0.3, 0.4) (stutWith 4 0.125 (|+ accelerate (range 2 (-0.2) $ slow 1.5 sine))))
+  $ every 5 (within (0.5, 0.75) (rot 1) . (slow "<2 1>"))
+  $ every 6 (within (0.75, 1) (density 0.5) . (within (0.1, 0.2) (density 2)))
+  $ sometimesBy 0.1 (|+ slowSpeedR 3)
+  $ unison "mbd" (s "[mst:21(3, 5), zap:9?*2]/<3 2>" |+ n "<2 31 26>" |+ coarse "2 <2 8 2 2 4>" |+ mGain)
+  -- $ s "[[mbd:21(1,2) mbd:1(5,8)]/2, [~ ~ msn2:2/2 ~]]" 
+  $ s "[mhh:11*<8 16>, [mbd(1,4) mbd:1(<3 4 5>,8)]/2, [~ ~ msn2:10 ~]]" 
+  -- $ s "[mhh:11*<8 16 12 8 <4 10> 16>, [mbd(1,4) mbd:1(<2 4 3 5>,8,<1 0>)]/2, [~ ~ msn2:10 ~]]" 
+  |+ mGain
+  |+ gain "[0.3 0.95]*4"
+  |+ sus "{<0.75 0.45> <1 0.3 0.25> <1 0.25 0.4> 0.1}*4"
+  |+ end "{<0.8 0.5><1 0.3 0.25> <0.5 0.25 0.1> 0.1}*2"
+  |+ up (rot "<2 0 1 -2>" $ "[<-1 2> 4 <1 -7 5> <3 1>]*4")
+  |+ shape "0 [0 0.1]*2 [0.1 0]*2 0"
+  |+ cutoff (range 1200 21000 (slow 1.25 $ sine))
+  |+ slowPanS 3
+  |+ n "[19 2 4] [1 9]/4 [1 23 34]/3"
+  -- |+ mDefault
+
+d5
+  $ whenmod 8 4 (mask "f")
+  $ s "zap*16"
+  |+ accelerate (range 0.2 0.5 saw)
+  |+ up "[5 8]*8" 
+  |+ mGain
+  |+ shape 0.2
+  |+ speed "9"
+  |+ hpf 5730
+  |+ sus "0.1 0.1 0.1 0.125"
+  |+ n 28
+
+d5
+  $ (0.5<~)
+  $ slow 4
+  $ s "~ ~ msoz:8 ~"
+  |+ n "<0 4>"
+  |+ hpf 900
+  |+ dist 0.4
+  |+ begin 0.7
+  |+ end 0.85
+  |+ pan (-0.5)
+  |+ speed 6
+  |+ 1.1
+
+d3 
+   $ (0.5<~)
+    $ mask "[t <t f> <t f> <t f f>]"
+    $ every 6 (within (0.25, 0.75) (rot 1) . (0.125<~) . (slow "<0.75 1.5>"))
+    $ every 7 (within (0.25, 0.5) (stutWith 2 0.125 (|+ accelerate (range 0.1 (-2) $ slow 0.75 sine))))
+    $ every 4 (within (0.5, 0.8) (rot 2) . (slow "<2 1.5>"))
+    $ every 5 (within (0.25, 0.5) (hurry 1.5))
+    $ s "mb:4(4,8)"
+    |+ up (scale "<minor>" ("-1 -3 2 <0 7> -2 5" + "[5 12]/2")) 
+    |+ sus "[<0.25 0.2> 0.5] <0.04 0.1> 0.08 <1 0.3>"
+    |+ shape "0.2 <0.1 0 0.2>"
+    |+ phasr "[0.3 0.2 0]*2"
+    |+ mGain
+    |+ n "6"
+
+d2 silence
+
+d3 silence
+
+d4 $ slow 16 $ s "sync"
+
+d4 silence
+
+hush
+
+
+--------------------------------
+
+
+do
+  let pat = "{<~ 0> [<1 ~> 0] <1 0> ~ 1 ~ [0 1/2] 1 ~ 0 <1*2 ~ 0 ~> 1 [1 0] ~ 1 0}%8"
+  let x = gain pat
+  let y = gain (inverse <$> pat)
+  d1 
+    $ slow 2
+    $ every 5 (within (0.5, 0.75) (stutWith 2 0.125 (|+ coarse "[2 4 8]*4")) . (|+ binsmr 0.25))
+    $ every 7 (within (0.75, 1) (rot "<1 3>/4") . (|+ wah "<0 0.04 0 0.1 0>") . (0.125<~) . (|+ mfDel))
+    $ every 4 (within (0.25, 0.5) (stutWith 3 0.125 (|+ slowSpeedR 3) . (|+ up 7)))
+    $ every 3 (within (0, 0.5) (|+ binsmr 0.4) . (|+ up (-2)) . (|+ accelerate "0.02 0.5 -0.15 0.3"))
+    $ unison "mbd" (s "[ml4:9, zap:4?]/<3 2>" |+ sus 0.35 |+ binfrz 0.3 |+ n "13" |+ coarse 4 |+ mGain)
+    $ unison "mbd" ((0.525~>) $ s "ml3:3/6" |+ n "13" |+ coarse 4 |+ mGain)
+    $ unison "mbd" ((0.075~>) $ s "ld0/2" |+ n "23" |+ sus 0.35 |+ coarse 4 |+ mGain |+ up (-5) |+ shape 0.4)
+    $ unison "mhh" ((0.125~>) $ s "<ml4:14 zap:2>" |+ binsmr 0.3 |+ n "<5 6>" |+ mGain)
+    $ unison "mhh" ((0.125<~) $ s "<ml4:8 msn2:27 mpd:9>" |+ dist 0.2 |+ begin 0.125 |+ n "9" |+ coarse "<2 4>" |+ mGain |+ slowSpeedR 3)
+    $ stack[ 
+      x |+ s "mhh:3"
+      , degradeBy 0.45 $ slow 4 $ y |+ s "zap:4" |+ coarse 4 # sus "<0.5 0.3>"
+      , y  |+ s "mbd:7"
+    ]
+    |+ sus "0.125 [0.2 0.125, <0.5 1.2> 0.125]/2 <0.04 0.1> 0.8 <1 0.3>"
+    |+ shape "[0 0.3]*4"
+    |+ speed "[1 1.25]*4"
+    |+ accelerate (range 0.4 (-0.25) (slow 3 $ sine))
+    |+ n "0 5 0 0 0 0 0 <9 12>"
+    |+ room "{0.025 0 0.03 0.1 0.05}%3"
+    |+ mGain
+    |+ slowPanS 3
+
+
+d3 
+    $ mask "[t <t f> t <t f t>]"
+    $ every 6 (within (0.25, 0.75) (rot 1) . (0.125<~) . (slow "<0.75 1.5>"))
+    $ every 7 (within (0.25, 0.5) (stutWith 2 0.125 (|+ accelerate (range 0.1 (-2) $ slow 0.75 sine))))
+    $ every 4 (within (0.5, 0.8) (rot 2) . (slow "<2 1.5>") . (|+ accelerate (range 0.1 (-2) $ slow 0.5 sine)))
+    $ every 5 (within (0.25, 0.5) (hurry 1.5))
+    $ s "mb:4(5,8,<0 1 1 2>)"
+    |+ up (scale "<dorian>" ("1 <-2 -3 5> 2 <-4 0 7> -2 <3 10 5>" + "5")) 
+    |+ sus "[<0.25 0.2> 0.5] <0.04 0.1> 0.08 <1 0.3>"
+    |+ shape "0.2 <0.1 0 0.2 0.4>"
+    |+ mGain
+    |+ n "6"
+
+
+d4 $ slow 16 $ s "sync"
+
+d1 silence
