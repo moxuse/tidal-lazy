@@ -31,18 +31,22 @@ do
     |+ n "0 5 0 0 0 0 0 <9 12>"
     |+ room "{0.025 0 0.03 0.02 0.05}%3"
     |+ mGain
+    |+ mfDel' "[0 0.95]*4 0"
+    -- |+ mDefault
     |+ slowPanS 3
 
 d1 silence
 
 d2
   -- $ msvoB 0
-  $ s "[mnz:20?(3,8) msoz:9*3]/4" |+ sus "<1 0.75>" 
-  |+ up (scale "superLocrian" "0 [-5, 2] <7 3> -1 -6" + 4 - "<-7 5>") 
+  $ s "[mnz:20?(3,8) msoz:9*3]/8" |+ sus "<1 0.75>" 
+  |+ up (scale "hijaz" "0 [-5, 2] <7 3> -1 -6" + 4 - "<-7 5>") 
   |+ shape 0.2 |+ delay 0.75 
-  |+ crush 12
-  |+ end "<1 0.75> 1" |+ mGain 
-  |+ n "4 10"
+  |+ crush 8
+  |+ accelerate "0.2 -0.04 -0.03 0.2"
+  |+ n "9 10"
+  -- |+ pan "0.25 0.6"
+  |+ mDefault
   |+ orbit 0
 
 d2
@@ -50,9 +54,9 @@ d2
     s "dig4"
     , s "~ [~ ~ dig3(3,8)]/2 ~"
     -- , s "[~ dig0/4, ~ ~ ~ dig2/12, ~ [~ dig1]/4 ~]"
-    , s "[ml4:19(5,8) ml4:19?*4]/8" |+ sus "<1 0.5 0.75>" |+ up (scale "superLocrian" "0 [-5, 2] <7 3> 10 -6" + 4 + 24) |+ delay 0.5 |+ crush 4 |+ shape 0.4 |+ end "<1 0.75 0.5>" |+ mGain |+ n 0 
-    -- , msvoB 0.125 $ s "ml2:8(<3,1,2>,8)?" |+ coarse 8 |+ mGain |+ wah 0.04 |+ begin"{0.2 0 0.4 0 0.3}" |+ end "<0.05 0.1 0.2>" |+ delay 0.125 |+ up (scale "aeolian" 7 + "<-4 -6 0 12>/2" + (range (-10) 9 (slow 1 $ sine))) |+ slowPanR 3
-    -- , s "~ [~ [~ pluck(3,8)]*3]/4 ~ ~" |+ chorus 0.015 |+ sus "<1 1 2>" |+ dist 0.2 |+ up (scale "aeolian" "<3 0> -1 <7 3> <-2 0> 7"  + 7 + "<8 13 8>" + "<7 9>/2") |+ room 0.3 
+    , s "[ml4:19(5,8) ml4:19?*4]/8" |+ sus "<1 0.5 0.75>" |+ up (scale "hijaz" "0 [-5, 2] <7 3> 10 -6" + 4 + 24) |+ delay 0.5 |+ crush 4 |+ shape 0.4 |+ end "<1 0.75 0.5>" |+ mGain |+ n 0 
+    , msvoB 0.125 $ s "ml2:8(<3,1,2>,8)?" |+ coarse 8 |+ mGain |+ wah 0.04 |+ begin"{0.2 0 0.4 0 0.3}" |+ end "<0.05 0.1 0.2>" |+ delay 0.125 |+ up (scale "aeolian" 7 + "<-4 -6 0 12>/2" + (range (-10) 9 (slow 1 $ sine))) |+ slowPanR 3
+    , s "~ [~ [~ pluck(3,8)]*3]/4 ~ ~" |+ chorus 0.015 |+ sus "<1 1 2>" |+ dist 0.2 |+ up (scale "aeolian" "<3 0> -1 <7 3> <-2 0> 7"  + 7 + "<8 13 8>" + "<7 9>/2") |+ room 0.3 
   ]
   |+ orbit 0
   -- |+ up  12
@@ -65,8 +69,10 @@ d3
     $ mask "[t <t f> t <t f t>]"
     $ every 4 (within (0.5, 0.8) (rot 2) . (slow "<2 1.5>") . (|+ accelerate (range 0.1 (-2) $ slow 0.5 sine)))
     $ s "ml:5(5,8,<0 1 1 2>)"
-    |+ up (scale "superLocrian" ("1 <-2 -3 5> 2 <-4 0 7> <-2 12> <3 24 5 16>" - 1 + "<3 5 7 2>")) 
+    |+ up (scale "hijaz" ("1 <-2 -3 5> 2 <-4 0 7> <-2 12> <3 24 5 16>" - 1 + "<3 5 7 2>")) 
     |+ sus "[<1 0.2> 0.5] <0.04 1> 0.8 <1 0.3>"
+    |+ accelerate "-0.03 0.5 -0.01 -0.4"
+    -- |+ modl "0 [0.2 0.1 0]*2"
     |+ crush 8
     |+ shape "0.2 <0.1 0 0.2 0.4>"
     |+ mGain
