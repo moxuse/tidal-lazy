@@ -1,16 +1,17 @@
 setcps 0.45
 
 do
-  x <- lazy' 2 inst1
-  -- x <- lazy'' "fftff" inst3
+  -- x <- lazy' 2 inst1
+  x <- lazy'' "tftft" inst3
   d1
-    $ degradeBy 0.48
+    -- $ degradeBy 0.48
     $ sometimesBy 0.2 (0.125<~)
-    $ msvo 0.125
+    $ msvoB 0.125
     $ whenmod 4 3 (rot "<1 2>")
     $ sometimesBy 0.25 (|+| flangeL)
     $ x
     |+ mDefault
+    -- |+ mfDel' "{0.2 0 0.9 0 0.5}"
     |+ shape 0.2
     |> pan (range (-0.5) 0.5 rand)
     |> accelerate "{0.03 0.1 0.04 0.05 2 0 0.04}%13"
@@ -58,7 +59,7 @@ do
   x <- lazy' "<2>" $ inst1 {bd' = "mbd:17"}
   d1
     $ degradeBy 0.125
-    $ sometimesBy 0.125 (msvoB 0)
+    -- $ sometimesBy 0.125 (msvoB 0)
     $ sometimes (within (0.0, 0.25) (density "<1.125 0.75>"))
     $ every 9 (within (0.75, 1) (striate 3))
     $ every 7 (within (0.25, 0.75) (0.125 ~>) . (rot 2) . (rev))
@@ -66,13 +67,14 @@ do
     $ x
     |> sus "[0.125 0.2 0.125 0.2]*2"
     |+ chorus 0.0015
-    |+ speed 1.25
-    -- |+ slowSpeedR 3
+    -- |+ speed 1.25
+    |+ slowSpeedR 3
     |+ slowPanS 3
-    -- |+ speed 1.2
+    |+ speed 1.2
     |+ coarse "{2 12 2 4 8 12 2 2 8}%3"
     -- |+ crush "{2 1 2 3 8}%3"
     -- |+ brick "{0 2 0 0 1 0 2 1 0}%8"
+    |+ mfDel' "0.2 0.8 0.05 0.9 0"
     |+ cutoff (slow 4 (range 800 12000 sine))
     |+ mGain
     |+ slowPanR 3
