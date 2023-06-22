@@ -1,0 +1,17 @@
+setcps 1.1
+
+d1
+  $ slow 2
+  $ off 0.125 (|+ n "[5 -7 -2 7]/2")
+  $ n (scale "locrian" (run "1 [~ 1]/2 4/2 1"))
+  |+ s "midi" |+ midichan 0
+
+
+d2 
+  $ slow 2
+  $ s "[[~ ~ mhh:1*2]*2, [~ msn:16]*2, mbd:2 mbd:2/2 ~ ~]"
+  |+ mGain
+
+d3 
+   $ n "~ 12*2 ~"
+   |+ s "midi" |+  midichan 1

@@ -1,0 +1,40 @@
+setcps (0.6)
+
+d1 
+  $ every 4 (within (0, 0.25) (striate 2)) 
+  $ n "~ [-12/2 ~]/8 ~ -4/4 [12 -4]/19" 
+  |+ s "midi" # midichan 4
+
+d2 
+  $ (0.075~>)
+  $ every 4 (within (0.75, 1) (chop 3))
+  $ n "-4 [0 ~ 9] 3" 
+  |+ s "midi" # midichan 0
+
+d3
+  $ (0.125~>)
+  $ every 4 (0.125~>)
+  $ every 2 (within (0, 0.5) (0.125~>))
+  $ n "[~ -16/3 ~ ~]/4 ~ 0 ~"
+  |+ s "midi" # midichan 1
+
+d4
+  $ (0.075<~)
+  $ n "0(6,16)"
+  |+ up (scale "dorian" "0 -3 [-1 7] -2 4 9" + "<0 2 0 2>")
+  |+ s "midi" # midichan 2
+ 
+d5
+  $ slow 2
+  $ n "0(<2 1 1 1>,32,<6 12 16>)"
+  |+  up  (scale "dorian" "[[0 3 -4] [-8 3 2]]/2 [[4 5] [-3 2]]" + "<0 2>"  + "7")
+  |+ s "midi" # midichan 3
+
+d6
+  $ slow 4
+  $ (0.125~>)
+  $ n "0(2,16,2)"
+  |+ up (scale "dorian" "[-1 5 4] [0 7] [[2 -4] [2 3 12] [5 10]]/3" + "<0 2>" -12)
+  |+ s "midi" # midichan 5
+
+d6 silence

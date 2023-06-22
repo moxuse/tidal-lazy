@@ -1,0 +1,47 @@
+setcps 0.48
+
+d1
+  $ slow 6
+  $ every 4 (striate' "<2 4>/2 3" 0.5) . (|+ sus 1)
+  $ s "mpd:10(4,12)"
+  |+ sus 4
+  |+ cutoff (range 800 1800 sine)
+  |+ coarse "{2 8 12 4 4}%6"
+  |+ squiz "<1 1.5> 1"
+  |+ mGain
+  |+ room 0.3
+  |+ up(scale "iraq" "[0,5,11] [-2,3,7,9] [-4,7,14] 4" + "<0 -12>")
+
+
+do
+  x <- lazy' 2 $ inst0
+  d2
+    $ every 2 (striate' "<6 3 18>/2 <12 18>/3" "<0.125 0.05 0.025>") . (|> up "0 2 5 -5 7 -12") . (within (0.25, 0.5) rev)
+    $ slow 8
+    $ msvoS 0
+    $ x
+    |+ sus "{4 0.2 <0.05 1> 4.85 <1.03 2> 0.25}%8"
+    |+ mGain
+    |+ slowPanS 2
+    |+ speed "-0.45 <2 -1> 12 <0.5 0.3>"
+    |+ mfDel' "<0.4 0 0.8> 0.75 0.03 <0.8 0> 0.8"
+    |+ cutoff "<1200 9800 4500 500>/1.75"
+    |+ room "0.02 0.1 0.05 0.1"
+    |+ loop 3
+    |+ accelerate "{-0.3 -0.04 0.1 0 -0.2 0}%8"
+    |+ room 0.02
+    |+ n "5 17 38"
+
+d3
+  $ (striate' "24 4 12 6" (range 0.073 0.25 $ sine)) . (|+ up (scale "dorian" "1 -2 3 12 -4 5")) . (|+ sus 0.25)
+  $ slow 8
+  $ s "[ml:3(6,32), mb2:1*4]"
+  |+ up (scale "dorian" "4 0 5 9 -4 7 18" + "2 3 1 7" - "<7 12>")
+  |+ sus "{0.04 1 0.125 0.45 0.5 1 2}%8"
+  -- |+ wah 0.03
+  |+ mGain
+  |+ slowSpeedR 3
+  |+ slowPanR 3
+  |+ room 0.3
+
+d3 silence

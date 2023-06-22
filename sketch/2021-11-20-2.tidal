@@ -1,0 +1,6 @@
+d1
+$ s "mhh:9*2"
+|+ mGain
+-- |+ accelerate (range "-0.3" 0.4 sine)
+-- |+ speed (range 1.3 0.7 sine)
+|+ mfDel
