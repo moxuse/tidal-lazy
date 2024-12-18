@@ -1,0 +1,38 @@
+setcps (128/120/2)
+
+do
+  let pat = "{[0,1] <0 ~ 1> [0, 1] <1 ~ 0 0> 1 <0 1 ~> ~ <[1,0] 0> ~ <~ 0 ~ 1>}%16"
+  let x =  gain pat
+  let y =  gain (inverse <$> pat)
+  d1 
+    $ rarely (within (0.75, 1) (msvoB 0))
+    $ every 2 (within (0, 0.5) (stut' 3 (1/128) (|* speed "[6 3 0.75]/5 <1 0.73> 0.9 2 <4 6>/2"))) 
+    $ every 5 (within (0.75, 1) (stut' 6 (1/64) (|+ accelerate "-0.3 0.5 0.04 -0.28"))) 
+    $ unison "mbd2" "win"
+    $ unison "mhh" "win2"
+    $ stack [ 
+      (x  |+ s "mbd2:8")
+      , (y  |+ s "mhh:3")
+      ]
+    |+ mGain
+    |+ slowSpeedR 3
+    |+ slowPanS 4
+    |+ room "0 [0 0.04]/3 <0.3 0> [<0 0.2> 0]"
+    |+ up "[8 12]/4 <-2 5 24 6> -2 4 <2 5>"
+
+d2  $ sometimes (0.05~>) . (rev) 
+  $ unison "knz" "win3"
+  $ slow 2
+  $ s "knz:9*3"
+  |+ up "<2 8> [15 -6]/3 <-36 0 5>"
+  |+ n "8 [8 4]/3 <~ 11>"
+  |+ mGain
+  |+ slowSpeedR 3
+  |+ room 0.3
+
+
+d1 silence
+
+d1 silence
+
+hush

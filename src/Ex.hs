@@ -69,6 +69,10 @@ msvoC time s = every 4 (|+ mfDel' (slow 2 (range 1 0.01 rand)))
 inverse 1 = 0
 inverse 0 = 1
 
+-- shift random seed
+shift' n p = (n <~) p
+shrand  n = shift' n $ rand
+
 so0 s = spaceOut [1, 0.75, 1.33, 2] $ s
 so1 s = spaceOut [2, 0.75, 0.33, 2] $ s
 so2 s = spaceOut [1, 0.1, 2.33, 2, 0.5] $ s
@@ -96,3 +100,16 @@ unison p f pt = overlay (rotR shiftT f) pt
         matched :: ControlPattern
         matched = filterJust $ (\(t, a) -> if t then Just a else Nothing) <$> matches
         shiftT = start $ unpackQuery $ whole ((queryArc matched (Arc 0 1))!!0)
+
+-- custom oscllation funcs
+parabolamod = listToPat([x^2 | x<-[0.1,0.12..0.5]])
+recparabola = listToPat([1/x^2 | x<-[0.1,0.12..0.5]])
+linmod = listToPat([0.4*x+0.4 | x<-[0.1,0.12..0.4]])
+sinemod = listToPat([sin(0.4*x+0.4) | x<-[0.1,0.12..0.4]])
+cosmod = listToPat([cos(0.4*x+0.4) | x<-[0.1,0.12..0.4]])
+downstairs = listToPat([x | x<-[1 ,1, 0.8 ,0.8 ,0.6, 0.6, 0.4, 0.4, 0.2, 0.2, 0, 0 ]])
+sinosc  min max frq = (fast frq $ range min max sine)   
+triosc  min max frq = (fast frq $ range min max tri)
+sqrosc  min max frq = (fast frq $ range min max square)
+sawosc  min max frq = (fast frq $ range min max saw)
+randosc min max = (range min max rand)

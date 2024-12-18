@@ -1,0 +1,125 @@
+setcps (124/120/2)
+
+d1
+  $ slow 4
+  -- $ msvoB 0
+  -- $ every 2 (mask "t f [t f t]*2 t f")
+  $ sometimes (within (0, 0.25) (stut' 8 (1/16) (|* gain "0.99..0.5") . (|+ sus 0.5)))
+  $ shift' 9
+  $ sometimes (within (0.5,0.625) (stut' (choose [4,4,8]) (1/16) (|+ accelerate "1.2..0.04")))
+  $ stack [ 
+    (s "psr:3(2,4) uxay:3(3,8)")
+    ,(s "[procshort:10 ul*3, kurt:3]")
+    ,(s "[808:1(<12 8>,32) ~]*2") |+ sus 0.3
+    ,(s "~ mbd:9*2 mbd:9(<5 3>,8)")
+    ,(s "[msn:16/2 <mst:14 ~>]/2 ~")
+  ]
+  |+ shape 0.125
+  |+ slowPanR "<-0.5 1 0.03>"
+  -- |* speed 0.86
+  |+ dist "{0.1 <0 0.1 0> 0.02 0.04 0.06 <0.02 0.01> 0 0.013}%12"
+  |+ accelerate "0 [-0.2 0.75]/2 <0.04 0.01 -0.75> 1 <-0.04 0>"
+  -- |+ n "[0 4 9]*4"
+  -- |+ mGrav
+  |+ gain 1.2
+ 
+d2
+  $ every 2 (within (0.25, 0.5) (|+ up "5 2 7"))
+  $ sometimes (within (0.5,0.75) (stut' (choose [2,2,4]) (1/16) (|* gain "0.9..0.35") . (|+ accelerate "-0.3..1")))
+  $ stack [ 
+    (s "[808mt:1(<4 2 3>,8), [[~ khh:8/2]/4] ~]")
+  ]
+  |+ sus (sinosc 0.5 0.05 0.3)
+  |+ slowPanR "<-0.5 1 0.03>"
+  |+ accelerate "0 [-0.2 1.75]/2 <0.04 0.01 -0.05> 1 <-0.04 0>"
+  |+ gain (sinosc 1.1 0.9 0.254)
+  |+ room 0.02
+
+-- lead
+d3
+$ slow 2
+$ up (scale "aeolian" "{<1 0 ~ 0/2> <~ 4> 6/4 ~ [~ 2 5 ~]/6 <2 ~ 7 ~>}%8")
+-- $ up (scale "aeolian" "[0 1]/2 [<4 2> 3]/2 [4 5 8]/4 <7 ~>")
+|+ up ("0" - "<12 12 24>")
+|+ s "ml4:15"
+|+ sus (sinosc 1.2 0.75 3)
+|+ wah 0.04
+|+ coarse "<8 4 4>"
+|+ cutoff (sinosc 4400 900 0.1333)
+|+ room 0.2
+|+ gain 1.1
+
+-- bass
+d4
+$ slow 2
+$ sometimes (within (0,0.5) (stut' (choose [3,2]) (1/8) (|+ up "{0 ~ 5}%8")))
+-- $ up (scale "aeolian" "[3 <-1 3> [~ -1 0]/3]/2 [2 5 ~ <8 4> 0 -1] -2 [6 ~ 0]/4")
+$ up (scale "aeolian" "<~ 4> [1 0 ~ [2 4]/2]/2 [~ 8 [~ 5 -2 ~]]/2 [~ 3 4 2]/4")
+|+ up "<0 0 2 2>"
+|+ s "mbs:2"
+|+ coarse "[2 4]*2 <12 2 4> 8 2"
+|+ shape 0.2
+|+ mGain
+|+ n "[0 0]"
+|+ wah "0.24 0.4 0.02 0.06"
+|+ sus "[0.4 0.2 0.1]*2"
+
+d5 silence
+
+-- pad
+d5
+$ slow 2
+$ s "msoz:14(2,8)"
+|* speed "<0.4 0.4 0.46 0.479>"
+|+ begin "[0.7 0.3 0.5 0.24 0.1]*2"
+|+ sus 2
+|+ shape 0.3
+-- |+ mGain
+|+ room 0.15
+
+d5 silence
+
+(setcps (133/120/2))
+
+do
+  let pat = "{f ~ [~ ~ t t]/4 [<t ~> [~ ~ <f ~> t]]/4 [~ t]/2 [~ ~ t*2 f]/4}%16"
+  let pat2 = "~ ~ [~ f ~]/3 f [t ~ ~]/3 ~ t/4 <~ t ~ f>"
+  d1
+    $ msvoA 0
+    $ every 8 (within(0.25,0.5) (stut' (choose [2,4]) (1/16) (|+ accelerate (sinosc (-0.03) 0.25 1.25)) . (|* gain (sinosc 0.99 0.3 0.45))))
+    $ stack[
+      (struct pat $ s "808:1" |+ sus "{0.8 0.24 0.1 0.75 1 0.2 1}%16")
+      ,(s "psr:3(2,6) ~")
+      ,(struct (inv pat) $ s "mbd:2") 
+      ,(struct (inv pat2) $ s "kurt:3" |+ bpf (triosc 900 12000 0.88) |+ sus (slow 3 $ "{0.04 0.25 0.3 <0.125 0.1> 0.6 0.1 0.5}"))
+      ,(struct pat2 $ s "mcp" |+ sus 0.3 |* gain "0.5 0 0 0.3") |+ cutoff (sawosc 1200 8000 0.75) 
+    ]
+    |+ shape 0.2
+    |+ mGain
+    |+ dist "{0.1 <0 0.2 0>  0.02 0.04 0 <0.02 0.2> 0 0.13}%12"
+    |+ accelerate "<-1 0> [-0.2 0.075]/2 <0.04 0.3 -0.125> -0.5 <-0.04 0 -1.04>"
+    |+ slowPanR 0.3
+    -- |+ n "<0 1 9>"
+
+d6
+  $ up (scale "aeolian" "{[<~ 0> <1 4> ~]/3 6/2 ~ [2 5]/2 <1 ~ 7 ~ 10>}%6" + "<0 24>")
+  |+ s "peri:10"
+  |+ room 0.3
+  |+ sus 1.0
+  |+ gain 1.2
+  |+ shape 0.2
+  |+ n "<0 9 0>"
+  |+ coarse "<2 2 8 2>"
+  |+ cutoff (sinosc 1800 9300 2.745)
+
+d5
+  $ slow 2
+  $ s "mpd:8(2,8)"
+  |* speed "0.4"
+  |+ begin "[0.7 0.3 0.5 0.24 0.1]*2"
+  |+ sus 2
+  |+ shape 0.3
+  |+ mGain
+  |+ room 0.25
+
+d3 silence

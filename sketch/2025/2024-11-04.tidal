@@ -1,0 +1,26 @@
+setcps (112/120/2)
+
+d1
+$ every 2 (stut' 3 (1/16) (|* gain (sinosc 1 0.25 9.75)) . (mask "[t f t f]*3") . (|+ speed (randosc 6.25 0.4)))
+$ sometimes (within (0, 0.25) (stut' 3 (1/16) (|* gain (sinosc 0.24 0.99 5.45))))
+$ s "[[<~ mhh:2*2> <mhh:19*4 mhh:19*3 ~>, ~ msn:19, mbd:2]*2, ~ <~ nfl*3>]"
+|+ up (slow 2 $ "[0 12 [0 0 4 2]*2]*3")
+|+ accelerate "[<0 0.04> 0 <0.8 -0.2 0> -0.1 0 0]*2"
+|+ mGain
+|+ mfDel' "<0.3 0 0> 0 <0 0.5 0> 0 0 0.25"
+|+ n 8
+|+ room "0 0 0.3 0.2 0.3"
+
+d2
+$ slow 2
+$ up (scale "aeolian" "{~ 0 -5 -2 ~ ~ -1 ~}%8" - 7)
+|+ s "mb2:18"
+|+ mGain
+
+d3
+$ up (scale "aeolian" "{[0, 5] ~ [0, 2] [4, 7] ~ ~ ~}%2")
+|+ s "ml:11"
+|+ bpf "<700 2300 1500>/2"
+|+ squiz 2
+|+ mGain
+

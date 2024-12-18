@@ -7,7 +7,7 @@ do
   let y = gain pat2
   let z = gain (inverse <$> pat2)
   d1
-    $ every 2 (msvoB 0)
+    -- $ every 2 (msvoB 0)
     $ every 9 (within (0.25, 0.5) (|+ coarse "4 [8 2] 2 [8 2 12]*2"))
     $ every 12 (within (0.5, 0.8) (rev) . (|+ mfDel' 0.25) . (|+ crush "0 2 8 6 8") . (|* gain 0.5))
     $ stack [

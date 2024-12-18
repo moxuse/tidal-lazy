@@ -1,0 +1,12 @@
+d1
+$ s "[mbd:2, mcp:2] [mviznut*2, fm7*2]"
+|+ wah "0 0.04"
+|+ up "<0 7 12>"
+|+ mGain
+|+ convn  "0 1"
+|+ flangeL
+|+ room 0.2
+|+ chorus 0.01
+
+
+

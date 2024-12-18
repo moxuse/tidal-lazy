@@ -1,0 +1,68 @@
+setcps (130/120/2)
+
+d1
+  -- $ degradeBy 0.3
+  $ slow 2
+  $ every 2 (mask "<f t t> [t <f t> t]/2 [<t f> t]/2 [[t <t f>] <f t>]*3")
+  $ sometimes (within (0.5,1.0) (stut' (choose [2,4,4]) (1/32) (|* gain "0.98..0.75") . (|* accelerate "-0.925..0.2")))
+  -- $ every 4 (within (0.5, 0.75) (density (1/3)))
+  $ shift' 3
+  $ sometimes (within (0.5,0.75) (stut' (choose [4,8,8]) (1/32) (|* gain "0.75..0.125") . (|+ accelerate "0.4..-1")))
+  $ unison "mbd" ("<~ mnz:2>" |+ dist 0.2 |+ cutoff 3800  |+ speed (0.78) |> gain 0.9 |+ up "<0 2>")
+  $ every 4 (within (0.5,0.75) (0.125~>))
+  $ every 6 (|+ accelerate "<0.3 0.04> 0.05 0.3 -0.04 -0.02") . (|+ slowPanR 0.4)
+  $ stack [ 
+    (s "mhh:3(<8 16 20>,32)" |+ sus "[0.8 0.03 1 0.26 0.125]*2")
+    , (s "[~ [~ msn2:8/2]/2, [mst:6/3 <~ msn2:15/2>]]" |+ vowel "<a e> o a" |+ sus (sinosc 0.75 0.25 33))
+    , (s "[mbd:5(<1 2 2>,6) ~ mbd:5/2 ~] ~ mbd:3/2 [~ mbd:2/4]" |+ accelerate "-0.08 <-0.02 0.03> 0 0.1")
+    , (s "~ msn2:9(2,6) ~ msn2:3*2" |+ cutoff (triosc 1000 4200 0.02)) |+ sus (sinosc 0.3 0.9 1.76)
+    , (s "[~ ~ ~ mst:10/2, ~ [~ mst:32/3] ~ ~]" |> gain 0.8)
+    ]
+  -- |+ modl "{0 0 4 0 10 <2000 10> 0}%8"
+  |+ sus "<0.5 [0.5 1]/2> 0.75 1 0.8"
+  |+ dist "{0 0.1 0 0.03 0.1 0.03 0.2}%6"
+  |+ slowPanR 0.4
+  -- |+ mGrav
+  |+ n "[0 0 <4 10> 0]*3"
+  |* gain "1 [1 0.85]*2 1 [1 0.75]*2"
+
+d2
+$ mask "[t f f t]/2 <f t> [<t f> t] [[f t]/2 t]*2"
+$ every 7 (rot 1)
+$ (within (0.25,0.5) ("<0 0.125>"<~))
+$ up (scale "aeolian" ((+) "{<~ 4> <0 -1 ~> [-3 2/2 0 <5 1 2>]/4 ~ [-3 <0 7 1>/2]/2 ~ ~}%8" "<1 0 2 2>"))
+  |+ s "mb:6"
+  |+ sus "0.2 0.4 <0.3 0.25> [0.25 0.5 0.8]"
+  |+ gain 1.2
+
+d3
+$ slow 4
+$ up (scale "aeolian" ((-) "[0 ~, 3, <5 ~>] [2, <1 ~ -1 4 7>]" "<0 2>/2"))
+|+ up "<12 0 12>/2"
+|+ s "ml5:19"
+|+ shape 0.3
+|+ coarse "{4 2 8 2 8}"
+|+ cutoff (sinosc 1200 7000 0.4)
+|+ sus 4
+|+ mGain
+|+ room 0.3
+
+d4
+$ slow 2
+$ every 11 (rot 1)
+$ every 7 (rot "2")
+$ every 4 (within (0, 0.125) (0.125~>))
+$ up (scale "aeolian" ((+) "{~ <1 -4>/2 0/3 ~ [5/3 7]/2 ~ 1 [2 <1*2 -1> <-2 5*2> ~]/4}%8" "<0 1 2 5>" + "-5"))
+|+ s "ml:24"
+|+ slowWahR 0.03
+|+ coarse 8
+|+ sus (sinosc 1.7 2.2 4.333)
+|+ cutoff (range 800 9700 (slow 4.5 sine))
+|+ gain 1.1
+|+ room 0.3
+
+
+d3 silence
+
+d4 silence
+

@@ -1,0 +1,89 @@
+(setcps 0.43)
+
+do
+  let pat = "{<~ 0 ~ 1> ~ <1 ~ 0 1 ~ ~ ~> 1 0 <0 ~ ~ 1 ~ 0> ~ <1 ~ 0> 1 <~ ~ 1>}%12"
+  -- let pat = "{0 <~ 0 1 1 0> <1 0 ~ ~ 0> 0 1 <0 1 1 ~ 0> <~ ~ 1>}%6"
+  let x =  gain pat
+  let y =  gain (inverse <$> pat)
+  d1
+    $ whenmod 6 4 (mask "t [t f]*3")
+    $ every 6 (within (0.25, 0.5) (0.125~>) . (rev))
+    $ every 4 (mask "[[t <f t f f> <t f>/3]*2 t <t f>]")
+    $ every 9 (stut' 4 (1/8) (|* gain (sinosc 1 0.75 6.75)) . (|+ speed (randosc 2.25 0.4)))
+    -- $ every 11 (stut' 4 (1/12) (|* gain (sinosc 1 0.65 12.75)) . (|+ sus (sawosc 1 0.2 4.4)))
+    $ every 8 (within (0.5, 0.75) (jux (rot "<-1 0>/8") . (|* sus (sinosc 0.1 1 3))))
+    $ stack [
+      (s "[808:1*12, mhh*6 mst:14*3, nfl/2 <~ ksn:1*2>/2]")
+      , (x |+ s "<msn2:3 mst:9>/3")
+      , (y |+ s "mbd2:7")
+     ]
+    |+ up (scale "aeolian" "{3 -5 7 0 9 0 3 1 2}%4" + 3)
+    |+ mfDel' "{<0 0.3> 0.0 <0.6 0.0>/2 0.18 <0 0 0.4> 0}%12"
+    |+ cutoff (triosc 12400 17800 3.85)
+    |+ slowPanR 0.3
+    -- |+ n "<25 5>/2"
+    -- |+ wah 0.03
+    |+ nudge "[0 0.0025]*3"
+    |+ shape 0.2
+    -- |+ cps (rot 1 $ "<0.9 0.75 0.5 0.125> 0.75 0.58")
+    -- |+ n 29
+    |+ mGain
+
+d2
+$ (0.125<~)
+$ rot "<0 -1>"
+$ every 2 (stut' (choose [2,4]) (1/16) (|* gain (sinosc 1 0.5 3)))
+$ s "[mb:9(5,8), msnb/2]"
+|+ up (scale "lydian"  "4" - 12)
+|+ sus "<0.26 1> 0.135 <0.25 0.8> 0.05"
+|+ mGain
+
+-- d3
+-- $ slow 2
+-- $ s "msoz:30(1,24)"
+-- |+ sus 4
+-- |+ begin "<0 0.125>"
+-- |+ bpf "<2000 5700>/2"
+-- |+ speed "<0.52 0.57>/2"
+-- |+ mGain
+-- |+ shape 0.2
+
+d4
+$ slow 4
+$ up (scale "<minor lydian>/4" "{[0, 4, 7] [2, 5, 10] [1, 4, 16]}%4" + "<0 1 -1 0 2 -2 1 3>/2")
+|+ s "ml2:30"
+|+ shape 0.2
+|+ coarse 4
+|+ sus 0.7
+|+ wah 0.03
+|+ chorus 0.0025
+|+ slowPanR 0.2
+|+ room 0.3
+|+ gain 0.9
+
+d5
+$ mask "t [f t]*2 [f t f t]*2 [f t]/2"
+$ rev
+$ every 2 (rot 2) . (rev)
+$ every 3 (|+ flangeD)
+$ up (scale "diatonc" "{0 7 2 15 2 5 33 4 1 28 3 6 14 5 12}%24" + "<5 8>/4" )
+-- $ up (scale "iraq" "{0 7 2 15 2 5 <3 1> 4 1 8 3 21 1 15 12}%24" + "<3 15 -2>/2" + 12)
+|+ sus "{0.05 0.01 0.075 0.03 0.04 0.01 0.075 0.1 0.5 0.75 0.08}%32"
+|+ coarse "[4 2 12 8 24 2 2]*2"
+|+ crush "{4 12 8 12 8}%12"
+-- |+ s "ml:38"
+|+ s "ml:38 ml:39"
+|+ cutoff "[4240 12450 1800 9500 1290]*3"
+-- |+ wah 0.04
+|+ vowel "a e o i"
+|+ slowPanR 0.4
+-- |+ mGrav
+|+ mGain
+
+do
+  d1 silence
+  d2 silence
+  d3 silence
+
+
+d4 silence

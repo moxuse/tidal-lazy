@@ -1,0 +1,31 @@
+d1
+  $ slow 2
+  $ sometimes (within (0, 0.5) (stut' (choose [4,8]) (1/32) (|+ accelerate (sinosc 0.1 (-0.4) 1.825)) . (|* gain (sinosc 1 0.5 24))))
+  $ shift' 5
+  $ sometimes (within (0.5, 0.75) (stut' (choose [3,4]) (1/32) (|+ accelerate (sinosc 0.05 (-0.2) 2.325))))
+  $ every 2 (within (0.25, 0.5) (0.125 <~))
+  $ stack [
+    (s "hh*16" |+ sus (sinosc 0.04 0.01 0.75) |* gain (sawosc 0.4 0.1 0.83))
+    ,(s "[<~ msn:2> ,[~ mbd:5/2 ~] ~, [~ mbd:3 msn:3/2]/2 ~]") |+ sus (slow 4 $ sinosc 0.9 0.3 0.285)
+    , (s "[~ <~ [~ mbd:3]>, ~ mst:6/3]")
+  ]
+  |+ mGain
+  |+ coarse "{2 8 2 2 2 2 4}%16"
+  |+ slowPanS 0.3
+  |+ shape 0.3
+
+d2
+$ s "msoz:2"
+|+ up "<0 1 0 2>"
+|+ speed "0.95"
+|+ gain "1.1"
+
+d4 
+$ slow 2
+$ up (scale "i" "[0, 3] ~ [2 ~, 1 4] 5/2" + "-24")
+|+ up "<0 1 0 2>"
+|+  s "rmsn"
+|+ shape 0.3
+|+ mGain 
+
+

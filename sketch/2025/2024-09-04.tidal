@@ -1,0 +1,16 @@
+(setcps (116/120/2))
+
+d1 
+$ sometimes (within (0.25, 0.5) (stut' 4 (1/32) (|+ accelerate (sinosc 0.1 (-0.03) 0.25))))
+$ shift' 3
+$ sometimes (within (0.5, 1) (stut' 4 (1/32) (|* gain (sinosc 0.04 0.99 4.45))))
+$ stack[
+  (s "khh:3(6,16)" |* gain (triosc 0.3 0.9 3.124) |+ sus (sawosc 0.04 0.49 3.4))
+  ,(s "[kbd:3,~ [~ ksn:8]]")
+] 
+|+ mGain
+|+ shape 0.2
+|+ slowPanS 0.3
+
+
+

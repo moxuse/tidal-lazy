@@ -1,0 +1,8 @@
+do
+  let pat = "0 1 0 1 1 1"
+  let x = gain (inv <$> pat)
+  d1
+    x |+ s "hh"
+   -- d1 $ gain x |+ s "bd"
+
+

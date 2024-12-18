@@ -1,0 +1,65 @@
+setcps 0.53
+
+do
+  let pat = "<0*2 0> 1*2 <1*2 ~> [~ 0]/2 [~ 1 ~] 0*2 <~ 1*2 0*2> <1 0 ~>"
+  let x = gain pat
+  let y = gain (inverse <$> pat)
+  d1
+    $ slow 2
+    $ sometimes (within (0.5, 1) (stut' "<3 6 4>" (1/16) (|+ accelerate "-0.04..0.03") . (|> gain "1.2 1.0 0.75 0.4 0.3")))
+    $ shift' 429
+    $ every 4 (within (0.25, 0.75) (rev) . (density "<1 2 0.75>"))
+    $ stack [
+      (x |+ s "mhh:2" |+ slowSpeedR 3)
+      , (mask "f t <t f> t t" $ x |+ s "[~ mst:8]/2" |+ slowPanS 2 |+ n "<0 7>")
+    ]
+    |+ slide "{500 <0.004 1200 120> 0.75 3 0.125 1000}%16"
+    |+ mGain
+    |+ slowPanR 4
+    |+ ring "{1 0.5 0.87 0 0.4 0.3}%12"
+    |+ ringf "[4 80 <140 70> 0 200 10]*2"
+    |+ room "0.03 0 0.08 0 0.01"
+    |+ n "0 <8 28>"
+    |+ sus "{[0.75 0.85]*2 [0.25 0.75]*2 [<0.5 1> 1]*2}%8"
+    |+ accelerate "{-0.01 0 <-0.08 0.5> -0.25 0 <-0.1 0> -0.04}"
+    |* speed "{[1.75 -0.75]*2 [0.85 1]*2 [2 0.75]*2 3/5}%8"
+
+d2
+  $ slow 2
+  $ every 16 (density 1.5) . (mask "t f t f")
+  $ stack[
+    (s "msnb*2" |+ up "-12" |+ sus 2 |+ crush "{12 8 12 6}%12")
+    , (s "mbd2*4" |+ up "-3")
+    , ((0.225~>) $ s "mcp:1*4" |+ up 18)
+    , (s "[[msn:14, msn:18/2] ~ [~ ~ mcp:1 [~ mcp:1/2]] ~]" |+ up 10)
+   ]
+  |+ shape 0.4
+  |+ mGain
+
+d1 silence
+
+d3
+  $ s "kl:11" 
+  |+ shape 0.3
+  |+ sus 0.75
+  |+ begin "[0.6 0.3]/4"
+  |+ room 0.3
+  |+ gain 1.1
+
+d4
+  $ within (0, 0.5) (off 0.25 (|+ up "5 -1 7"))
+  $ slow 2
+  $ s "[~ ml2:25(<2>,16)]"
+  |+ sus "{[2 0.85]/2 [1 0.75]*2 [0.5 1]*2}%6"
+  |+ coarse "12"
+  |+ speed "-0.5"
+  |+ shape 0.3
+  |+ wah 0.1
+  |+ squiz "2"
+  |+ cutoff (sinosc 2500 9800 1.75)
+  |+ up (scale "aeolian" "[0, 5, 12]" + "-25")
+  |+ slowPanS 5
+  |+ gain "1.1"
+
+d3 silence
+

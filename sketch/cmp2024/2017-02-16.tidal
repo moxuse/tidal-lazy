@@ -1,0 +1,51 @@
+(cps 0.9)
+
+d1
+  $ slow 1.5
+  $ degradeBy 0.75
+  $ whenmod 3 5 (within (0.4, 0.9) (striate 6))
+  $ every 6 (within (0.4, 0.8) (|+| disv "-3 -2 -4" "3 2 3"))
+  $ msvoS 0 
+  $ stack[
+    sound "mbd*2 [knz:4/2, mhh*2] [msn2:4(2,3)? mbd:7/4] [knz:10*2 mnt/2]" |+| speed "0.85 1 0.95"
+    ,sound "[knz:6(3,8), mst:14/12 ,mcp*2?]"
+    ,sound "~ msn:14 short <ul:14/3 mwb:12>"
+    ,off 0.33333 (|+| up "-4 8 -1") (sound "~ ml:1/2 ~ ml:1/3 ~" |+| speed "0.93")
+  ]
+  |+| n "12 12 8"
+  -- |+| mGrav
+  |+| mDefault
+
+
+d2
+  $ slow 3
+  $ every 1 (superimpose (|* speed (choose [1, 0.5, 1.5, 1])))
+  $ shift' 21
+  $ every 3 (superimpose (|* speed (choose [1, 2, 1.5])))
+  $ s "<kl:10 kl:11>"
+  -- |+ gain "1.1"
+  |+ room "0.3"
+  |+ sus "[4 6]/2"
+  |+ slowPanR 2
+
+d2
+  $ stut' 16 (1/16) (|+ cut 2) . (|+ gain (slow 0.3333 $ range 0.2 0.9 sine)) . (|+ begin (density 64 $ choose [0, 0, 0, 0.125, 0.75, 0.85, 0.65, 0.9]))
+  $ s "<kl:10 kl:11>"
+  |+ gain "0.2"
+  |+ sus 0.25
+  |+ room "0.3"
+  |+ slowPanR 2
+
+
+d3
+  $ slow 6
+  $ s "bass3:11(<9, 11>/4,16)"
+  |+ up (scale "lydian" (rot "<5 2 -3> " ("[0 4 5 7 8 10 11 15]/2" + "12")))
+  |+ room 0.3
+  |+ sus 1.2
+  -- |+ gain "1.1"
+
+d1 silence
+
+hush
+
