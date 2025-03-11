@@ -35,3 +35,5 @@ flangeL = flange (density 0.5 $ "{0.1 0.2 0.0 0.4 0.3}%7") "{0.0 0.4 0.0 0.3 0.1
 
 mUp pt = up (foldl (+) "<0 1 2>" [pt, "[0 1]"])
 
+stut'' pt pt2 = superimpose (stutWith pt (1/pt2) (|+ sus (density 3.157 (range 0.025 1.125 $ sine))) . (|* speed (density 3.125 (range 1.75 0.45 sine))) . (|* gain (density 4 $ (range 0.125 1.0 saw))))
+

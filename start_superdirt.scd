@@ -796,3 +796,4 @@ XLine.kr(ExpRand(400,1800), ExpRand(250,500), 0.2),3
 	}).store;
 }; //wait for boot.
 )
+
