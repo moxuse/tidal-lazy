@@ -1,38 +1,62 @@
-setcps (128/120/2)
+setcps (123/120/2)
+
+d6
+$ up ("<[0, 1, 3]*6 [1, 4, 5]*6>" + "-6") |+ s "msoz:2" |+ bpf (range 600 3700 sine) |+ cut "[1 2 3 4]*4" |+ mGain |+ room 0.3
+
+-- 19
+
+d2 silence
 
 do
-  let pat = "{[0,1] <0 ~ 1> [0, 1] <1 ~ 0 0> 1 <0 1 ~> ~ <[1,0] 0> ~ <~ 0 ~ 1>}%16"
+  let pat = "{[0, 1] <0 ~ 1> [0, 1] <1 ~ 0 0> 1 <0 1 ~> ~ <[1, 0] 0> ~ <~ 0 ~ 1>}%16"
   let x =  gain pat
   let y =  gain (inverse <$> pat)
   d1 
     $ rarely (within (0.75, 1) (msvoB 0))
-    $ every 2 (within (0, 0.5) (stut' 3 (1/128) (|* speed "[6 3 0.75]/5 <1 0.73> 0.9 2 <4 6>/2"))) 
-    $ every 5 (within (0.75, 1) (stut' 6 (1/64) (|+ accelerate "-0.3 0.5 0.04 -0.28"))) 
+    $ every 4 (within (0, 0.5) (stut' 3 (1/128) (|* speed "[6 3 0.75]/5 <1 0.73> 0.9 2 <4 6>/2"))) 
+    $ every 5 (within (0.75, 1) (stut' 6 (1/64) (|+ accelerate "-0.3 0.5 0.04 -0.28") . (|+ crush "<4 4 8 2>"))) 
     $ unison "mbd2" "win"
     $ unison "mhh" "win2"
     $ stack [ 
       (x  |+ s "mbd2:8")
       , (y  |+ s "mhh:3")
+      , (s  "[~ msn2:27]*4")
       ]
     |+ mGain
     |+ slowSpeedR 3
     |+ slowPanS 4
-    |+ room "0 [0 0.04]/3 <0.3 0> [<0 0.2> 0]"
+    |+ room "0 [0 0.04]/3 <0.3 0 0> [<0 0.2 0 0> 0]"
     |+ up "[8 12]/4 <-2 5 24 6> -2 4 <2 5>"
 
-d2  $ sometimes (0.05~>) . (rev) 
+d2  $ sometimes (0.125~>) . (rev) 
   $ unison "knz" "win3"
-  $ slow 2
-  $ s "knz:9*3"
+  $ s "knz:9*2"
   |+ up "<2 8> [15 -6]/3 <-36 0 5>"
   |+ n "8 [8 4]/3 <~ 11>"
   |+ mGain
+  -- |+ accelerate "<0.03 -0.4> 0.04 -0.5 0 0 0.6"
+  |+ binshf "0.4 0.5 0.2"
   |+ slowSpeedR 3
-  |+ room 0.3
+  |+ slowPanR 4
+  |+ room 0.2
+  |+ wah 0.0125
 
+d3
+  $ rev
+  $ slow 2
+  $ up (scale "minor" "[<0 19> 12 5]/3" + "[-2, 1, 3, 8]" + "-6")
+  |+ s "[~ <ml3 ml4>]"
+  |+ n "9"
+  |+ shape 0.2
+  |+ mGain
+  |+ slowPanR 3
+  -- |+ vowel "<a e o>"
+  |+ room 0.4
 
 d1 silence
 
 d1 silence
+
+-- korg 032 Future Pulse
 
 hush
