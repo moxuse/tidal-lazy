@@ -949,84 +949,84 @@ MIDIIn.connect(0, MIDIClient.sources.at(1));
 			var current = vel.linlin(0, 127, 20, 500).asInteger;
 			~knob1.value = vel / 127;
 			~label1.string = "dens: \n" ++ current;
-			// s.sendMsg("/n_set", 92000, \dens, current);
+			s.sendMsg("/n_set", 92000, \dens, current);
 			("dens: " ++ current).postln;
 		}.defer },
 		6, {{
 			var current = vel.linlin(0, 127, 22000, 92400).asInteger;
 			~knob2.value = vel / 127;
 			~label2.string = "ptrRandSamples: \n" ++ current;
-			// s.sendMsg("/n_set", 92000, \ptrRandSamples, current);
+			s.sendMsg("/n_set", 92000, \ptrRandSamples, current);
 			("ptrRandSamples: " ++ current).postln;
 			}.defer },
 		7, {{
 			var current = vel.linlin(0, 127, 10500, 75000).asInteger;
 			~knob3.value = vel / 127;
 			~label3.string = "ptrSampleDelay: \n" ++ current;
-			// s.sendMsg("/n_set", 92000, \ptrSampleDelay, current);
+			s.sendMsg("/n_set", 92000, \ptrSampleDelay, current);
 			("ptrSampleDelay: " ++ current).postln;
 			}.defer },
 		8, {{
 			var current = vel.linexp(0, 127, 1000, 50000).asInteger;
 			~knob4.value = vel / 127;
 			~label4.string = "minPtrDelay: \n" ++ current;
-			// s.sendMsg("/n_set", 92000, \rateFreq, current);
+			s.sendMsg("/n_set", 92000, \minPtrDelay, current);
 			("minPtrDelay: " ++ current).postln;
 			}.defer },
 		9, {{
 			var current = vel.linlin(0, 127, 0.02, 1.75);
 			~knob5.value = vel / 127;
 			~label5.string = "baseDur: \n" ++ current;
-			// s.sendMsg("/n_set", 92000, \baseDur, current);
+			s.sendMsg("/n_set", 92000, \baseDur, current);
 			("baseDur: " ++ current).postln;
 			}.defer },
 		0, {{
 			var current = vel.linexp(0, 127, 0.05, 10);
 			~knob6.value = vel / 127;
 			~label6.string  = "rateFreq: \n" ++ current;
-			// s.sendMsg("/n_set", 92000, \rateFreq, current);
+			s.sendMsg("/n_set", 92000, \rateFreq, current);
 			("rateFreq: " ++ current).postln;
 			}.defer },
 		1, {{
 			var current = vel.linexp(0, 127, 0.1, 4.0);
 			~knob7.value = vel / 127;
 			~label7.string = "rateRand: \n" ++ current;
-			// s.sendMsg("/n_set", 92000, \rateRand, current);
+			s.sendMsg("/n_set", 92000, \rateRand, current);
 			("rateRand: " ++ current).postln;
 			}.defer },
 		12, {{
 			var current = vel.linexp(0, 127, 0.05, 40);
 			~knob8.value = vel / 127;
 			~label8.string = "ptrFreq: \n" ++ current;
-			// s.sendMsg("/n_set", 92000, \ptrFreq, current);
+			s.sendMsg("/n_set", 92000, \ptrFreq, current);
 			("ptrFreq: " ++ current).postln;
 			}.defer },
 		13, {{
 			var current = vel.linexp(0, 127, 0.05, 40);
 			~knob9.value = vel / 127;
 			~label9.string = "durRand: \n" ++ current;
-			// s.sendMsg("/n_set", 92000, \durRand, current);
+			s.sendMsg("/n_set", 92000, \durRand, current);
 			("durRand: " ++ current).postln;
 			}.defer },
 		14, {{
 			var current = (vel / 127).floor;
 			~knob10.value = vel / 127;
 			~label10.string = "sync: \n" ++ current;
-			// s.sendMsg("/n_set", 92000, \sync, current);
+			s.sendMsg("/n_set", 92000, \sync, current);
 			("sync: " ++ current).postln;
 			}.defer },
 		10, {{
 			var current = (vel / 127).floor;
 			~knob11.value = vel / 127;
 			~label11.string = "rateSync: \n" ++ current;
-			// s.sendMsg("/n_set", 92000, \rateSync, current);
+			s.sendMsg("/n_set", 92000, \rateSync, current);
 			("rateSync: " ++ current).postln;
 			}.defer },
 		11, {{
 			var current = vel / 127;
 			~knob12.value = vel / 127;
 			~label12.string = "amp: \n" ++ current;
-			// s.sendMsg("/n_set", 92000, \amp, current);
+			s.sendMsg("/n_set", 92000, \amp, current);
 			("amp: " ++ current).postln;
 			}.defer }
 	);
