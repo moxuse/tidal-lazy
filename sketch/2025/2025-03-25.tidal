@@ -1,0 +1,25 @@
+setcps (124/120/2)
+
+do
+  let pat = "{0 ~ ~ 1 <~ 0 ~ 1> ~ ~ ~ <0 0 1> <1 0 ~> ~ ~ <~ 1 ~ ~ 0 ~>}%16"
+  let pat2 = "{~ ~ <~ ~ 0> ~ <~ 1 0> 1/2 ~ ~ ~ <0 ~ ~ 1 ~>}%16"
+  let x =  gain pat
+  let y =  gain (inverse <$> pat)
+  let w =  gain pat2
+  let z =  gain (inverse <$> pat2) 
+  d1 
+    $ superimpose (|+ pipe "<90 0> 0 90 90 <0 0 90>") 
+    $ every 6 (within (0.75, 1) (stut'' "<4 6 5>" "<16 64 32 4>") . (|+ speed 1.85))
+    $ stack[
+      (x |+ s "mbd:7" |+ sus 0.25)
+      , (y|+ s "[cusn:8 msn2:3]/2" |+ n "<0 10> 4 0 10" |+ sus 0.38)
+      , (z |+ s "cub:12" |+ n "0 <-4 0> 0 9" |+ sus 0.25 |+ up (scale "lydian" "[0 7]/2 <5 2 3> 4" + "<0 1 4 -2>")) 
+      , (w |+ s "cul:9" |+ n "0 <16 0> 0" |+ sus 0.25 |+ up (scale "lydian" "[8 3]/4 <1 8> 5" + "<0 1 14 -2>") |+ wah 0.3) 
+      ]
+    |+ crush "<12 4> 12 <4 12> 8 12 8" 
+    |+ mGain 
+    |+ room "0 0 0 0.3 0 0.1 0" 
+    |+ mfDel' "0 0 0.4 0 <0.6 0 0> 0 0"
+    |+ coarse "[0 0 12]/3 <2 8> [4 2]*2 2 <8 1>"
+    |+ slowPanR 3
+ 

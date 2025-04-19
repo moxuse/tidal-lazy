@@ -1,0 +1,25 @@
+d1
+$ n (arp "up" "<c'min6'5 d'maj9'5>")
+-- $ up "<c'min6'5 f'maj9'5>"
+|+ s "superpiano"
+
+d1 $ jux rev $ chunk 4 (fast 2 . (|- n 12)) $ off 0.25 (|+ 7) $ struct (iter 4 "t(3,8)")
+  $ n (scale "pelog" "0 .. 10") # sound "superpiano"
+
+d1 
+  $ superimpose (|+ pipe "90 0 0 90 0 0") 
+  -- $ jux rev
+  $ chunk 4 (fast "<2 1.125 2 0.75>" . (|+ n 12)) $ off 0.125 (|- 12) 
+  $ struct "t ~ t ~ ~ ~ ~ t"
+  $ up (scale "hexDorian" "0 .. <8 5 8 6>") 
+  |+ sound "[cul:5, cub:12?]" 
+  |+ sus 0.45 
+  |+ shape 0.2
+  |+ room 0.3 
+  |+ slowPanS 3
+  |+ chorus "0.01 0 0 0.001"
+
+d2 $ (0.125<~) $ s "gtrig*3"
+
+d1 $ struct (every 3 inv "t(3,8)") $ sound "cp"
+

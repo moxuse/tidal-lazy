@@ -1,0 +1,21 @@
+setcps (97/120/2)
+
+d1 
+  $ every 11 (within (0.75, 1) (stut'' "<4 2 2 3>" "<4 8 4>") . (|+ speed (range 0.75 1 sine)) . (|+ accelerate (range 0.03 0.6 sine)) . (|+ sus 0.25))
+  $ every 5 (within (0.125, 0.25) (stut'' "<4 3>" "<16 8 4>") . (rev) . (|+ speed (range 0.7 1.0 sine)))
+  $ stack [
+    (s "cubd*2 ~ mbd*2 ~" |+ n 15 |+ shape 0.3)
+    ,(s "cuhh*16" |+ n 4 |* gain "[0.1 0.4 0.125]*6")
+    ,(superimpose (|+ pipe "90 0") $ s "cub [~ mst/2] ~ [~ cub] [cusn/2 ~ cub] [~ cub] ~ cub/2" |+ n 18 |+ up (scale "mixolydian" "[0 1 4 5]/2 [-2 4]/2 -3 5") |+ sus 0.85)
+    ,(s "cul(2,8) ~ [~ cul] ~ ~ [~ cul/2]" |+ n 8 |+ up (scale "mixolydian" "-2 3 [0 3 4 1]/2 [2 4]/2 -2") |+ sus 0.85)
+    ,(s "~ [~ ml2/2] ~ [~ kl]/2" |+ n 2 |+ sus 0.125 |+ up (scale "mixolydian" "[-3, 2] 5 [0, -3 5, -1]/2 [3, 14]/2 -2" + "12"))
+    ,(superimpose(|+ pipe "0 0 90 0") $ s "[[~ cusn]/4 ~ [~ cusn] ~]*4 [~ mnz/2]*2" |+ n 14 |+ sus 0.05 |* gain "[0.3 0.2 0.1]*2")
+    ,((0.125<~) $ s "gtrig*4")
+  ]
+  |+ mGain
+  |+ up "<0 3 1 4>"
+  |+ slowPanR 3
+  |+ room "0.2 0 0 0.03 0 0.3 0"
+  |+ coarse "2 [2 12]/2 4 [2 8 12]/3 2 2"
+  -- |+ real "0 0 [0 0.03 0 0]/2 0 0 [0 0 0.2 0]/2 0 0 0"
+
