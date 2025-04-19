@@ -653,7 +653,7 @@ XLine.kr(ExpRand(400,1800), ExpRand(250,500), 0.2),3
 	(calc%256)/128.0-1.0;
 	});
 
-	viznut_buf = Buffer.alloc(s, 512 * 1200, bufnum: 99999);
+	viznut_buf = Buffer.alloc(s, 512 * 1200, bufnum: 88888);
 	viznut_buf.loadCollection(viznut_sig);
 
 	SynthDef(\mviznut, {|out, sustain = 1, gate = 1, note = 0, speed = 1, begin=0, end=1, pan, accelerate, amp = 1, offset|
@@ -664,7 +664,7 @@ XLine.kr(ExpRand(400,1800), ExpRand(250,500), 0.2),3
 		rate = Dseq([1, 0.5], inf);
 		dur = 1.0 * (end - begin)/speed;
 		env = EnvGen.ar(Env.perc(0.0 , dur,  1, 4), gate, timeScale:sustain, doneAction:2);
-		sound = TGrains.ar(1, Impulse.ar(trate), 99999, rate * speed, MouseX.kr(0,BufDur.kr(99999)), tdur, 0, 0.1, 1) * 0.5 * amp;
+		sound = TGrains.ar(1, Impulse.ar(trate), 88888, rate * speed, MouseX.kr(0,BufDur.kr(88888)), tdur, 0, 0.1, 1) * 0.5 * amp;
 		OffsetOut.ar(out,
 		DirtPan.ar(sound, ~dirt.numChannels, pan, env);
 		)
@@ -797,3 +797,285 @@ XLine.kr(ExpRand(400,1800), ExpRand(250,500), 0.2),3
 }; //wait for boot.
 )
 
+// MIDI Connection
+(
+MIDIClient.init;
+)
+(
+~midiOut = MIDIOut.newByName("UM-ONE", "UM-ONE");
+~midiOut.latency = 0;
+~dirt.soundLibrary.addMIDI(\midiout, ~midiOut);
+)
+
+// Grain Extension
+(
+var outBusIndex;
+var orbitGroupIndex = 3;
+var midispec, knobSize;
+
+outBusIndex = ~dirt.orbits[0].globalEffectBus.index;
+// outBusIndex = ~dirt.orbits[0].synthBus.index;
+
+	~rec_Buf = Buffer.alloc(s, 44100 * 4.0, 1, bufnum: 9999);
+	~ptrBus = Bus.audio(s,1);
+	~ptrGroup = Group.after(orbitGroupIndex);
+	~rec_group = Group.after(~ptrGroup);
+	~grainGroup = Group.after(~rec_group);
+
+	SynthDef(\g_ptr, {|out = 0, buf = 0, trig = 0|
+		var sig;
+		sig = Phasor.ar(trig, BufRateScale.kr(buf), 0, BufFrames.kr(buf));
+		Out.ar(out, sig);
+	}).store();
+
+	SynthDef(\orbit_rec, {|buf = 0, ptrIn = 0|
+		var ptr, sig;
+		ptr = In.ar(ptrIn, 1);
+		sig = In.ar(90, 1);
+		BufWr.ar(sig, buf, ptr);
+	}).store();
+
+	SynthDef(\grain_player,{|amp = 0.5, buf=0, out=0, atk=1, rel=1, gate=1,
+		sync=1, dens=40, baseDur=0.05, durRand=1, rate=1,
+		rateRand=1, pan=0, panRand=0, grainEnv=(-1), ptrBus=0, ptrSampleDelay=20000, ptrRandSamples=5000,
+		ptrRRandSamples=5000, minPtrDelay=1000, rateFreq = 0.5, ptrFreq = 2.0, rateSync = 0|
+
+		var sig, env, densCtrl, durCtrl, rateCtrl, panCtrl, ptr, ptrRand, totalDelay, maxGraindDur;
+
+		env = EnvGen.kr(Env.asr(atk,1,rel), gate, doneAction: 2);
+		densCtrl = Select.ar(sync, [Dust.ar(dens), Impulse.ar(dens)]);
+		durCtrl = baseDur * LFNoise2.ar(0.75).exprange(1/durRand, durRand);
+	    rateCtrl = rate * Select.ar(
+		    rateSync, [
+		      LFNoise2.ar(rateFreq).exprange(1/rateRand, rateRand),
+		      Demand.ar(Impulse.ar(rateFreq), 0, Drand([1, 1.5, 1.75, 2, 2.5, 3, 4], inf))
+		    ]
+	    );
+		panCtrl = pan + LFNoise2.kr(100).bipolar(panRand);
+		ptrRand = LFNoise1.ar(ptrFreq).bipolar(ptrRandSamples);
+		totalDelay = max(ptrSampleDelay - ptrRand, minPtrDelay);
+
+		ptr = In.ar(ptrBus, 1);
+		ptr = ptr - totalDelay;
+		ptr = ptr / BufFrames.kr(buf);
+
+		maxGraindDur = (totalDelay / rateCtrl) / SampleRate.ir;
+		durCtrl = min(durCtrl, maxGraindDur);
+
+		sig = GrainBuf.ar(
+			2,
+			densCtrl,
+			durCtrl,
+			buf,
+			rateCtrl,
+			ptr,
+			2,
+			panCtrl,
+			grainEnv
+		);
+
+		sig = sig * env * amp;
+		Out.ar(outBusIndex, sig)
+	}).store;
+
+s.sendMsg(9, \g_ptr, 91000, 0, ~ptrGroup.nodeID, \buf, ~rec_Buf.bufnum, \out, ~ptrBus.index);
+s.sendMsg(9, "orbit_rec", 99999, 0, ~rec_group.nodeID, \ptrIn, ~ptrBus.index, \buf, ~rec_Buf.bufnum);
+s.sendMsg(9, "grain_player", 92000, 1, ~grainGroup.nodeID,
+	\amp, 0.5,
+	\buf, ~rec_Buf.bufnum,
+	\out, 0,
+	\atk, 1,
+	\rel, 1,
+	\gate, 1,
+	\sync, 1,
+	\rateSync, 0,
+	\dens, 115,
+	\baseDur, 0.25,
+	\durRand, 0.21,
+	\rate, 0.85,
+	\rateRand, 1.025,
+	\pan, 0,
+	\panRand, 0.5,
+	\grainEnv, -1,
+	\ptrBus, ~ptrBus.index,
+	\ptrSampleDelay, 50500,
+	\ptrRandSamples, 72400,
+	\minPtrDelay, 1000,
+	\rateFreq, 1,
+	\ptrFreq, 0.5,
+);
+
+~dirt.soundLibrary.addSynth(\gtrig, (play: {
+	s.sendMsg("/n_set", 91000, \trig, 0);
+}));
+// s.plotTree;
+
+knobSize = 30;
+MIDIIn.connect(0, MIDIClient.sources.at(1));
+~midiWindow = Window("Grain Controls", Rect(10,10,250,300));
+~label1 = StaticText(~midiWindow, Rect(10, 35, 75, 28));
+~label2 = StaticText(~midiWindow, Rect(90, 35, 75, 28));
+~label3 = StaticText(~midiWindow, Rect(170, 35, 75, 28));
+~label4 = StaticText(~midiWindow, Rect(10, 105, 75, 28));
+~label5 = StaticText(~midiWindow, Rect(90, 105, 75, 28));
+~label6 = StaticText(~midiWindow, Rect(170, 105, 75, 28));
+~label7 = StaticText(~midiWindow, Rect(10, 175, 75, 28));
+~label8 = StaticText(~midiWindow, Rect(90, 175, 75, 28));
+~label9 = StaticText(~midiWindow, Rect(170, 175, 75, 28));
+~label10 = StaticText(~midiWindow, Rect(10, 245, 75, 28));
+~label11 = StaticText(~midiWindow, Rect(90, 245, 75, 28));
+~label12 = StaticText(~midiWindow, Rect(170, 245, 75, 28));
+
+~knob1 = Knob.new(~midiWindow, Rect(20, 5, knobSize, knobSize));
+~knob2 = Knob.new(~midiWindow, Rect(100, 5, knobSize, knobSize));
+~knob3 = Knob.new(~midiWindow, Rect(180, 5, knobSize, knobSize));
+~knob4 = Knob.new(~midiWindow, Rect(20, 75, knobSize, knobSize));
+~knob5 = Knob.new(~midiWindow, Rect(100, 75, knobSize, knobSize));
+~knob6 = Knob.new(~midiWindow, Rect(180, 75, knobSize, knobSize));
+~knob7 = Knob.new(~midiWindow, Rect(20, 145, knobSize, knobSize));
+~knob8 = Knob.new(~midiWindow, Rect(100, 145, knobSize, knobSize));
+~knob9 = Knob.new(~midiWindow, Rect(180, 145, knobSize, knobSize));
+~knob10 = Knob.new(~midiWindow, Rect(20, 215, knobSize, knobSize));
+~knob11 = Knob.new(~midiWindow, Rect(100, 215, knobSize, knobSize));
+~knob12 = Knob.new(~midiWindow, Rect(180, 215, knobSize, knobSize));
+
+// 5 6 7
+// 8 9 0
+// 1 12 13
+// 14 10 11
+~midiControl = {arg src, chan, num, vel;
+	switch(num,
+		5, {{
+			var current = vel.linlin(0, 127, 20, 500).asInteger;
+			~knob1.value = vel / 127;
+			~label1.string = "dens: \n" ++ current;
+			// s.sendMsg("/n_set", 92000, \dens, current);
+			("dens: " ++ current).postln;
+		}.defer },
+		6, {{
+			var current = vel.linlin(0, 127, 22000, 92400).asInteger;
+			~knob2.value = vel / 127;
+			~label2.string = "ptrRandSamples: \n" ++ current;
+			// s.sendMsg("/n_set", 92000, \ptrRandSamples, current);
+			("ptrRandSamples: " ++ current).postln;
+			}.defer },
+		7, {{
+			var current = vel.linlin(0, 127, 10500, 75000).asInteger;
+			~knob3.value = vel / 127;
+			~label3.string = "ptrSampleDelay: \n" ++ current;
+			// s.sendMsg("/n_set", 92000, \ptrSampleDelay, current);
+			("ptrSampleDelay: " ++ current).postln;
+			}.defer },
+		8, {{
+			var current = vel.linexp(0, 127, 1000, 50000).asInteger;
+			~knob4.value = vel / 127;
+			~label4.string = "minPtrDelay: \n" ++ current;
+			// s.sendMsg("/n_set", 92000, \rateFreq, current);
+			("minPtrDelay: " ++ current).postln;
+			}.defer },
+		9, {{
+			var current = vel.linlin(0, 127, 0.02, 1.75);
+			~knob5.value = vel / 127;
+			~label5.string = "baseDur: \n" ++ current;
+			// s.sendMsg("/n_set", 92000, \baseDur, current);
+			("baseDur: " ++ current).postln;
+			}.defer },
+		0, {{
+			var current = vel.linexp(0, 127, 0.05, 10);
+			~knob6.value = vel / 127;
+			~label6.string  = "rateFreq: \n" ++ current;
+			// s.sendMsg("/n_set", 92000, \rateFreq, current);
+			("rateFreq: " ++ current).postln;
+			}.defer },
+		1, {{
+			var current = vel.linexp(0, 127, 0.1, 4.0);
+			~knob7.value = vel / 127;
+			~label7.string = "rateRand: \n" ++ current;
+			// s.sendMsg("/n_set", 92000, \rateRand, current);
+			("rateRand: " ++ current).postln;
+			}.defer },
+		12, {{
+			var current = vel.linexp(0, 127, 0.05, 40);
+			~knob8.value = vel / 127;
+			~label8.string = "ptrFreq: \n" ++ current;
+			// s.sendMsg("/n_set", 92000, \ptrFreq, current);
+			("ptrFreq: " ++ current).postln;
+			}.defer },
+		13, {{
+			var current = vel.linexp(0, 127, 0.05, 40);
+			~knob9.value = vel / 127;
+			~label9.string = "durRand: \n" ++ current;
+			// s.sendMsg("/n_set", 92000, \durRand, current);
+			("durRand: " ++ current).postln;
+			}.defer },
+		14, {{
+			var current = (vel / 127).floor;
+			~knob10.value = vel / 127;
+			~label10.string = "sync: \n" ++ current;
+			// s.sendMsg("/n_set", 92000, \sync, current);
+			("sync: " ++ current).postln;
+			}.defer },
+		10, {{
+			var current = (vel / 127).floor;
+			~knob11.value = vel / 127;
+			~label11.string = "rateSync: \n" ++ current;
+			// s.sendMsg("/n_set", 92000, \rateSync, current);
+			("rateSync: " ++ current).postln;
+			}.defer },
+		11, {{
+			var current = vel / 127;
+			~knob12.value = vel / 127;
+			~label12.string = "amp: \n" ++ current;
+			// s.sendMsg("/n_set", 92000, \amp, current);
+			("amp: " ++ current).postln;
+			}.defer }
+	);
+};
+~knob1.action_({|v,x,y,m|
+	s.sendMsg("/n_set", 92000, \dens, v.value.linlin(0, 1, 20, 500).asInteger);
+	~label1.string_("dens: \n" ++  v.value.linlin(0, 1, 20, 500).asInteger);
+});
+~knob2.action_({|v,x,y,m| s.sendMsg("/n_set", 92000, \ptrRandSamples, v.value.linlin(0, 1, 1400, 72400).asInteger);  });
+~knob3.action_({|v,x,y,m| s.sendMsg("/n_set", 92000, \ptrSampleDelay, v.value.linlin(0, 1, 1500, 70500).asInteger);  });
+~knob4.action_({|v,x,y,m| s.sendMsg("/n_set", 92000, \minPtrDelay, v.value.linexp(0, 1, 1000, 50000).asInteger);  });
+~knob5.action_({|v,x,y,m| s.sendMsg("/n_set", 92000, \baseDur, v.value.linlin(0, 1,  0.075, 1.0));  });
+~knob6.action_({|v,x,y,m| s.sendMsg("/n_set", 92000, \rateFreq, v.value.linexp(0, 1, 0.075, 40));  });
+~knob7.action_({|v,x,y,m| s.sendMsg("/n_set", 92000, \rateRand, v.value.linexp(0, 1, 0.1, 4));  });
+~knob8.action_({|v,x,y,m| s.sendMsg("/n_set", 92000, \ptrFreq, v.value.linexp(0, 1, 0.05, 40));  });
+~knob9.action_({|v,x,y,m| s.sendMsg("/n_set", 92000, \durRand, v.value.linexp(0, 1, 0.05, 40));  });
+~knob10.action_({|v,x,y,m| s.sendMsg("/n_set", 92000, \sync, v.value.floor);  });
+~knob11.action_({|v,x,y,m| s.sendMsg("/n_set", 92000, \rateSync, v.value.floor);  });
+~knob12.action_({|v,x,y,m| s.sendMsg("/n_set", 92000, \amp, v.value.linexp(0, 1, 0.0, 1.0));  });
+
+MIDIIn.addFuncTo(\control, ~midiControl);
+~midiWindow.front;
+~midiWindow.onClose_({
+	s.sendMsg(11, 91000);
+	s.sendMsg(11, 92000);
+	s.sendMsg(11, 99999);
+	s.sendMsg(11, ~ptrGroup.nodeID);
+	s.sendMsg(11, ~rec_group.nodeID);
+	s.sendMsg(11, ~grainGroup.nodeID);
+	MIDIIn.removeFuncFrom(\control, ~midiControl);
+	MIDIIn.disconnect;
+});
+~label1.string_("dens: \n" ++ "0");
+~label2.string_("ptrRandSamples: \n" ++ "0");
+~label3.string_("ptrSampleDelay: \n" ++ "0");
+~label4.string_("minPtrDelay: \n" ++ "0");
+~label5.string_("baseDur: \n" ++ "0");
+~label6.string_("rateFreq: \n" ++ "0");
+~label7.string_("rateRand: \n" ++ "0");
+~label8.string_("ptrFreq: \n" ++ "0");
+~label9.string_("durRand: \n" ++ "0");
+~label10.string_("sync: \n" ++ "0");
+~label11.string_("rateSync: \n" ++ "0");
+~label12.string_("amp: \n" ++ "0");
+~midiWindow.front;
+)
+
+/*(
+s.sendMsg("/n_set", 92000,  \minPtrDelay, 63250);
+
+s.sendMsg("/n_set", 92000, \gate, 1, \sync, 1, \dens, 80, \ptrRandSamples, 62400, \ptrSampleDelay, 36500, \durRand, 0.5, \baseDur, 0.325, \minPtrDelay, 0.05, \rateRand, 1);
+)*/
