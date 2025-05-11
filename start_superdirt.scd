@@ -911,7 +911,7 @@ s.sendMsg(9, "grain_player", 92000, 1, ~grainGroup.nodeID,
 // s.plotTree;
 
 knobSize = 30;
-MIDIIn.connect(0, MIDIClient.sources.at(1));
+MIDIIn.connect(0, MIDIClient.sources.at(0));
 ~midiWindow = Window("Grain Controls", Rect(10,10,250,300));
 ~label1 = StaticText(~midiWindow, Rect(10, 35, 75, 28));
 ~label2 = StaticText(~midiWindow, Rect(90, 35, 75, 28));
@@ -1045,7 +1045,7 @@ MIDIIn.connect(0, MIDIClient.sources.at(1));
 ~knob9.action_({|v,x,y,m| s.sendMsg("/n_set", 92000, \durRand, v.value.linexp(0, 1, 0.05, 40));  });
 ~knob10.action_({|v,x,y,m| s.sendMsg("/n_set", 92000, \sync, v.value.floor);  });
 ~knob11.action_({|v,x,y,m| s.sendMsg("/n_set", 92000, \rateSync, v.value.floor);  });
-~knob12.action_({|v,x,y,m| s.sendMsg("/n_set", 92000, \amp, v.value.linexp(0, 1, 0.0, 1.0));  });
+~knob12.action_({|v,x,y,m| s.sendMsg("/n_set", 92000, \amp, v.value);  });
 
 MIDIIn.addFuncTo(\control, ~midiControl);
 ~midiWindow.front;
