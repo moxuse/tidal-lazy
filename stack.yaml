@@ -17,7 +17,7 @@
 #
 # resolver: ./custom-snapshot.yaml
 # resolver: https://example.com/snapshots/2018-01-01.yaml
-resolver: ghc-8.10.5
+resolver: ghc-9.4.2
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -38,23 +38,26 @@ packages:
 # using the same syntax as the packages field.
 # (e.g., acme-missiles-0.3)
 extra-deps:
-  - bifunctors-5.5.13@sha256:66f1c1d0cba5de9d8810e2ef0be700b98d3689482f605cc46a69283e92a60840,3794
-  - clock-0.8.3@sha256:a692159828c2cd278eaec317b3a7e9fb6d7b787c8a19f086004d15d9fa1fd72c,4601
+  - bifunctors-5.5.15@sha256:5ebaf9a1996de38ad9d77bec37a5585b6461b34f39446e8f1cadae7689a12bfd,3850
+  - clock-0.8.4@sha256:b938655b00cf204ce69abfff946021bed111d2609a9f7a9c22e28a1a202e9115,4631
   - colour-2.3.6@sha256:ebdcbf15023958838a527e381ab3c3b1e99ed12d1b25efeb7feaa4ad8c37664a,2378
   - hosc-0.18.1@sha256:a1df22de40207e44a7b32dd28a1feb0b9ef0aa2335310517cfbb07288240996e,1983
-  - network-3.1.2.7@sha256:e3d78b13db9512aeb106e44a334ab42b7aa48d26c097299084084cb8be5c5568,4888
-  - primitive-0.7.4.0@sha256:89b88a3e08493b7727fa4089b0692bfbdf7e1e666ef54635f458644eb8358764,2857
-  - random-1.2.1.1@sha256:dea1f11e5569332dc6c8efaad1cb301016a5587b6754943a49f9de08ae0e56d9,6541
-  - base-orphans-0.8.7@sha256:58d5514b688ec037f53b9d60097b9d87f6b3847da68f65124987d67222c3a334,3175
-  - blaze-builder-0.4.2.2@sha256:f0017df374c330de0ebe0eb15eae8c48427bddefa1d81a3cb31c0a4812ecdb08,3685
-  - comonad-5.0.8@sha256:1f1aabd73ec7f80f20cf078a748a60cd48d8e57277802fdf6a9ab3601a9b8f7e,3631
+  - network-3.1.4.0@sha256:e152cdb03243afb52bbc740cfbe96905ca298a6f6342f0c47b3f2e227ff19def,5208
+  - primitive-0.7.4.0@sha256:c2f0ed97b3dce97f2f43b239c3be8b136e4368f1eb7b61322ee9ac98f604622b,2982
+  - random-1.2.1.3@sha256:117541ba0a177397a3333f94870f789ef050dca31b0688a19824b2bc401b8823,6237
+  - text-1.2.5.0@sha256:92ea31d8b356b7fd62ac862b871dc1e134bd5db462d798313babf6aa6f69aca8,8180
+  - base-orphans-0.9.3@sha256:c95cd3490ef99998a496de26afe8879a1d7780fa181a4479a956c690d74f75f1,3161
+  - blaze-builder-0.4.2.3@sha256:3f2ff408e858e3ecac30183f98bbb14ce6cf6314c654bd9107e51defd386d5ef,3733
+  - comonad-5.0.9@sha256:f7bf55e62c24e9a9f523dc63e8b644a0eb5e1f6179366b16177ef68a5d4cdb15,3450
   - data-binary-ieee754-0.4.4@sha256:60a56dd516e3710f05d79310cce25a10ed0f361a388df1e24ef96ce540901e1c,948
-  - splitmix-0.1.0.4@sha256:804e2574bc7e32d08cbab91e47ee6287b4df7d50851d73f9e778f94a9a7814c7,6521
-  - tagged-0.8.6.1@sha256:8a24aef29b8e35447ccc56658ea07c2aded30bfa8130ea057e382936e17c74a6,2874
-  - th-abstraction-0.4.5.0@sha256:313f8b3c65781310df66ba86518bcf7662b1b419b601afaf72bb977c255fe6e9,2148
+  - parsec-3.1.17.0@sha256:8407cbd428d7f640a0fff8891bd2f7aca13cebe70a5e654856f8abec9a648b56,5149
+  - splitmix-0.1.1@sha256:8f92088f1c51c8d4569279a07565f8aa6b534a6735615b2295d2961dec8f1783,6225
+  - tagged-0.8.9@sha256:6aad7d2fd594bd51834450d97850b9959305951993ea739fa2bbc18b55d8767d,2123
+  - th-abstraction-0.5.0.0@sha256:4351cadf6bf0ca80c90225bae0b12f4cfdd550f30c333b050186af5a8bc19457,2236
   - distributive-0.6.2.1@sha256:0f99f5541cca04acf89b64432b03422b6408e830a8dff30e6c4334ef1a48680c,2996
-  - indexed-traversable-0.1.2@sha256:52a1b708abd921f91a5977f6ae53c4aa2b33f7c30be0fff17173f658b34c5350,2533
+  - indexed-traversable-0.1.4@sha256:7e6eaeca52197856f3ab878fb31e30233dbb35b52a16441a42e4364b22b421e5,2061
   - transformers-compat-0.7.2@sha256:044fb9955f63ee138fcebedfdcbe54afe741f2d5892a2d0bdf3a8052bd342643,5601
+  - foldable1-classes-compat-0.1.1@sha256:a75aaa3e061f245b5a25a49aa4afd52ee7c4690b7c247dfd53b04b50bd9ea6f9,3096
   - tidal-1.7.4
 # Override default flag values for local packages and extra-deps
 # flags: {}
