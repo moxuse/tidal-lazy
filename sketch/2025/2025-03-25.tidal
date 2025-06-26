@@ -1,25 +1,51 @@
-setcps (124/120/2)
+setcps (128/120/2) 
 
 do
-  let pat = "{0 ~ ~ 1 <~ 0 ~ 1> ~ ~ ~ <0 0 1> <1 0 ~> ~ ~ <~ 1 ~ ~ 0 ~>}%16"
-  let pat2 = "{~ ~ <~ ~ 0> ~ <~ 1 0> 1/2 ~ ~ ~ <0 ~ ~ 1 ~>}%16"
-  let x =  gain pat
-  let y =  gain (inverse <$> pat)
+  let pat = "{0 1 ~ ~ <1 0 ~ 1> ~ 1 ~ <~ 1 0> ~ 0 <0 1 ~ ~ 0 ~> ~}%8"
+  let pat2 = "{~ ~ <1 ~ 0> ~ <~ 1 0> 1/2 0 ~ 1 <0 ~ 1 1 ~>}%16"
+  let y =  gain pat
+  let x =  gain (inverse <$> pat)
   let w =  gain pat2
   let z =  gain (inverse <$> pat2) 
-  d1 
-    $ superimpose (|+ pipe "<90 0> 0 90 90 <0 0 90>") 
-    $ every 6 (within (0.75, 1) (stut'' "<4 6 5>" "<16 64 32 4>") . (|+ speed 1.85))
+  d1
+    $ superimpose (|+ pipe "<90 0> 0 0 90 0") 
+    $ every 4 (within (0.75, 1) (stut'' "<4 6 5>" "<16 64  12 4>") . (|+ speed (range 0.64 1.9 sine)))
     $ stack[
-      (x |+ s "mbd:7" |+ sus 0.25)
-      , (y|+ s "[cusn:8 msn2:3]/2" |+ n "<0 10> 4 0 10" |+ sus 0.38)
-      , (z |+ s "cub:12" |+ n "0 <-4 0> 0 9" |+ sus 0.25 |+ up (scale "lydian" "[0 7]/2 <5 2 3> 4" + "<0 1 4 -2>")) 
-      , (w |+ s "cul:9" |+ n "0 <16 0> 0" |+ sus 0.25 |+ up (scale "lydian" "[8 3]/4 <1 8> 5" + "<0 1 14 -2>") |+ wah 0.3) 
+      (x |+ s "mbd:7" |+ sus 0.25 |+ mGain)
+      , (y|+ s "[msn:15 msn2:3]/2" |+ n "<0 10> 6 0 10" |+ sus 0.018)
+      , (mask "t t f t t f" $ z |+ s "mb:30" |+ n "0 <-4 0> 0" |+ sus 0.125 |+ up (scale "hexMajor6" "[0 9]/2 <5 -2 3> 4" + "<0 -3 5 -1>") |+ mGain) 
+      , ((every 4 (0.125<~)) $ s "gtrig*4")
+      -- , (w |+ s "cul:9" |+ n "0 <16 0> 0" |+ sus 0.25 |+ up (scale "lydian" "[8 3]/4 <1 8> 5" + "<0 1 14 -2>") |+ wah 0.3) 
       ]
-    |+ crush "<12 4> 12 <4 12> 8 12 8" 
-    |+ mGain 
-    |+ room "0 0 0 0.3 0 0.1 0" 
+    |+ crush "<12 8> 24 <4 8 12> 12 12 8" 
+    |+ room "0 0 0 0.08 0 0 0.25" 
     |+ mfDel' "0 0 0.4 0 <0.6 0 0> 0 0"
-    |+ coarse "[0 0 12]/3 <2 8> [4 2]*2 2 <8 1>"
-    |+ slowPanR 3
- 
+    |+ coarse "[0 0 8]/3 <2 8> [4 2]*2 2 <8 1>"
+    |+ slowPanR 4
+  d2
+    $ s "[~ msn2:3]*2"
+    |+ mGain
+    |+ shape 0.1
+    |+ sus 0.095
+    |+ up 8
+    |+ crush 6
+  once $ midicmd "start" # s "[midiout sync]"
+  p "midiclock" $ midicmd "midiClock*96" # s "midiout"
+
+d3
+$ up (scale "hexMajor6" "[0 -10 5 75 0 1] [75 [4 -4]/2]/4" + 4)
+|+ s "ml5:19"
+|+ shape 0.25
+|+ wah 0.04
+|+ sus 0.45
+|+ slowPanR 3
+|+ mGain
+
+d1 silence
+ -- do
+  -- once $ midicmd "start" # s " midiout"
+  -- p "midiclock" $ midicmd "midiClock*128" # s "midiout"
+
+do
+  once $ midicmd "stop" # s " midiout"
+  p "midiclock" $ silence
