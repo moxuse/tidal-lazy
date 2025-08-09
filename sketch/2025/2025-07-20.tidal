@@ -1,0 +1,21 @@
+setcps (132/120/2)
+
+do  
+  let pat = "{1 ~ [1 ~]/2 1 ~ 0/2 ~ 0 [1 0]/2 ~ [~ 1*2 ~]/3 1 ~ ~ ~ 0 ~}%16"
+  let x = gain pat
+  let y = gain (inverse <$> pat)
+  d1
+    $ every 2 (within (0.25,0.75) (|+ slowSpeedR 3) . (|+ coarse "2 8 4 2 12 8 12") . (|+ up "0 -13 0 12 -6 15"))
+    $ every 5 (within (0.5,1) (stutWith "<3 4 5>" (1/"<8 16 8>") (mask "[t f t]*2") . (|+ speed (slow 3 $ range 0.04 6 rand)) . (|* gain (slow 3 $ range 0.95 0.45 sine))))
+    $ every 3 (within (0.25, 0.75) rev . (|+ up "4 -16 4 -8 12 0") . (|+ accelerate " 0 0.3 0.05 -0.04 -0.75 -0.4"))
+    $ every 7 (within (0.35, 0.45) (|+ wah 0.1))
+    $ stack [
+      (x |+ s "mhh:9" |+ speed 32 |+ hpf "[500 7000 1600]/2 [1200 100]/3 900 [6000 12000] 4800/3")
+      , (y |+ s "mbd:11" |+ sus 0.125 |+ cutoff "1800 [250 2600 400]*2 [900 1500/4]/2 [200 120]*2" |* gain "[0.5 1]*6")
+      , (s "{~ ~ mst:16 ~ ~ ~ ~ v:8/3 [~ v:0]/2 ~ peri:10 ~}%16" |+ accelerate (choose[0.1 -0.05 -0.1]) |+ up ("0 5 -5 2 -12 -7" + "7") |+ shape 0.2)
+    ]
+    |+ mGain
+    |+ mfDel' "0 0.03/3 0 [0 0.25]/2 0 0.3/8 0 0.24/3"
+    |+ slowPanR 2
+    |+ room "[0 0 0.125]/2 0 0 0.18/4 0 0.075/6 0 0 0.1/5"
+
