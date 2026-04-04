@@ -11,6 +11,7 @@ s.quit;
 
 // configure the sound server: here you could add hardware specific options
 // see http://doc.sccode.org/Classes/ServerOptions.html
+
 s.options.sampleRate = 44100;
 s.options.numBuffers = 1024 * 256; // increase this if you need to load more samples
 s.options.memSize = 8192 * 64; // increase this if you get "alloc failed" messages
@@ -52,7 +53,7 @@ s.waitForBoot {
 		NetAddr("localhost", 49160).sendMsg("frame:" ++ current);
 		1
 		});*/
-		NetAddr("localhost", 49160).sendMsg("frame:0");
+		NetAddr("localhost", 49160).sendMsg("frame:1");
 	}));
 	~dirt.soundLibrary.addSynth(\dig0, (play: {
 		NetAddr("localhost", 49160).sendMsg("write:E;2;16");
@@ -802,15 +803,23 @@ XLine.kr(ExpRand(400,1800), ExpRand(250,500), 0.2),3
 MIDIClient.init;
 )
 (
-~midiOut = MIDIOut.newByName("UM-ONE", "UM-ONE");
+~midiOut = MIDIOut.newByName("Midi Through", "Midi Through Port-0");
+// ~midiOut = MIDIOut.newByName("UM-ONE", "UM-ONE MIDI 1");
 ~midiOut.latency = 0;
 ~dirt.soundLibrary.addMIDI(\midiout, ~midiOut);
+)
+
+(
+// ~midiOut = MIDIOut.newByName("Midi Through", "Midi Through Port-0");
+~midiOut2 = MIDIOut.newByName("UM-ONE", "UM-ONE MIDI 1");
+~midiOut2.latency = 0;
+~dirt.soundLibrary.addMIDI(\midiout2, ~midiOut2);
 )
 
 // Grain Extension
 (
 var outBusIndex;
-var orbitGroupIndex = 3;
+var orbitGroupIndex = 2;
 var midispec, knobSize;
 
 outBusIndex = ~dirt.orbits[0].globalEffectBus.index;
@@ -911,7 +920,7 @@ s.sendMsg(9, "grain_player", 92000, 1, ~grainGroup.nodeID,
 // s.plotTree;
 
 knobSize = 30;
-MIDIIn.connect(0, MIDIClient.sources.at(0));
+MIDIIn.connect(0, MIDIClient.sources.at(4));
 ~midiWindow = Window("Grain Controls", Rect(10,10,250,300));
 ~label1 = StaticText(~midiWindow, Rect(10, 35, 75, 28));
 ~label2 = StaticText(~midiWindow, Rect(90, 35, 75, 28));

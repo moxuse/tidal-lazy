@@ -1,15 +1,5 @@
 setcps(128/120/2)
 
-d1 $ superimpose (|+ pipe 90) $ s "[mhh:0(3,16,<0 1>), [msn2:20 ~]/2 mbd:5]" |+ mGain |+ room 0.2 |+ up "<0 4 3 5>"
-
-d2
-  $ stack[
-    (superimpose (|+ pipe 90) $ s "~ ml:28/2" |+ up (scale "lydian" "[0,3,4]" + "<12 17 9>/3"))
-    , (s "<ml:13 ml:7>" |+ up (scale "lydian" "[0,5,8]" + "<7 0 -3 15>" + "4") |+ coarse "<2 4 8 12>" |+ pipe "<0 90 90>" |+ room 0.05)
-    , (slow 2 $ s "mb2:4(3,16)?" |+ up (scale "lydian" "[2,4,8]" + "<0 12 17>") |* 0.65 |+ pipe 90 |+ room 0.1)
-    , (slow 4 $ s "ml3:2(1,16,2)?" |+ up (scale "lydian" "[2 4 8]" + "<0 12 17>") |* 0.65 |+ pipe 90 |+ room 0.3)
-  ]
-
 do
   let pat = "{0 ~ 1 <1 0 ~ 1> <0 ~ 1> 1 <~ 1 0> ~ ~ <~ 1 ~ ~ 0>}%16"
   let pat2 = "{0 1 ~ <1 ~ 0> <~ 0 1 1> 0 ~ ~ 1/3 <~ 0 ~ ~ 1>}%16"
@@ -25,7 +15,7 @@ do
     $ unison "mhh" ((0.125~>) "<mst:13 knz:15>" |+ n 2 |+ sus "<0.25 0.125 0.75 0.1>/2" |+ begin "<0.075 0.125 0 0.75 0.8 0.24>")
     $ stack [
       (z |+ "[mhh:1, ~ mhh:0]" |+ slow 2 (gain "[1 0.35 0.6]*2") |* sus "0.5" |+ pipe "0 0 90 [0 0 90]/3 90"),
-      (every 4 (within (0.5, 1) (0.125<~)) $ s "msn:7*2" |+ shape 0.3 |+ slow 2 (gain "[1 0.35 0.6]*2") |+ up 3 |* sus 0.125),
+      (mask "[[f t]/2 f]/2 [f t] t f" $ x |+ s "msn3:12*2" |+ shape 0.38 |+ speed 0.38 |+ crush 8 |+ slow 2 (gain "[1 0.35 0.6]*3") |* sus (range 0.125 0.008 (slow 4 $ sine))),
       (y |+ s "mst:23" |* gain (slow 2 "[1.1 0.57 0.75]*2") |+ pipe "0 [0 90]/2 0 [0 90 90 0]/2 0"),
       (w |+ s "mbd2:17" |+ gain "0.15")
     ]
@@ -36,8 +26,10 @@ do
     |< up "1 0 [0 1]/3 <0 0 5> 1 0"
     |+ mGain
     |+ room "<0 0 0.06 0> 0.075 <0.1 0 0> 0 0 <0 0.07> 0 0 0"
-    |+ pipe "{0 0  0 0 90 90? 0 0}%8"
+    |+ pipe "{0 0 90 0 90 90? 0 0}%8"
 
-d2 silence
+d1 silence
 
-d3 $ superimpose (|+ pipe 90) $ slow 4 $ s "ml2:3(3,8)" |+ up (scale "minor" "[0 4, 3 5]" + "<0 1 3>" - "24") |+ wah 0.2
+d3 sience
+
+d3 $ superimpose (|+ pipe 90) $ slow 4 $ s "ml2:2(3,8)" |+ up (scale "minor" "[0 4, 3 5]" + "<0 1 3>" - "12") |+ wah 0.2

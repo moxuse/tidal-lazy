@@ -1,0 +1,23 @@
+setcps (142/120/2)
+
+do
+  let pat = "{~ ~ <1 ~ 0*2> [~ 0] <1*2 0 0 ~> [0 ~] <1*0 ~ ~ 0 ~> 1/4 <~ 0*2 ~ ~>/2 ~ ~ ~ ~}%8"
+  let pat2 = "{[1,0] 0/4 0 <0*2 0*2 ~ 1> 0 [~,0] <~ 0 ~> <~ 1> ~ ~ ~ ~ 0 ~ ~}%8"
+  let pat3 = "{[1,0] 0/4 0 <0*2 0*2 ~ 1> 0 [~,0] <~ 0 ~> <~ 1> ~ ~ ~ ~ 0 ~ ~}%16"
+  let x =  gain pat
+  let y =  gain (inverse <$> pat)
+  let w =  gain pat2
+  let z =  gain (inverse <$> pat3) 
+  d1 
+    -- $ superimpose (|+ pipe "<90 20> 90 20 90 <90 20 90>") 
+    $ every 5 (within (0.25, 0.5) (stut'' "<2 6 5>" "<16 8 4>") . (|+ speed (range 0.95 1.4 sine)) . (|> gain (density 24 (range 0.95 1.2 sine))))
+    $ every 4 (within (0.5, 1) (stut'' "<4 3 5>" "<2 16 32 4>") . (|+ slowSpeedR 2) . (|+ cutoff (density 128 (range 900 4500 sine))) . (|+ gain 1) . (|+ sus 0.125))
+    $ stack[
+      (x |+ s "sn:6" |+ sus 0.2)
+      , (y |+ s "sn:6" |+ sus 0.025 |* gain 0.5 |+ begin "0.1 0.5 0.25 -1 0.3" |+ hpf 220)
+      , (z |+ s "808:1" |+ shape 0.2 |+ sus 1 |+ hpf 3000)
+      , (w |+ s "cubd:10" |+ shape 0.4 |+ sus 0.75)
+    ]
+    |+ slowPanR 3
+    |+ mGain
+ 
