@@ -26,7 +26,7 @@ s.waitForBoot {
 	~dirt.loadSoundFiles(Platform.resourceDir ++ "/sounds/superdirt/*", true);   // load samples (path can be passed in)P
 	s.sync; // wait for samples to be read
 
-	~dirt.start(57120, [0, 0]);   // start listening on port 57120, create two busses each sending audio to channel 0
+	~dirt.start(57120, [0,0]);   // start listening on port 57120, create two busses each sending audio to channel 0
 
 	// optional, needed for the sclang tests only:
 	// (
@@ -618,7 +618,7 @@ SynthDef(\rmsn, {|out, sustain = 1, gate = 1, note = 0, speed = 1, begin = 0, en
 	var snd = BHiShelf.ar(
 		(MoogFF.ar(
 			Pulse.ar(LFPar.kr(ExpRand(1, 0.8), Rand(-pi, pi), 40) + (note + 48).midicps ,0.25, 0.5),
-			XLine.kr(ExpRand(400,300), ExpRand(600,800), 0.1), 3
+			XLine.kr(ExpRand(1400,4300), ExpRand(600,800), 0.1), 3
 		) * 8.dbamp).fold2
 	,
 		ExpRand(500, 400),
@@ -628,9 +628,9 @@ SynthDef(\rmsn, {|out, sustain = 1, gate = 1, note = 0, speed = 1, begin = 0, en
 	snd = (Latch.ar(snd, Impulse.ar(XLine.kr(ExpRand(400,16e3), ExpRand(150,16e3), 1))) * 5.dbamp);
 	snd = (snd * 10).softclip * -8.dbamp;
 	snd = (MoogFF.ar(snd,
-XLine.kr(ExpRand(400,1800), ExpRand(250,500), 0.2),3
+XLine.kr(ExpRand(9250,5000), ExpRand(400,500), 0.2),3
 		).tanh * 10.dbamp);
-	snd = Limiter.ar(PitchShift.ar(snd, Rand(0.01, 0.03), 1 + Amplitude.ar(Impulse.ar(2).lag(0.01), 0.01, 0.02), ExpRand(0.005, 0.08)) * 5.dbamp);
+	snd = Limiter.ar(PitchShift.ar(snd, Rand(0.01, 0.09), 1 + Amplitude.ar(Impulse.ar(2).lag(0.01), 0.01, 0.02), ExpRand(0.005, 0.08)) * 5.dbamp);
 	snd = (snd + DelayC.ar(snd, Rand(0.1,0.2), SinOsc.ar(0.1,[0, pi * 2]).linlin(-1, 1, 0, 1) * 1e-03)) * 0.3;
 	OffsetOut.ar(out, DirtPan.ar(snd, ~dirt.numChannels, pan, env));
 	}).store();
@@ -681,7 +681,7 @@ XLine.kr(ExpRand(400,1800), ExpRand(250,500), 0.2),3
 		rate = Dseq([1, 0.5], inf);
 		dur = 1.0 * (end - begin)/speed;
 		env = EnvGen.ar(Env.perc(0.0 , dur,  1, 4), gate, timeScale:sustain, doneAction:2);
-		sound = TGrains.ar(1, Impulse.ar(trate), 88888, rate * speed, MouseX.kr(0,BufDur.kr(88888)), tdur, 0, 0.1, 1) * 0.5 * amp;
+		sound = TGrains.ar(1, Impulse.ar(trate), 88888, rate * speed, MouseX.kr(0,BufDur.kr(88888)), tdur, 0, 0.1, 1) * amp;
 		OffsetOut.ar(out,
 		DirtPan.ar(sound, ~dirt.numChannels, pan, env);
 		)
@@ -824,6 +824,18 @@ XLine.kr(ExpRand(400,1800), ExpRand(250,500), 0.2),3
 		2.do({ src = AllpassN.ar(src, {0.03.rand}, 0.01 , 0.75) });
 		OffsetOut.ar(out, DirtPan.ar(src, 2, pan, env));
 	}).store;
+
+	SynthDef("madd", {|out, sustain = 1, note = 0, pan = 0, amp = 1.0, begin = 0, end = 1.0|
+		var snd, duration, num, env;
+		num =  (0..11).normalize.pow(0.5);
+		env = EnvGen.ar(Env.perc(0.1, sustain, amp, 4), levelScale: amp, doneAction: 2);
+		snd = SinOsc.ar(num.linexp(0, 1, (note + 60).midicps * 2, 80), SinOsc.kr((note + 60).midicps * 6, 0, 0.5pi), 0.5);
+		snd = snd.sum;
+		snd = BPF.ar(snd, XLine.ar((note + 60).midicps, \bpfEnd.kr(9300), sustain * 1.25), 0.4);
+
+		snd = PitchShift.ar(snd, 0.04, LFNoise2.kr(4.5,0.5,sustain * 1.25), 0, 0.005);
+		OffsetOut.ar(out, DirtPan.ar(snd, 2, pan, env));
+	}).store;
 }; //wait for boot.
 )
 
@@ -831,6 +843,7 @@ XLine.kr(ExpRand(400,1800), ExpRand(250,500), 0.2),3
 (
 MIDIClient.init;
 )
+
 (
 ~midiOut = MIDIOut.newByName("ネットワーク", "セッション1");
 ~midiOut.latency = 0;

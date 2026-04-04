@@ -1,0 +1,114 @@
+setcps (138/120/2)
+
+do
+  let pat = "{0/2 ~ ~ ~ <~ 0 ~ 1> ~ 1 ~ <~ 1 ~> ~ 0 <~ 1 ~ ~ 0 ~> ~}%16"
+  let pat2 = "{~ ~ <1 ~ 0> ~ <~ 1 0> 1/2 0 ~ ~ ~ 1/2 <0 ~ 1 1 ~>}%16"
+  let y =  gain pat
+  let x =  gain (inverse <$> pat)
+  let w =  gain pat2
+  let z =  gain (inverse <$> pat2) 
+  d1
+    -- $ superimpose (|+ pipe "<90 0> 0 0 90 0") 
+    $ every 6 (within (0, 0.5) (stutWith "<3 5 4>" (1/16) (|+ sus (range 0.75 0.07 sine))))
+    $ every 4 (within (0.75, 1) (stut'' "<4 6 5>" "<16 64 12 4>") . (|+ speed (range 0.64 1.9 sine)))
+    $ stack[
+      (x |+ s "mbd:9" |+ sus 0.5 |+ mGain)
+      , (y|+ s "[msn:15 msn2:3]/2" |+ n "<0 10> 6 0 10" |+ sus 0.018)
+      , (mask "t t f t t f t" $ z |+ s "mb:30" |+ n "0 <-4 0> 0" |> sus 0.075 |+ up (scale "hexDorian" "[0 9]/2 <5 -2 3> 4" + "<0 -3 5 -1>") |+ mGain) 
+      -- , ((every 4 (0.125<~)) $ s "gtrig*4")
+      , (w |+ s "ml:26" |+ n "0 <16 0> 0" |+ sus 0.35 |+ up (scale "hexDorian" "[24 3]/4 <1 9> 5" + "3") |+ wah 0.3) 
+      ]
+    |+ crush "<12 8> 24 <4 8 12> 12 12 8" 
+    |+ room "0 0 0 0.08 0 0 0.25" 
+    |+ mfDel' "0 0 0.4 0 <0.6 0 0> 0 0"
+    |+ coarse "[0 0 8]/3 <2 8> [4 2]*2 2 <8 1>"
+    |+ slowPanR 4
+  d2
+    $ s "[~ msn2:3]*2"
+    |+ mGain
+    |+ shape 0.1
+    |+ sus 0.095
+    |+ up 9
+    |+ crush 6
+  -- once $ midicmd "start" # s "[midiout sync]"
+  -- p "midiclock" $ midicmd "midiClock*96" # s "midiout"
+
+d7
+$ mask "t [t <f t> t f] t <f f f t>"
+$ off "<0.125 0.25 0.375 0.75>" (|+ up "<5 7 5>") . (rot "<0 1 2>")
+$ every 7 (rot "<1 2 0>") . (0.125<~)
+-- $ up (scale "lydian" "[~ <~ 12>, <-5 7 ~> 21 -5/4 ~] [~ 1/4 ~ <~ 24>, ~ -1? ~] [~ <~ 4 ~>] [-1 [~ -5]/2 ~ ~]/4" - "<~ 0 2>")
+$ up (scale "lydian" "{0 2 6 ~ 8 9 <~ 11? 17? ~> ~ ~ ~ ~ ~ ~ ~ ~ ~}" - "2")
+-- |+ s "ml3:2"
+-- |+ s "ml3:14"
+|+ s "cul:15"
+|+ coarse "<12 2 4 8 2 2 10>"
+|+ n "0 0 <0 20> <0 -2 -4>"
+|+ shape 0.25
+|+ sus (range 0.125 0.75 $ slow 3 sine)
+|+ cutoff (range 1800 6200 $ slow 3 sine)
+-- |+ room 0.2
+|+ slowPanR 3
+|+ mGain
+
+d7
+$ off "<0.125 0.25 0.75>" (|+ up "<5 7 5>") . (rot "<0 1 2 3>")
+$ up (scale "hexDorian" "{[-1, ~ 6/2, 19?] ~ ~ ~ [~ <7 12 12 6> 3, 14?] ~ ~ ~ ~ ~ <~ [~5]> ~ -8/2 ~ ~ ~}" + 2)
+|+ s "ml:14"
+|+ dist 0.2
+|+ cutoff (range 3500 7700 $ sine)
+|+ convn 0.2
+|+ sus (range 0.125 0.025 $ slow 3.33 sine)
+|+ mGain
+|+ speed "<4 2 2> <2 -1> 2 <2 1>"
+|+ slowPanR 3
+
+d7
+$ ((1/4)<~)
+$ up (scale "hexDorian" "{[~ <~ 3>] [4 8] ~ ~ ~ [~ <~ 9 ~ 10>] [<~ 8> 5] [-2] [<12 ~ 7> <0 -1>] ~ ~}%8" + 2)
+|+ s "ml:23"
+|+ coarse 4
+|+ sus (range 0.25 0.14 $ slow 4 sine)
+|* sus  "1 0.75 0.4 0.8 0.765 0.999 0.8 1 0.75"
+|+ room 0.1
+|+ mGain
+
+d8
+$ slow 2
+$ off "<0.125 0.375 0.845 0.25>" (|+ up "<7 5>") . (rot "<0 1 3>")
+$ up (scale "hexDorian" "{[0,2,<3 6>,15] ~ ~ ~ ~ ~ [2,<9 13>,17,27,45] ~ ~ ~ }%8" + 2)
+|+ s "ml:41"
+|+ coarse "<4 4 8>"
+|+ cutoff 4800
+|+ sus 1.75
+|+ shape 0.25
+|+ pan 0.24
+|+ speed ("<-0.75 -0.5 -1>")
+|+ gain 1.1
+
+d7 silence
+ -- do
+  -- once $ midicmd "start" # s " midiout"
+  -- p "midiclock" $ midicmd "midiClock*128" # s "midiout"
+
+-- with Mox-3* Surge
+d9 $ slow 1 $ every 2 (stutWith "<3 5 6>" (1/12) (|+ accelerate (range 0.1 (-0.2) $ slow 1.25 sine)) . (|+ sus (range 0.12 0.46 sine)))  
+$ n (scale "hexDorian" "[-5, 4 -5/2, 0, 8] 7 ~ -5/4 [0, 2, 5] 6/8 ~ ~ [0/3, 5/3] -8 ~") |+ s "[midiout]" |+ midichan 0 |* sus "0.5 0.1 0.75 0.8"
+
+d4 $ s "midiout*16 midiout*10" |+ ccv (range 25 90 $ density "2 0.25 <5 0.1 0.4> [3 0.25 0.25]/3" $ slow 3 sine) |+ ccn 3 |+ midichan 0
+
+d5 $ s "midiout*24" |+ ccv (range 78 32 $ density "1 [2 0.25 0.1] 0.75 0.1 0.03" sine) |+ ccn 1 |+ midichan 0
+
+d3 $ s "midiout*32" |+ ccv (range 97 19 $ density "2 0.25 [3 0.4 0.3] 0.25" $ slow 4 saw) |+ ccn 2 |+ midichan 0
+
+
+d9 silence
+
+do
+  d3 silence
+  d4 silence
+  d5 silence
+
+do
+  once $ midicmd "stop" # s " midiout"
+  p "midiclock" $ silence
