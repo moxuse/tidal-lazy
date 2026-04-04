@@ -1,0 +1,54 @@
+setcps (124/120/2)
+
+do
+  let pat0 = "[0 1/2 0*4 1/4 0 0/2 0/4 1*2]"
+      -- pat1 = "[~ 0*4 1/2 0 1*2 0/4 0 1]" 
+      pat1 = "[~ 0*4 1/2 0 1 0/4 0 1]*2" 
+  let ppt0 = stack [
+        (sometimes (0.125 <~) $ gain pat1 |+ sound "<mhh:9 mbd:6>"|+ mfDel' (slow 1.25 (range 0.1 1 sine)))
+        ,((0.125 ~>) $ gain (inverse <$> pat0) |+ sound "moe1" |+ wah "0.1")
+        ,(gain (inverse <$> pat1) |+ sound "[msn:15 mbd:5]/2" |+ speed "0.5 -0.75 2")
+        ]
+  let ppt1 = stack [
+        (gain pat1 |+ sound "<mbd:2 cub:19 mhh:21>" |+ accelerate "{-0.04 0.2 -0.124 0.02 0.05 -0.05}%8")
+        ,(gain (inverse <$> pat1) |+ sound "mb:26?" |+ end "0.35")
+        ,((0.125 ~>) $ gain (inverse <$> pat0) |+ sound "<mhh:26 msn:28>" |+ end "0.75")
+       ]
+  d2
+    $ msvoA 0.125
+    -- $ every 4 (stutWith 3 (1/16) (|+ speed (range 1.2 0.5 sine)))
+    $ whenmod 4 3 (within (0.25, 0.4) (rev) . (striate 4))
+    $ whenmod 6 4 (within (0.5, 0.75) (off 0.125 (|+ speed "-0.75 0.8 3 -2.666")))
+    $ slow 2
+    $ ur 1 "<b a c b b a c>" [
+      ("a", ppt0 |+ up "{0 0 -3 0 0 0 0}%8"
+        -- |+ binshfS "{0.4 0.3 0.04 0 0.5}%8"
+        |+ sus "0.3 0.74 0.3 0.05 0.99 0.75 1.1 0.5"
+      )
+      ,("b", ppt1 |+ up "{0 0 -3 0 0 0 5}%8"
+        |+ coarse "{2 8 2 2 2 12}%8" 
+        -- |+ crush "{2 8 2 2 2 12}%8" |+ cutoff (range 2300 5000 sine)
+        -- |+ wah "{<0.03 0.04 0> 0 0.4 <0 0 0.3>}"
+        |+ sus "{0.24 0.25 1.125 0.99 1.75 0.5 0.25}"
+      )
+      ,("c", (s "mnt:26/2 mbd:5 [~ mhh:14*2]/2 mbd2:3") |+ accelerate "{-0.03 0.03 0.05 0.03 -0.05 0.3 0 0}%8" |+ mfDel' (slow 2.5 (range 0.1 1 sine)))
+    ] []
+    |+ room "{0 0 0 0 0.2 0 0.1/2 0 0 0.3/3}%16"
+    |+ orbit "1"
+    |> slowPanS 3
+    -- |+ mDefault
+    |+ mGain
+
+d3
+$ slow 3
+-- $ superimpose (off "<0.666 [0.3333 1.125]*2 1.66666>" (|+ up "<-5 -7 12>") . (palindrome) . (iter "<3 -6>") . (|* sus "<0.5 0.75> 0.36 0.25 0.75 0.125"))
+$ up (scale "ionian" "{~ ~ [~ ~ 5] [7 3 ~] -5 ~ <5 8> -2 <0 -1> ~ [12/4 ~ 3/4]}%16")
+|+ s "cul:4"
+|+ crush "{2 8 2 2 2 12 4}%6" |+ cutoff (range 700 2000 sine)
+|+ sus (range 0.5 0.14 $ slow 3 sine)
+|+ room 0.3
+|+ mGain
+
+d3 silence
+
+

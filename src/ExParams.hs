@@ -62,8 +62,11 @@ chorus = pF "chorus"
 pipe :: Pattern Int -> ControlPattern
 pipe = pI "pipe"
 
+tilt :: Pattern Double -> ControlPattern
+tilt = pF "tilt"
 
-
+throp :: Pattern Double -> ControlPattern
+throp = pF "throp"
 -- this is exprimental
 -- out :: Pattern Int -> ParamPattern
 -- out = make' VI out_p

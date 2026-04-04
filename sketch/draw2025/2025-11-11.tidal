@@ -1,0 +1,229 @@
+(setcps 0.52)
+
+d2
+$ slow 2
+$ up (scale "hexMajor7" "[0 5 7] [0 5 7] [0 5 7] 2 ~ ~ ~ ~ ~ ~")
+|+ s "[supersaw, ml2:2]"
+|+ coarse 4 |+ cutoff (range 300 1200 $ slow 9.5 saw) |+ sus (range 0.125 0.025 $ slow 3.5 sine)
+|+ gain (range 1.1 0.9 $ slow 4.3 sine)
+|+ slowPanR 4
+|+ room 0.3
+
+d3
+$ up (scale "hexMajor7" "<[0 5 <7 7 2 7>] [3, 8, 9]>")
+|+ s "[txosc, ml2:4]"
+|+ cutoff (range 4200 700 $ slow 6.5 sine)
+|+ gain 1.2
+|+ sus (range 2.2 1.125 $ slow 7.5 saw)
+|+ room 0.4
+|+ dist "<0.1 0.07 0.02>"
+
+do
+  let pat = "{1? ~ [1 0?]/2 ~ ~ 1/2 ~ ~ <~ ~ 1 0> ~ ~ ~ ~ <~ 0 ~ 1> ~ ~}%16"
+  let pat2 = "{0/2 ~ <1 ~ ~> 0? ~ 1/5 ~ ~ ~ ~ ~ ~ ~ ~ <~ 0 1 ~ ~> <~ ~ 1>}%16"
+  let x = gain pat
+  let y = gain (inverse <$> pat)
+  let z = gain pat2
+  let w = gain (inverse <$> pat2)
+  d1
+    -- $ msvoA 0
+    -- $ degradeBy 0.65
+   $ every 2 (within (0.25,0.5) (stutWith "<5 4 3>" (1/4) (|+ cutoff (range 450 9000 sine))))
+    $ within (0.5,1) (stutWith "<6 4 2 5>" (1/16) (|* sus (range 0.25 0.75 $ slow 1.33 sine)) . (|* gain 0.65))
+    $ stack [
+      (x |+ s "mbd:15" |+ sus (range 0.25 0.125 $ slow 3 saw) |+ up "{-14 0 2 -8 -4 -12}")
+      , (y |+ s "<mst:26 msn:19 mnz:9>" |+ sus (range 0.01 0.75 $ slow 3 sine) |+ up "0 24 5 3 12" |+ accelerate (range 0.3 (-0.04) $ slow 3.5 sine))
+      , (z |+ s "ksn:5" |+ sus (range 0.05 0.25 $ slow 0.65 sine) |+ up "7 5 3 -4 12" |+ n "<0 4 10 1>/2")
+      , (w |+ s "<msn2:5 msn2:27 cusn:14>" |+ sus (range 0.5 0.075 $ slow 0.65 sine) |+ up "{-7 <24 -15> -23 <-6 -4> <15 -12>}")
+    ] 
+    |+ cutoff (range 6200 12000 $ slow 3.6 saw)
+    -- |+ mGrav
+    |+ gain 1.1
+    |+ shape 0.1
+    |+ orbit 1
+    |+ slowPanR 3
+
+----
+d1
+$ degradeBy 0.35
+$ mask "t f t <t f>"
+$ within (0,0.75) (stutWith "<4 3 2 5>" (1/"<3 2 4>") (|+ up "0 -4 -12 7 -24") . (|* sus (range 0.8 0.09 $ slow 3 sine)) . (rot "1 2"))
+$ up (scale "hexDorian" "[0,5,7](4,8)" - "<-12 -9 -14 2 15 -24>")
+|+ s "[madd, cul:7?, mbd:11]"
+|+ sus "<0.71 1.8 1.2> 0.25"
+|+ accelerate "<1.5 -0.2 0.3 -0.03 -0.75>"
+|+ slowPanR 3
+-- |+ cutoff (range 500 12000 sine)
+|+ cps "1.1 0.8 0.73 {0.6 0.7 0.8}%6 0.4 0.35"
+-- |+ cps(132/120/2)
+|+ pan (range (-0.75) 0.75 rand)
+|+ mGain
+
+d2
+$ slow 4
+-- $ up (scale "hexDorian" "[<-2 6> 0 ~ 9]*2 [0,6,9]" - 2)
+$ up (scale "hexDorian" "[<0 6>, -2]" - 2)
+|+ s "[mpd:14(3,8), flau]"
+|+ speed 0.5
+|+ sus 1.5
+-- |+ shape 0.2
+|+ cutoff (range 7280 800 $ slow 5 sine)
+|+ room 0.3
+|+ mGain
+
+-- with Mox-Pad-0*
+d6
+$ slow 2
+$ up (scale "dorian" "[0,<6 8 5 9>,<10 11 9>]")
+|+ s "midiout"
+
+d4
+$ slow 4
+$ off 0.5 (|+ up "<5 -7 2>/2")
+$ up (scale "hexDorian" "{[0 <~ 9> 5, 14 21] ~ ~ [-5, 0] ~ ~ ~ [-5, 0]}")
+|+ s "ml6:25"
+|+ cutoff (range 3400 900 $ slow 3.33 saw)
+|+ coarse 8
+|+ conv 0.2
+|+ speed (-0.75)
+|+ begin (range 0.04 0.125 $ slow 3 sine)
+|+ sus (range 0.85 2.49 $ slow 4.5 sine)
+|+ room 0.3
+|+ gain 1.1
+
+scaleList
+
+d1 silence
+
+d3 silence
+
+d1 silence
+
+d4 silence
+
+d6 silence
+
+do
+  let pat = "{<~ 1> ~ ~ 0 ~ [1 ~] 0/2 ~ 1/2 [1 [~ 0/2]]/2 ~ ~ 1/3 <0 1> ~ ~}%16"
+  let pat2 = "{1/2 ~ [~ ~ 0 ~]/4 <~ ~1> ~ ~ [~ 0, 1/3 ~]/2 1? [~ 0? 1 ~]/4 ~ 0/2 ~ ~ ~ 1/3 ~}%16"
+  let x = gain pat
+  let w = gain (inverse <$> pat)
+  let y = gain pat2
+  let z = gain (inverse <$> pat2)
+  d1
+    $ every 2 (within (0, 0.5) (stutWith "<2 3 4>" (1/"<16 6>") (|+ accelerate (range 0.04 (-0.6) sine))))
+    $ every 7 (within (0.25, 0.5) (0.125~>) . (|+ coarse "2 8 4 2 12 8 4 2"))
+    $ every 3 (within (0.5,0.75) (iter 1) . (|+ mfDel' "0.2 0 0 0.04 0.05 0.5"))
+    $ stack [
+      x |+ s "mhh" |+ n "0 10 1 0 0 0" |+ sus (range 0.05 0.35 $ slow 7 sine) |+ cutoff (range 4000 1200 $ slow 3 sine)|+ nudge "[0, 0.01]*2"
+      , y |+ s "mbd:17" |+ sus (range 0.25 0.05 $ slow 5 sine) |+ shape 0.2 |+ accelerate "0 -0.3 -0.03 0.5"
+      , w |+ s "msn2:3" |+ sus (range 0.025 0.25 $ slow 4 sine) |+ slowPanR 4
+      , z |+ s "mst:9" |+ n "0 0 0 <0 -2> 0 2" |+ shape 0.2 |* gain (slow 3 (range 0.3 0.8 sine))
+      , degradeBy 0.45 $ y |+ s "mwb2:5?" |+ slowSpeedR 3 |+ wah 0.03 |+ hpf 200 |+ sus 0.9
+    ]
+    |+ mGain
+    -- |+ slowSpeedR 3
+    |+ accelerate "{0 -0.05 [0 0 -0.03] 0.05 -1 0 0.0 <0  0.2> 0}%8"
+    |+ slowPanS 2
+    |+ cps (138/120/2)
+
+-- bass
+d3
+$ up (scale "hexDorian" "~ [<-2 ~>] 1 [~ <0 ~>] ~ 5 ~ ~ [~ <6 3>] ~ -6 ~ ~ ~ <0 ~> ~")
+|+ s "mb:14"
+|+ sus "0.125 0.05 0.075 0.25 0.6"
+|+ mGain
+
+d2
+$ slow 2
+$ every 3 (0.25~>)
+$ stack [
+  (degradeBy 0.45 $ s "knz:24(<2 3>,8)" |+ wah 0.02)
+  , ((0.125~>) $ s "mnz:15(2,8)" |> sus 1.125 |+ speed "<0.65 0.95>/2" |> cutoff 1230 |+ vowel "<a e i>" |+ n "<0 -3>/4")
+]
+|+ sus (range 0.35 0.65 $ slow 3 saw)
+|+ up "<-1 4 -5 -3>"
+|+ cutoff (range 400 4500 $ slow 6.75 sine)
+|+ dist 0.08
+|+ slowPanR 4
+|+ begin (range 0.025 0.66 $ slow 3 sine)
+|+ speed (choose [-0.35, 0.4, 0.75, 0.99, -0.75])
+|+ room 0.2
+|+ mGain
+
+-- pad
+d6
+$ slow 2
+$ up (scale "hexDorian" "[0,3,9,23]" + "<0 5>")
+|+ s "pad2:9"
+|+ gain 0.9
+|+ cutoff (range 600 3000 $ slow 4 sine)
+|+ room 0.4
+
+d1 silence
+
+
+setcps(132/150)
+
+do
+  let pat = "{<1 0> [<1 ~> 0] <1 0> ~ 1*2 ~ [0 1/2] 1 ~ 0 <1*2 ~ 0 ~> 1 [1 0] ~ 1}%8"
+  let x = gain pat
+  let y = gain (inverse <$> pat)
+  d1
+    $ mask "t f t f t t t f t f"
+    $ every 13 (within (0.5, 0.75) (stutWith 2 0.125 (|+ coarse "[2 4 8]*4")) . (|+ binsmr 0.25))
+    $ every 9 (within (0.75, 1) (rot "<1 4>/4") . (|+ wah "<0 0.04 0 0.1 0>") . (0.125<~))
+    $ every 4 (within (0.25, 0.5) (stutWith 3 0.125 (|+ slowSpeedR 3) . (|+ up 7)))
+    $ every 3 (within (0, 0.5) (|+ binsmr 0.4) . (|+ up (-2)) . (|+ accelerate "0.02 0.5 -0.15 0.3"))
+    $ unison "mbd" (s "[ml4:9, zap:4?]/<3 2>" |+ sus 0.35 |+ binfrz 0.3 |+ n "13" |+ coarse 4 |+ mGain)
+    $ unison "mbd" ((0.525~>) $ s "ml3:3/6" |+ n "13" |+ coarse 4 |+ mGain |+ slowSpeedR 5)
+    $ unison "mbd" ((0.075~>) $ s "ld0/2" |+ sus 0.35 |+ coarse 4 |+ mGain |+ cut "<10 20>" |+ up (-5) |+ shape 0.4)
+    $ unison "mhh" ((0.125~>) $ s "<ml4:14 zap:2>" |+ binsmr 0.3 |+ n "<5 6>" |+ mGain |+ cut "<20 10>")
+    $ unison "mhh" ((0.125<~) $ s "<ml4:8 msn2:27 mpd:9>" |+ dist 0.1 |+ begin 0.125 |+ n "9" |+ coarse "<2 4>" |+ mGain |+ slowSpeedR 3)
+    $ stack[ 
+      x |+ s "mhh:3" |* end "<0.75 0.5>" |+  cut 20  |+ modl 0
+      , degradeBy 0.65 $ slow 4 $ y |+ s "zap:4" |+ coarse 4 # sus "<0.5 0.3>" |+ cut 10
+      , y  |+ s "mbd:7"
+    ]
+    |+ end "0.125 [0.2 0.125, <0.5 1.2> 0.125]/2 <0.04 0.1> 0.8 <1 0.3>"
+    |+ sus "0.125 [0.2 0.125, <0.5 1.2> 0.125]/2 <0.04 0.1> 0.8 <1 0.3>"
+    |+ shape "[0 0.3]*4"
+    |+ speed "[1 1.25 0.9]*8"
+    |+ accelerate (range 0.4 (-0.25) (slow 3 $ sine))
+    |+ n "0 5 0 0 0 0 0 <9 12>"
+    |+ room "{0.025 0 0.03 0.02 0.05}%3"
+    |+ mGain
+    |+ mfDel' "[0 0.95]*4 0"
+    -- |+ mDefault
+    |+ slowPanS 3
+
+d6 silence
+
+d2
+  -- $ msvoB 0
+  $ s "[mnz:20?(3,8) msoz:9*3]/8" |+ sus "<1 0.75>" 
+  |+ up (scale "hijaz" "0 [-5, 2] <7 3> -1 -6" + 4 - "<-7 5>") 
+  |+ shape 0.2 |+ delay 0.75 
+  |+ crush 8
+  |+ accelerate "0.2 -0.04 -0.03 0.2"
+  |+ n "9 10"
+  -- |+ pan "0.25 0.6"
+  |+ mDefault
+  |+ orbit 0
+
+d2
+  $ stack [
+    s "dig4"
+    -- , s "~ [~ ~ dig3(3,8)]/2 ~"
+    , s "[~ dig0/4, ~ ~ ~ dig2/12, ~ [~ dig1]/4 ~]"
+    , s "[ml4:19(5,8) ml4:19?*4]/8" |+ sus "<1 0.5 0.75>" |+ up (scale "hijaz" "0 [-5, 2] <7 3> 10 -6" + 4 + 24) |+ delay 0.5 |+ crush 4 |+ shape 0.4 |+ end "<1 0.75 0.5>" |+ mGain |+ n 0 
+    , msvoB 0.125 $ s "ml2:8(<3,1,2>,8)?" |+ coarse 8 |+ mGain |+ wah 0.04 |+ begin"{0.2 0 0.4 0 0.3}" |+ end "<0.05 0.1 0.2>" |+ delay 0.125 |+ up (scale "aeolian" 7 + "<-4 -6 0 12>/2" + (range (-10) 9 (slow 1 $ sine))) |+ slowPanR 3
+    , s "~ [~ [~ pluck(3,8)]*3]/4 ~ ~" |+ chorus 0.015 |+ sus "<1 1 2>" |+ dist 0.2 |+ up (scale "aeolian" "<3 0> -1 <7 3> <-2 0> 7"  + 7 + "<8 13 8>" + "<7 9>/2") |+ room 0.3 
+  ]
+  |+ orbit 0
+  -- |+ up  12
+
+-- ml2 28
+
+d2 silence
+

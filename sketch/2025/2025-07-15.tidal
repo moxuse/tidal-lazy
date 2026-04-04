@@ -1,0 +1,28 @@
+d1 $ (slow (range 12 64 sine) $ striate 256 $ s "msoz:3")
+  |- begin "0.005"
+  |+ end "0.005"
+  |+ cutoff 5200
+  |+ tilt 0.5
+  |+ speed (slow 1.5 $ range 0.75 6 sine)
+  |+ mGain
+
+d1
+$ every 2 (stut' 3 (1/32) (|* gain (sinosc 1 0.25 9.75)) . (mask "[t f t f]*3") . (|+ speed (randosc 6.25 0.4)))
+$ sometimes (within (0, 0.25) (stut' 3 (1/16) (|* gain (sinosc 0.24 0.99 5.45))))
+$ s "[[<~ mhh:2*2> <mhh:19*4 mhh:19*3 ~>, ~ msn:19, mbd:2]*2, ~ <~ nfl*3>]"
+|+ up (slow 2 $ "[0 12 [0 0 4 2]*2]*3")
+|+ accelerate "[<0 0.04> 0 <0.8 -0.2 0> -0.1 0 0]*2"
+|+ mGain
+|+ mfDel' "<0.3 0 0> 0 <0 0.5 0> 0 0 0.25"
+|+ n 8
+|+ tilt (slow 3 $ range 0 0.5 sine)
+-- |+ room "0 0 0.3 0.2 0.3"
+
+d1 $ echoWith 4 (1/6) (|* speed "1.5") $ sound "arpy arpy:2"
+
+-- d1 $ stack [ ghost $ sound "~ msn", sound "bd" ]
+d1 $ stack [ ghost' (1/3) $ sound "~ [~ msn]", sound "bd [~ bd]" ]
+
+d1 $ echo 4 (-0.2) 0.5 $ sound "bd sn"
+
+d1 $ layer [rev, fast 2] $ sound "arpy [~ arpy:4]

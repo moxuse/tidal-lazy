@@ -13,7 +13,7 @@ s.quit;
 // see http://doc.sccode.org/Classes/ServerOptions.html
 
 s.options.sampleRate = 44100;
-s.options.numBuffers = 1024 * 256; // increase this if you need to load more samples
+s.options.numBuffers = 1024 * 256; // increasej this if you need to load more samples
 s.options.memSize = 8192 * 64; // increase this if you get "alloc failed" messages
 s.options.maxNodes = 1024 * 64; // increase this if you are getting drop outs and the message "too many nodes"
 s.options.numOutputBusChannels = 2; // set this to your hardware output channel size, if necessary
@@ -27,7 +27,7 @@ s.waitForBoot {
 	~dirt.loadSoundFiles(Platform.resourceDir ++ "/sounds/superdirt/*", true);   // load samples (path can be passed in)P
 	s.sync; // wait for samples to be read
 
-	~dirt.start(57120, [0, 0]);   // start listening on port 57120, create two busses each sending audio to channel 0
+	~dirt.start(57120, [0,0]);   // start listening on port 57120, create two busses each sending audio to channel 0
 
 	// optional, needed for the sclang tests only:
 	// (
@@ -430,10 +430,27 @@ s.waitForBoot {
 		ReplaceOut.ar(out, Pan2.ar(effect, pan));
 	}).store;
 
-	// ~dirt.orderModules(['sound', 'vowel', 'flange', 'shape',  'crush', 'coarse', 'mod', 'wah', 'brick', 'spectral-delay','decay-filter','binfreeze', 'binscramble', 'binshift', 'binsmear', 'conv', 'convn', 'convp', 'henon', 'distortion', 'hpf', 'lpf', 'bpf', 'envelope', 'tremolo', 'phaser', 'convolution', 'convolution_n', 'convolution_p']);
+	~dirt.addModule('throp', { |dirtEvent|
+		dirtEvent.sendSynth('throp' ++ numChannels,
+			[
+				out: ~out,
+				throp: ~throp
+			]
+		)
+	}, { ~throp.notNil and:{ ~throp > 0 } });
+
+	SynthDef("throp" ++ numChannels, { |out, pan = 0, throp = 10|
+		var input, effect, foldGain;		input = In.ar(out, numChannels);
+		foldGain = Amplitude.ar(input, 0.05, 0.25);
+		effect = input.wrap2(LFCub.ar(throp - Sweep.kr(1, throp), 0, foldGain));
+		ReplaceOut.ar(out, Pan2.ar(effect, pan));
+	}).store;
+
+
+	// ~dirt.orderModules(['sound', 'vowel', 'flange', 'throp', 'shape',  'crush', 'coarse', 'mod', 'wah', 'brick', 'spectral-delay','decay-filter','binfreeze', 'binscramble', 'binshift', 'binsmear', 'conv', 'convn', 'convp', 'henon', 'distortion', 'hpf', 'lpf', 'bpf', 'envelope', 'tremolo', 'phaser', 'convolution', 'convolution_n', 'convolution_p']);
 	~dirt.orderModules([
 		'sound',
-		'vowel', 'flange', 'chorus', 'shape',  'crush', 'coarse', 'mod', 'wah',
+		'vowel', 'flange', 'chorus', 'throp', 'shape',  'crush', 'coarse', 'mod', 'wah',
 		'brick', 'spectral-delay','decay-filter',
 		'binfreeze', 'binscramble', 'binshift', 'binshiftN', 'binsmear', 'conv', 'convn', 'convp',
 		'henon', 'distortion',
@@ -602,7 +619,7 @@ SynthDef(\rmsn, {|out, sustain = 1, gate = 1, note = 0, speed = 1, begin = 0, en
 	var snd = BHiShelf.ar(
 		(MoogFF.ar(
 			Pulse.ar(LFPar.kr(ExpRand(1, 0.8), Rand(-pi, pi), 40) + (note + 48).midicps ,0.25, 0.5),
-			XLine.kr(ExpRand(400,300), ExpRand(600,800), 0.1), 3
+			XLine.kr(ExpRand(1400,4300), ExpRand(600,800), 0.1), 3
 		) * 8.dbamp).fold2
 	,
 		ExpRand(500, 400),
@@ -612,9 +629,9 @@ SynthDef(\rmsn, {|out, sustain = 1, gate = 1, note = 0, speed = 1, begin = 0, en
 	snd = (Latch.ar(snd, Impulse.ar(XLine.kr(ExpRand(400,16e3), ExpRand(150,16e3), 1))) * 5.dbamp);
 	snd = (snd * 10).softclip * -8.dbamp;
 	snd = (MoogFF.ar(snd,
-XLine.kr(ExpRand(400,1800), ExpRand(250,500), 0.2),3
+XLine.kr(ExpRand(9250,5000), ExpRand(400,500), 0.2),3
 		).tanh * 10.dbamp);
-	snd = Limiter.ar(PitchShift.ar(snd, Rand(0.01, 0.03), 1 + Amplitude.ar(Impulse.ar(2).lag(0.01), 0.01, 0.02), ExpRand(0.005, 0.08)) * 5.dbamp);
+	snd = Limiter.ar(PitchShift.ar(snd, Rand(0.01, 0.09), 1 + Amplitude.ar(Impulse.ar(2).lag(0.01), 0.01, 0.02), ExpRand(0.005, 0.08)) * 5.dbamp);
 	snd = (snd + DelayC.ar(snd, Rand(0.1,0.2), SinOsc.ar(0.1,[0, pi * 2]).linlin(-1, 1, 0, 1) * 1e-03)) * 0.3;
 	OffsetOut.ar(out, DirtPan.ar(snd, ~dirt.numChannels, pan, env));
 	}).store();
@@ -665,7 +682,7 @@ XLine.kr(ExpRand(400,1800), ExpRand(250,500), 0.2),3
 		rate = Dseq([1, 0.5], inf);
 		dur = 1.0 * (end - begin)/speed;
 		env = EnvGen.ar(Env.perc(0.0 , dur,  1, 4), gate, timeScale:sustain, doneAction:2);
-		sound = TGrains.ar(1, Impulse.ar(trate), 88888, rate * speed, MouseX.kr(0,BufDur.kr(88888)), tdur, 0, 0.1, 1) * 0.5 * amp;
+		sound = TGrains.ar(1, Impulse.ar(trate), 88888, rate * speed, MouseX.kr(0,BufDur.kr(88888)), tdur, 0, 0.1, 1) * amp;
 		OffsetOut.ar(out,
 		DirtPan.ar(sound, ~dirt.numChannels, pan, env);
 		)
@@ -696,10 +713,23 @@ XLine.kr(ExpRand(400,1800), ExpRand(250,500), 0.2),3
 		sound = AllpassC.ar(
 			(DynKlank.ar(`[[d_freq / 2, d_freq, d_freq * 2], nil, [0.25, 1, 0.75]], BrownNoise.ar([0.07, 0.07])) * 4).softclip
 			* 0.3
-			* Decay2.ar(Dust.ar((d_freq / 35).clip(0.25, 12)), 0.2, 0.35),
+			* Decay2.ar(Dust.ar((d_freq / 35).clip(0.25, 12)), 0, 0.5),
 			0.2, 0.5, 2);
 
 		env = EnvGen.ar(Env.perc(1, 1.5 * dur,  1 * amp, -4), gate, timeScale: sustain, doneAction: 2);
+		OffsetOut.ar(out,
+			DirtPan.ar(sound, ~dirt.numChannels, pan, env)
+		)
+	}).store;
+
+	SynthDef(\txosc2, { |out, sustain = 1, gate = 1, note = 0, speed = 1, begin = 0, end = 1, pan, accelerate, amp = 1, offset|
+		var sound, d_freq, dur, env, d_env, src, mod;
+		dur = 1.0 * (end - begin) / speed;
+		d_freq = ([0,-12]+(note + 60).midicps) * (1.0 + Sweep.kr(1, accelerate)) * speed;
+
+	mod = SinOsc.ar(d_freq * 2, 0, Demand.kr(gate, 0, Drand([0.125, 0.75,1,2], inf)) * pi);
+	sound = SinOsc.ar(d_freq, mod, 0.3).clip2(LFCub.ar(d_freq * 0.2 + Sweep.kr(1, accelerate) * speed));
+		env = EnvGen.ar(Env.perc(0, 1.5 * dur,  1 * amp, -4), gate, timeScale: sustain, doneAction: 2);
 		OffsetOut.ar(out,
 			DirtPan.ar(sound, ~dirt.numChannels, pan, env)
 		)
@@ -758,10 +788,10 @@ XLine.kr(ExpRand(400,1800), ExpRand(250,500), 0.2),3
 	SynthDef(\flau, { |out, sustain = 2, note = 0, pan = 0, amp = 1.0, begin = 0, end = 1.0|
 		var src;
 		var mod = LFNoise0.kr(18, 20);
-		var freqs = (((0,12..45) + (note + 60)).midicps);
+		var freqs = (((-12,0..45) + (note + 60)).midicps);
 		var env = EnvGen.kr(Env.perc(0, 4, 1, 2), 1, levelScale: amp, doneAction: 2);
 		src = RLPF.ar((DynKlang.ar(`[freqs, nil, mod ], 1, 0) * 6).softclip * 0.3, 2000, 0.4)
-		* Decay2.ar(Dust.ar(Line.kr(125, 10, 0.5)), 0.0, Line.kr(0.025, 0.76, 0.8), 0.3);
+		* Decay2.ar(Impulse.ar(Line.kr(125, 2 * sustain, 0.5)), 0.0, Line.kr(0.025, 0.76, 0.8), 0.3);
 		3.do({
 			src = CombC.ar(
 				src,
@@ -795,6 +825,18 @@ XLine.kr(ExpRand(400,1800), ExpRand(250,500), 0.2),3
 		2.do({ src = AllpassN.ar(src, {0.03.rand}, 0.01 , 0.75) });
 		OffsetOut.ar(out, DirtPan.ar(src, 2, pan, env));
 	}).store;
+
+	SynthDef("madd", {|out, sustain = 1, note = 0, pan = 0, amp = 1.0, begin = 0, end = 1.0|
+		var snd, duration, num, env;
+		num =  (0..11).normalize.pow(0.5);
+		env = EnvGen.ar(Env.perc(0.1, sustain, amp, 4), levelScale: amp, doneAction: 2);
+		snd = SinOsc.ar(num.linexp(0, 1, (note + 60).midicps * 2, 80), SinOsc.kr((note + 60).midicps * 6, 0, 0.5pi), 0.5);
+		snd = snd.sum;
+		snd = BPF.ar(snd, XLine.ar((note + 60).midicps, \bpfEnd.kr(9300), sustain * 1.25), 0.4);
+
+		snd = PitchShift.ar(snd, 0.04, LFNoise2.kr(4.5,0.5,sustain * 1.25), 0, 0.005);
+		OffsetOut.ar(out, DirtPan.ar(snd, 2, pan, env));
+	}).store;
 }; //wait for boot.
 )
 
@@ -802,6 +844,7 @@ XLine.kr(ExpRand(400,1800), ExpRand(250,500), 0.2),3
 (
 MIDIClient.init;
 )
+
 (
 ~midiOut = MIDIOut.newByName("Midi Through", "Midi Through Port-0");
 // ~midiOut = MIDIOut.newByName("UM-ONE", "UM-ONE MIDI 1");
@@ -1082,6 +1125,31 @@ MIDIIn.addFuncTo(\control, ~midiControl);
 ~label12.string_("amp: \n" ++ "0");
 ~midiWindow.front;
 )
+
+
+(
+var numChannels =  ~dirt.numChannels;
+  SynthDef("dirt_delay" ++ numChannels, { |dryBus, effectBus, gate = 1, delaytime, delayfeedback, delayAmp = 1, lock = 0, cps = 1|
+			var signal = In.ar(dryBus, numChannels);
+			var maxDelayTime = 4;
+			var decayTime;
+
+			delayfeedback = delayfeedback.clip(0, 0.99);
+			delaytime = delaytime * if(lock, reciprocal(cps), 1);
+			delaytime = delaytime.clip(0, maxDelayTime); // just to be sure
+			decayTime = log2(-60.dbamp) / log2(delayfeedback) * delaytime;
+			decayTime = decayTime.clip(0, 20);
+
+			signal = CombL.ar(signal, maxDelayTime, delaytime.lag(1), decayTime);
+
+			signal = LeakDC.ar(signal) * delayAmp.lag(0.01) * EnvGen.kr(Env.asr, gate, doneAction:2);
+
+			DirtPause.ar(signal, graceTime:4);
+
+			Out.ar(effectBus, signal);
+		}, [\ir, \ir]).add;
+)
+
 
 /*(
 s.sendMsg("/n_set", 92000,  \minPtrDelay, 63250);
